@@ -1,0 +1,124 @@
+function dp = eegc3_erders_score(data, labels)
+
+
+M0 = mean(data(find(labels==0),:));
+M1 = mean(data(find(labels==1),:));
+M2 = mean(data(find(labels==2),:));
+
+S0 = std(data(find(labels==0),:));
+S1 = std(data(find(labels==1),:));
+S2 = std(data(find(labels==2),:));
+
+dp = zeros(size(data,2),2);
+for i=1:size(data,2)
+
+    F0 = @(x)normcdf(x,M0(i),S0(i));
+    F1 = @(x)normcdf(x,M1(i),S1(i));
+    F2 = @(x)normcdf(x,M2(i),S2(i));
+    
+    % Class 1
+    alpha = S1(i)^2 - S0(i)^2;
+    beta = 2*M1(i)*(S0(i)^2) - 2*M0(i)*(S1(i)^2);
+    gamma = (M0(i)^2)*(S1(i)^2) - (M1(i)^2)*(S0(i)^2) + ...
+        2*log(S0(i)/S1(i))*(S1(i)^2)*(S0(i)^2);
+    D = beta^2 - 4*alpha*gamma;
+    sol1 = (-beta + sqrt(D))/(2*alpha);
+    sol2 = (-beta - sqrt(D))/(2*alpha);
+    
+    erdsol1 = min(sol1,M0(i));
+    erdsol2 = min(sol2,M0(i));
+    erssol1 = max(sol1,M0(i));
+    erssol2 = max(sol2,M0(i));
+    
+    % Search for ERD
+    dp1erd1 = F1(erdsol1) - F0(erdsol1);
+    if(dp1erd1 < 0)
+        dp1erd1 = 0;
+    end
+    
+    dp1erd2 = F1(erdsol2) - F0(erdsol2);
+    if(dp1erd2 < 0)
+        dp1erd2 = 0;
+    end    
+    dp1erd = max(dp1erd1,dp1erd2);
+
+
+    % Search for ERS
+    dp1ers1 = F0(erssol1) - F1(erssol1);
+    if(dp1ers1 < 0)
+        dp1ers1 = 0;
+    end
+    
+    dp1ers2 = F0(erssol2) - F1(erssol2);
+    if(dp1ers2 < 0)
+        dp1ers2 = 0;
+    end
+    dp1ers = max(dp1ers1,dp1ers2);    
+    
+    
+    alpha = S2(i)^2 - S0(i)^2;
+    beta = 2*M2(i)*(S0(i)^2) - 2*M0(i)*(S2(i)^2);
+    gamma = (M0(i)^2)*(S2(i)^2) - (M2(i)^2)*(S0(i)^2) + ...
+        2*log(S0(i)/S2(i))*(S2(i)^2)*(S0(i)^2);
+    D = beta^2 - 4*alpha*gamma;
+    sol1 = (-beta + sqrt(D))/(2*alpha);
+    sol2 = (-beta - sqrt(D))/(2*alpha);
+    erdsol1 = min(sol1,M0(i));
+    erdsol2 = min(sol2,M0(i));
+    erssol1 = max(sol1,M0(i));
+    erssol2 = max(sol2,M0(i));
+    
+    
+    % Search for ERD
+    dp2erd1 = F2(erdsol1) - F0(erdsol1);
+    if(dp2erd1 < 0)
+        dp2erd1 = 0;
+    end
+    
+    dp2erd2 = F2(erdsol2) - F0(erdsol2);
+    if(dp2erd2 < 0)
+        dp2erd2 = 0;
+    end    
+    dp2erd = max(dp2erd1,dp2erd2);
+
+    % Search for ERS
+    dp2ers1 = F0(erssol1) - F2(erssol1);
+    if(dp2ers1 < 0)
+        dp2ers1 = 0;
+    end
+    
+    dp2ers2 = F0(erssol2) - F2(erssol2);
+    if(dp2ers2 < 0)
+        dp2ers2 = 0;
+    end
+    dp2ers = max(dp2ers1,dp2ers2);    
+    
+    % Deciede for class1
+    if(dp1erd >= dp1ers)
+        dp1 = dp1erd;
+        iserd1 = true;
+    else
+        dp1 = dp1ers;
+        iserd1 = false;
+    end
+    
+    % Deciede for class2
+    if(dp2erd >= dp2ers)
+        dp2 = dp2erd;
+        iserd2 = true;
+    else
+        dp2 = dp2ers;
+        iserd2 = false;
+    end
+    
+    % Decide on final dp
+    if(iserd1 & iserd2)
+        dp(i) = dp1 - dp2;
+    elseif(iserd1 | iserd2)
+        
+    end
+    
+end
+
+% Extract final DP
+dp = dp(:,1) - dp(:,2);

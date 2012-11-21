@@ -1,0 +1,23 @@
+function scores = eegc3_FisherScore(data, labels)
+
+% function scores = eegc3_FisherScore(data, labels)
+%
+% Function returning the Fisher scores of all features of a dataset for N
+% classes
+%
+% Input:
+%
+% data: Data matrix samples x features
+%
+% labels: Labels of the samples, any real value
+%
+% Output:
+%
+% Fisher Scores: Word says all!
+%
+
+% Identify number of classes and labels
+Lbl = unique(labels);
+NClass = length(Lbl);
+
+% Separate dataset into classes

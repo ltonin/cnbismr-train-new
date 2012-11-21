@@ -1,0 +1,72 @@
+MAIA Gaussian classifier
+------------------------
+
+Author(s)
+---------
+Pierre Ferrez, IDIAP, pierre.ferrez@idiap.ch, March 2005
+Modified Cristina de Negueruela, IDIAP, January 2007
+
+
+Description
+-----------
+Gaussian classifier using during MAIA project. Requires the Neural Network Toolbox 
+
+
+
+Filelist
+--------
+
+- classifier.m
+	Simple classifier. It classifies a sample with the given centers and
+	covariances. The output are the activities of each prototype of each class
+	and the probability of each class.
+
+- initialisation.m 
+	creates the first centers and covariances used for further training. The
+	input are a data-set containing samples of the different classes, the map
+	used by the SOM algorithm (for example [3 2] if you want 3x2 = 6 prototypes
+	per class) and 'f' or 't' to specify shared covariances or not 
+	('t' = true = shared, 'f' = false = unshared)
+
+- eval_performances.m 
+	evaluates the performances of a given model on a given data-set using a
+	given probability threshold.  The output is the confusion matrix (in
+	absolute numbers of samples and in %) and a performance vector.
+
+- update.m 
+	is the training part, it updates the model using a given data-set and given
+	rates (for centers and covariances).
+
+- scaling.m 
+	returns "weights" if all classes don't have the same number of samples in
+	the data-set. You don't need it directly, it's needed by the other m-files.
+
+
+Use
+---
+
+If you want to classify a sample using an existing model, use simply 
+gauClassifier.m, you'll get the probabilities for all classes.
+If you want to classyfiy a complete data-set and if you're only 
+interested in the confusion matrix, use gauEval.m  
+If you want to create a model, you could use the following structure 
+(jsut an example):
+
+Use gauInitialisation.m on your training data.
+Use gauEval on your training data and your validation data (if 
+existing), so you have performances for iteration 0.
+For N iterations
+    Use gauUpdate.m on your training data
+    Use gauEval on your training data and your validation data 
+(if existing), so you have performances for iteration i.
+Extract the best model out of the N+1 iterations
+Eventually evaluate performances on a testing set.
+
+But again this is just an example, use these m-files as you want ....
+
+Data sets are 2D arrays, the last column is the class, (#samples) x 
+(space dimensionality + 1)
+Centers and Covariances are 3D arrays,  (#classes) x (#protos per class) 
+x (space dimensionality)
+Map is a 1D array with the x and y dimension of the map
+
