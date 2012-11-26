@@ -6,3 +6,4 @@ mtpath_include('$SMR_TRAIN_ROOT/toolboxes/gdfmatlab');
 mtpath_include('$SMR_TRAIN_ROOT/toolboxes/gkde');
 mtpath_include('$SMR_TRAIN_ROOT/toolboxes/subdir');
 mtpath_include('$SMR_TRAIN_ROOT/toolboxes/xml4mat');
+mtpath_include('$SMR_TRAIN_ROOT/toolboxes/mt_support');
