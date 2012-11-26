@@ -83,8 +83,8 @@ handles = load_listbox(dir,handles);
 
 
 % Prepare the Classifier cell array for requested classifiers
-Classifier = cell(1,5);
-for i=1:5
+Classifier = cell(1,6);
+for i=1:6
     Classifier{i}.Enable = false;
     Classifier{i}.filename = '';
     Classifier{i}.filepath = '';
@@ -93,8 +93,10 @@ end
 Classifier{1}.modality = 'rhlh';
 Classifier{2}.modality = 'rhbf';
 Classifier{3}.modality = 'lhbf';
-Classifier{4}.modality = 'mod1';
-Classifier{5}.modality = 'mod2';
+Classifier{4}.modality = 'rhrst';
+Classifier{5}.modality = 'lhrst';
+Classifier{6}.modality = 'mod1';
+
 
 Classifier{1}.task_right = 770;
 Classifier{1}.task_left = 769;
@@ -105,11 +107,14 @@ Classifier{2}.task_left = 771;
 Classifier{3}.task_right = 771;
 Classifier{3}.task_left = 769;
 
-Classifier{4}.task_right = 0;
-Classifier{4}.task_left = 0;
+Classifier{4}.task_right = 770;
+Classifier{4}.task_left = 783;
 
-Classifier{5}.task_right = 0;
-Classifier{5}.task_left = 0;
+Classifier{5}.task_right = 783;
+Classifier{5}.task_left = 769;
+
+Classifier{6}.task_right = 0;
+Classifier{6}.task_left = 0;
 
 handles.Classifier = Classifier;
 
@@ -174,7 +179,7 @@ else
         
         [SR ChanNum TrChanNum] = eegc3_GDFInfo(file_path);
         handles.settings.acq.sf = SR;
-        handles.settings.acq.channels_eeg = ChanNum;
+%         handles.settings.acq.channels_eeg = ChanNum;
         set(handles.EEG_Fs,'String',SR);
         set(handles.EEG_Channels,'String',num2str(ChanNum));
         
@@ -532,24 +537,24 @@ function LdClassMod2_Callback(hObject, eventdata, handles)
 % hObject    handle to LdClassMod2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[handles.Classifier{5}.filepath handles.Classifier{5}.filename] = eegc3_gui_initclass();
-if(~isempty(handles.Classifier{5}.filepath))
+[handles.Classifier{5}.filepath handles.Classifier{6}.filename] = eegc3_gui_initclass();
+if(~isempty(handles.Classifier{6}.filepath))
     set(handles.ClassLbl_Mod2,'String',handles.Classifier{5}.filename);
 else
     set(handles.ClassLbl_Mod2,'String','None');
 end
 guidata(gcf,handles);
 
-% --- Executes on button press in LdClassMod1.
-function LdClassMod1_Callback(hObject, eventdata, handles)
-% hObject    handle to LdClassMod1 (see GCBO)
+% --- Executes on button press in LdClassRHRST.
+function LdClassRHRST_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassRHRST (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [handles.Classifier{4}.filepath handles.Classifier{4}.filename] = eegc3_gui_initclass();
 if(~isempty(handles.Classifier{4}.filepath))
-    set(handles.ClassLbl_Mod1,'String',handles.Classifier{4}.filename);
+    set(handles.ClassLbl_LHRST,'String',handles.Classifier{5}.filename);
 else
-    set(handles.ClassLbl_Mod1,'String','None');
+    set(handles.ClassLbl_LHRST,'String','None');
 end
 guidata(gcf,handles);
 
@@ -816,27 +821,43 @@ end
 guidata(gcf,handles);
 
 
-% --- Executes on button press in Mod1Check.
-function Mod1Check_Callback(hObject, eventdata, handles)
-% hObject    handle to Mod1Check (see GCBO)
+% --- Executes on button press in RHRSTCheck.
+function RHRSTCheck_Callback(hObject, eventdata, handles)
+% hObject    handle to RHRSTCheck (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of Mod1Check
-if(get(handles.Mod1Check,'Value')==1)
-    set(handles.LdClassMod1,'Enable','on');
-    set(handles.Mod1Check,'Value',1);
-    set(handles.Mod1Lbl,'Enable','on');
-    set(handles.Mod1Rtrig,'Enable','on');
-    set(handles.Mod1Ltrig,'Enable','on');
+% Hint: get(hObject,'Value') returns toggle state of RHRSTCheck
+if(get(handles.RHRSTCheck,'Value')==1)
+    set(handles.LdClassRHRST,'Enable','on');
+    set(handles.RHRSTCheck,'Value',1);
     handles.Classifier{4}.Enable = true;
 else
-    set(handles.LdClassMod1,'Enable','off');
-    set(handles.Mod1Check,'Value',0);
-    set(handles.Mod1Lbl,'Enable','off');
-    set(handles.Mod1Rtrig,'Enable','off');
-    set(handles.Mod1Ltrig,'Enable','off');
+    set(handles.LdClassRHRST,'Enable','off');
+    set(handles.RHRSTCheck,'Value',0);
     handles.Classifier{4}.Enable = false;
+end
+guidata(gcf,handles);
+
+% --- Executes on button press in LdClassLHRST.
+function LdClassLHRST_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassLHRST (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% --- Executes on button press in LHRSTCheck.
+function LHRSTCheck_Callback(hObject, eventdata, handles)
+% hObject    handle to LHRSTCheck (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if(get(handles.LHRSTCheck,'Value')==1)
+    set(handles.LdClassLHRST,'Enable','on');
+    set(handles.LHRSTCheck,'Value',1);
+    handles.Classifier{5}.Enable = true;
+else
+    set(handles.LdClassLHRST,'Enable','off');
+    set(handles.LHRSTCheck,'Value',0);
+    handles.Classifier{5}.Enable = false;
 end
 guidata(gcf,handles);
 
@@ -1178,6 +1199,33 @@ else
 end
 guidata(gcf,handles);
 
+% --- Executes on button press in checkbox14.
+function checkbox14_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox14
+
+
+% --- Executes on button press in checkbox15.
+function checkbox15_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox15
+
+
+% --- Executes on button press in checkbox16.
+function checkbox16_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox16
+
+
 
 function EEG_Fs_Callback(hObject, eventdata, handles)
 % hObject    handle to EEG_Fs (see GCBO)
@@ -1223,7 +1271,7 @@ function EEG_Channels_Callback(hObject, eventdata, handles)
 if(~isempty(get(hObject,'String')) && ~isnan(str2double(get(hObject,'String'))) && ...
         str2double(get(hObject,'String')) > 0)
 
-        handles.settings.acq.channels_eeg  = str2double(get(hObject,'String'));
+%         handles.settings.acq.channels_eeg  = str2double(get(hObject,'String'));
 else
     uiwait(msgbox('Number of channels should be a positive integer!','Attention!','error'));
     set(hObject,'String','16');
@@ -1319,7 +1367,7 @@ end
 
 % Warn that only features will be computed
 isEnabled = false;
-for i=1:5
+for i=1:6
     if(handles.Classifier{i}.Enable)
         isEnabled = true;
     end
