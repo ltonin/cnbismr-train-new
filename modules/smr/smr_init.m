@@ -1,3 +1,2 @@
-% 2010-11-10  Michele Tavella <michele.tavella@epfl.ch>
-mtpath_include('$CNBITKMAT_ROOT/matndf');
-mtpath_include('$EEGC3_ROOT/modules/cl');
+mtpath_include('$SMR_TRAIN_ROOT/toolboxes/matndf');
+mtpath_include('$SMR_TRAIN_ROOT/modules/cl');
