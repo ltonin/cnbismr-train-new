@@ -1,0 +1,6 @@
+2010-11-26  Michele Tavella <michele.tavella@epfl.ch>
+
+Be sure you add this to your .bashrc:
+ export MATLABPATH=~/Sync/toolboxes/eegc3includes/mtmatlab/:$MATLABPATH
+ export MATLABPATH=~/Sync/toolboxes/eegc3includes/mtpath/:$MATLABPATH
+ export EEGC3_INCLUDES=~/Sync/toolboxes/eegc3includes/

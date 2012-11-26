@@ -1,0 +1,42 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+01l	example/Session.vim	/^normal! 01l$/;"	m
+06l	Session.vim	/^normal! 06l$/;"	m
+08l	Session.vim	/^normal! 08l$/;"	m
+AUTHOR	example/Makefile	/^AUTHOR=Michele Tavella <tavella.michele@gmail.com>$/;"	m
+CC	example/Makefile	/^CC=g++$/;"	m
+CFLAGS	example/Makefile	/^CFLAGS=-Wall -O2$/;"	m
+CNBITK_ROOT	example/Makefile	/^CNBITK_ROOT=~\/Paths\/cnbitk\/$/;"	m
+CONFIG_CFLAGS	example/Makefile	/^CONFIG_CFLAGS=$(shell pkg-config --cflags $(CONFIG_LIBS))$/;"	m
+CONFIG_LDFLAGS	example/Makefile	/^CONFIG_LDFLAGS=$(shell pkg-config --libs $(CONFIG_LIBS))$/;"	m
+CONFIG_LIBS	example/Makefile	/^CONFIG_LIBS=ndf transport transpipe$/;"	m
+CTAGS	example/Makefile	/^CTAGS=ctags -R --c++-kinds=+p --fields=+iaS --extra=+q$/;"	m
+LDFLAGS	example/Makefile	/^LDFLAGS=-lm -lpthread -lstdc++$/;"	m
+OBJ_BIN	example/Makefile	/^OBJ_BIN=$(OBJ_SRC:.c=)$/;"	m
+OBJ_SRC	example/Makefile	/^OBJ_SRC=$(wildcard *.c)$/;"	m
+PROJECT	example/Makefile	/^PROJECT=ndfmat_examples$/;"	m
+SessionLoad	Session.vim	/^let SessionLoad = 1$/;"	v
+SessionLoad	example/Session.vim	/^let SessionLoad = 1$/;"	v
+VERSION	example/Makefile	/^VERSION=N\/A$/;"	m
+main	example/ndfsource_gtec.c	/^int main(void) {$/;"	f	signature:(void)
+main	example/ndfsource_legacy.c	/^int main(void) {$/;"	f	signature:(void)
+ndf_close	ndf_close.m	/^function ndf_close(fid)$/;"	f
+ndf_frame	ndf_frame.m	/^function frame = ndf_frame(frame)$/;"	f
+ndf_read_gtec	ndf_read_gtec.m	/^function [frame, count] = ndf_read_gtec(fid, frame)$/;"	f
+ndf_read_legacy	ndf_read_legacy.m	/^function [frame, count] = ndf_read_legacy(fid, frame, channels, framesize, type)$/;"	f
+ndf_sink	ndf_sink.m	/^function fid = ndf_sink(filename, waits)$/;"	f
+s:l	Session.vim	/^let s:l = 28 - ((27 * winheight(0) + 29) \/ 58)$/;"	v
+s:l	Session.vim	/^let s:l = 4 - ((3 * winheight(0) + 29) \/ 58)$/;"	v
+s:l	example/Session.vim	/^let s:l = 38 - ((37 * winheight(0) + 29) \/ 59)$/;"	v
+s:so_save	Session.vim	/^let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0$/;"	v
+s:so_save	example/Session.vim	/^let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0$/;"	v
+s:sx	Session.vim	/^let s:sx = expand("<sfile>:p:r")."x.vim"$/;"	v
+s:sx	example/Session.vim	/^let s:sx = expand("<sfile>:p:r")."x.vim"$/;"	v
+s:wipebuf	Session.vim	/^  let s:wipebuf = bufnr('%')$/;"	v
+s:wipebuf	example/Session.vim	/^  let s:wipebuf = bufnr('%')$/;"	v
+zt	Session.vim	/^normal! zt$/;"	m
+zt	example/Session.vim	/^normal! zt$/;"	m

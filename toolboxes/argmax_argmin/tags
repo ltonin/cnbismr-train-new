@@ -1,0 +1,12 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+arg_max	argmaxmin_mex.c	/^ void arg_max(double *X, int X_rows, int X_cols, double *I, int DIM, int max_NOT_MIN){$/;"	f	signature:(double *X, int X_rows, int X_cols, double *I, int DIM, int max_NOT_MIN)
+arg_min	argmaxmin_mex.c	/^  void arg_min(double *X, int X_rows, int X_cols, double *I, int DIM){$/;"	f	signature:(double *X, int X_rows, int X_cols, double *I, int DIM)
+argmax	argmax.m	/^function I = argmax(X, DIM)$/;"	f
+argmax_demo	argmax_demo.m	/^function argmax_demo$/;"	f
+argmin	argmin.m	/^function I = argmin(X, DIM)$/;"	f
+mexFunction	argmaxmin_mex.c	/^void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])$/;"	f	signature:(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
