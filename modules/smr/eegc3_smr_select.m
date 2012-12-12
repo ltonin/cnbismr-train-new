@@ -48,7 +48,9 @@ if(settings.modules.smr.options.selection.dpt)
 	disp('[eegc2_select] Running DPT feature selection');
 	dp = dpfeatures(udataset, ulabels, 100);
 end
-	
+
+% HACK: hardcoded 16 electrodes
+settings.acq.channels_eeg = 16;
 dpa = reshape(dp,  settings.acq.channels_eeg, ...
 	length(settings.modules.smr.psd.freqs));
 

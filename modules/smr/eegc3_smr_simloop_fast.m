@@ -262,7 +262,9 @@ if(mod(bci.settings.modules.smr.psd.win*bci.settings.modules.smr.psd.ovl,...
     return;
 end
 
-% Preprocess batch
+% Preprocess batch 
+% TODO: HACK!! 16 channelsare hardcoded here
+bci.settings.acq.channels_eeg = 16
 warning('[eegc3_simloop_fast] Careful dude, I only work for gtec 16 electrodes!')
 data.eeg = eegc3_smr_preprocess(data.eeg(:,1:bci.settings.acq.channels_eeg), ...
 	bci.settings.modules.smr.options.prep.dc, ...
@@ -271,6 +273,7 @@ data.eeg = eegc3_smr_preprocess(data.eeg(:,1:bci.settings.acq.channels_eeg), ...
 	bci.settings.modules.smr.laplacian);
 
 % Calculate all the internal PSD windows beforehand for speed
+% HACK: channels set to 16, check bci.settings.acq.channels_eeg, instead
 for ch=1:bci.settings.acq.channels_eeg
     disp(['[eegc3_smr_simloop_fast] Internal PSDs on electrode ' num2str(ch)]);
     [~,f,t,p(:,:,ch)] = spectrogram(data.eeg(:,ch), ...
