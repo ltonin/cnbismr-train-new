@@ -16,7 +16,7 @@
 % None. The script saves useful variables, among which the trained
 % classifier eegc3 MAT files (settings)
 
-function [] = eegc3_smr_autotrain(FilePaths)
+function [] = eegc3_smr_autotrain(FilePaths, presets)
 % 2012  Andrea Biasiucci <andrea.biasiucci@epfl.ch>
 
 %if(nargin < 4)
@@ -87,18 +87,7 @@ Classifiers{1}.task_left = 769;
 Classifiers{1}.filename = '';
 Classifiers{1}.filepath = '';
 Classifiers{1}.modality = 'rhlh';
-%%
-/
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% HACK: PRESETS -> Trains a Classifier using these features, only. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-presets.channels = [7 8 10 11 13 15];
-presets.bands = {...           
-                            [] ...
-           []        []     []    []        [] ...
-        [8 10 12] [8 10 12] [] [8 10 12] [8 10 12] ... 
-           []      [10 12]  []  [10 12]     [] ...
-           };
+
 
 %% 
 
