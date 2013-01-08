@@ -49,6 +49,8 @@ if(settings.modules.smr.options.selection.dpt)
 	dp = dpfeatures(udataset, ulabels, 100);
 end
 	
+% TODO: HACK TO MAKE THIS WORK WITH 16
+settings.acq.channels_eeg = 16;
 dpa = reshape(dp,  settings.acq.channels_eeg, ...
 	length(settings.modules.smr.psd.freqs));
 

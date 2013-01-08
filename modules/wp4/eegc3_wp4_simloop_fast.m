@@ -76,16 +76,17 @@ else
     printf(' > MAT:         %s\n', bci.trace.eegc3_smr_simloop.filemat);    
 end
 
+% TODO: HACK, put plot spectrum here
 if(exist(bci.trace.eegc3_smr_simloop.filemat, 'file') && (~recompute))
 	printf('[eegc3_smr_simloop] Loading precomputed MAT: %s\n', ...
 		bci.trace.eegc3_smr_simloop.filemat);
 	load(bci.trace.eegc3_smr_simloop.filemat);
     
-    % Plot spectrum
-    printf('[eegc3_smr_simloop] Plotting precomputed EEG spectrum');
-    eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
-        bci.settings.modules.smr.montage);
-	return;
+%     % Plot spectrum
+%     printf('[eegc3_smr_simloop] Plotting precomputed EEG spectrum');
+%     eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
+%         bci.settings.modules.smr.montage);
+% 	return;
 end
 
 % Import all the data we need
@@ -158,6 +159,9 @@ printf('[eegc3_smr_simloop] Calculating and plotting EEG spectrum');
 % eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
 %     bci.settings.modules.smr.montage, info);
 
+% TODO: HACK to make this work with 16 electrodes
+bci.settings.acq.channels_eeg = 16;
+% /HACK
 bci.eeg = ndf_ringbuffer(bci.settings.acq.sf, ...
 	bci.settings.acq.channels_eeg, 1);
 bci.tri = ndf_ringbuffer(bci.settings.acq.sf, 1, 1);
@@ -264,7 +268,7 @@ if(mod(bci.settings.modules.smr.psd.win*bci.settings.modules.smr.psd.ovl,...
 end
 
 % Preprocess batch
-data.eeg = eegc3_smr_preprocess(data.eeg(:,1:end-1), ...
+data.eeg = eegc3_smr_preprocess(data.eeg(:,1:bci.settings.acq.channels_eeg), ...
 	bci.settings.modules.smr.options.prep.dc, ...
 	bci.settings.modules.smr.options.prep.car, ...  
 	bci.settings.modules.smr.options.prep.laplacian, ...
