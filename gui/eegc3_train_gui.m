@@ -22,7 +22,7 @@ function varargout = eegc3_train_gui(varargin)
 
 % Edit the above text to modify the response to help eegc3_train_gui
 
-% Last Modified by GUIDE v2.5 08-Nov-2012 18:24:47
+% Last Modified by GUIDE v2.5 08-Jan-2013 18:42:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,8 +83,8 @@ handles = load_listbox(dir,handles);
 
 
 % Prepare the Classifier cell array for requested classifiers
-Classifier = cell(1,5);
-for i=1:5
+Classifier = cell(1,7);
+for i=1:7
     Classifier{i}.Enable = false;
     Classifier{i}.filename = '';
     Classifier{i}.filepath = '';
@@ -93,8 +93,10 @@ end
 Classifier{1}.modality = 'rhlh';
 Classifier{2}.modality = 'rhbf';
 Classifier{3}.modality = 'lhbf';
-Classifier{4}.modality = 'mod1';
-Classifier{5}.modality = 'mod2';
+Classifier{4}.modality = 'rhrst';
+Classifier{5}.modality = 'lhrst';
+Classifier{6}.modality = 'mod1';
+Classifier{7}.modality = 'mod2';
 
 Classifier{1}.task_right = 770;
 Classifier{1}.task_left = 769;
@@ -105,11 +107,17 @@ Classifier{2}.task_left = 771;
 Classifier{3}.task_right = 771;
 Classifier{3}.task_left = 769;
 
-Classifier{4}.task_right = 0;
-Classifier{4}.task_left = 0;
+Classifier{4}.task_right = 770;
+Classifier{4}.task_left = 783;
 
-Classifier{5}.task_right = 0;
-Classifier{5}.task_left = 0;
+Classifier{5}.task_right = 783;
+Classifier{5}.task_left = 769;
+
+Classifier{6}.task_right = 0;
+Classifier{6}.task_left = 0;
+
+Classifier{7}.task_right = 0;
+Classifier{7}.task_left = 0;
 
 handles.Classifier = Classifier;
 
@@ -593,6 +601,32 @@ else
 end
 guidata(gcf,handles);
 
+% --- Executes on button press in LdClassRHRST.
+function LdClassRHRST_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassRHRST (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[handles.Classifier{1}.filepath handles.Classifier{1}.filename] = eegc3_gui_initclass();
+if(~isempty(handles.Classifier{1}.filepath))
+    set(handles.ClassLbl_rhrst,'String',handles.Classifier{1}.filename);
+else
+    set(handles.ClassLbl_rhrst,'String','None');
+end
+guidata(gcf,handles);
+
+% --- Executes on button press in LdClassRHRST.
+function LdClassLHRST_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassLHRST (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[handles.Classifier{1}.filepath handles.Classifier{1}.filename] = eegc3_gui_initclass();
+if(~isempty(handles.Classifier{1}.filepath))
+    set(handles.ClassLbl_lhrst,'String',handles.Classifier{1}.filename);
+else
+    set(handles.ClassLbl_lhrst,'String','None');
+end
+guidata(gcf,handles);
+
 function Mod1Ltrig_Callback(hObject, eventdata, handles)
 % hObject    handle to Mod1Ltrig (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -894,7 +928,41 @@ else
 end
 guidata(gcf,handles);
 
+% --- Executes on button press in RHRSTCheck.
+function RHRSTCheck_Callback(hObject, eventdata, handles)
+% hObject    handle to RHRSTCheck (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+% Hint: get(hObject,'Value') returns toggle state of RHRSTCheck
+if(get(handles.RHRSTCheck,'Value')==1)
+    set(handles.LdClassRHRST,'Enable','on');
+    set(handles.RHRSTCheck,'Value',1);
+    handles.Classifier{1}.Enable = true;
+else
+    set(handles.LdClassRHRST,'Enable','off');
+    set(handles.RHRSTCheck,'Value',0);
+    handles.Classifier{1}.Enable = false;
+end
+guidata(gcf,handles);
+
+% --- Executes on button press in LHRSTCheck.
+function LHRSTCheck_Callback(hObject, eventdata, handles)
+% hObject    handle to LHRSTCheck (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of LHRSTCheck
+if(get(handles.LHRSTCheck,'Value')==1)
+    set(handles.LdClassLHRST,'Enable','on');
+    set(handles.LHRSTCheck,'Value',1);
+    handles.Classifier{1}.Enable = true;
+else
+    set(handles.LdClassLHRST,'Enable','off');
+    set(handles.LHRSTCheck,'Value',0);
+    handles.Classifier{1}.Enable = false;
+end
+guidata(gcf,handles);
 
 function Feat_Win_Callback(hObject, eventdata, handles)
 % hObject    handle to Feat_Win (see GCBO)
@@ -1458,3 +1526,17 @@ else
     handles.settings.modules.wp4.datatype = 1;
 end
 guidata(gcf,handles);
+
+
+% --- Executes on button press in LdClassRHRST.
+function LdClassRHRST_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassRHRST (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in LdClassLHRST.
+function LdClassLHRST_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassLHRST (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
