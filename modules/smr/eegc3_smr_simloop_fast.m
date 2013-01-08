@@ -1,8 +1,7 @@
-function bci = eegc3_smr_simloop(filexdf, filetxt, filemat, ... 
+function bci = eegc3_smr_simloop_fast(filexdf, filetxt, filemat, ... 
 	rejection, integration, doplot, resetevents, recompute)
-% 2010-11-05  Michele Tavella <michele.tavella@epfl.ch>
-%
-% Edited by Simis for compatibility with eegc3_smr_train
+% 2012 Simis for compatibility with eegc3_smr_train
+% 2011 Michele Tavella <michele.tavella@epfl.ch>
 %
 % IMPORTANT: This function is used BOTH for protocol simulation reasons 
 % (when the information of the settings, the classifier, the rejection and 
