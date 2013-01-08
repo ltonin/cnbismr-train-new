@@ -1,8 +1,9 @@
-function bci = eegc3_smr_simloop(filexdf, filetxt, filemat, ... 
+function bci = eegc3_wp4_simloop_fast(filexdf, filetxt, filemat, ... 
 	rejection, integration, doplot, resetevents, recompute)
-% 2010-11-05  Michele Tavella <michele.tavella@epfl.ch>
+% 2013 Andrea Biasiucci <andrea.biasiucci@epfl.ch>
+% 2012 Simis for compatibility with eegc3_smr_train
+% 2010 Michele Tavella <michele.tavella@epfl.ch>
 %
-% Edited by Simis for compatibility with eegc3_smr_train
 %
 % IMPORTANT: This function is used BOTH for protocol simulation reasons 
 % (when the information of the settings, the classifier, the rejection and 
@@ -150,12 +151,12 @@ data = eegc3_smr_labelEEG(data, protocol_label, bci.settings);
 % Calculate spectrum
 % Use only the pure MI trials, not the whole recording
 printf('[eegc3_smr_simloop] Calculating and plotting EEG spectrum');
-[bci.MI bci.nonMI info] = ...
-    eegc3_smr_spectrum(data.eeg(:,1:end-1), data.trial_idx,...
-    data.lbl_sample, 1, bci.settings, protocol_label, taskset);
-% Plot spectrum
-eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
-    bci.settings.modules.smr.montage, info);
+% [bci.MI bci.nonMI info] = ...
+%     eegc3_smr_spectrum(data.eeg(:,1:end-1), data.trial_idx,...
+%     data.lbl_sample, 1, bci.settings, protocol_label, taskset);
+% % Plot spectrum
+% eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
+%     bci.settings.modules.smr.montage, info);
 
 bci.eeg = ndf_ringbuffer(bci.settings.acq.sf, ...
 	bci.settings.acq.channels_eeg, 1);

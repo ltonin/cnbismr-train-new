@@ -1443,3 +1443,18 @@ else
     set(handles.OnlyTrials, 'Enable','off');
 end
 guidata(gcf,handles);
+
+% --- Executes on button press in FastTrain.
+function WP4CheckBox_Callback(hObject, eventdata, handles)
+% hObject    handle to FastTrain (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of FastTrain
+Val = get(hObject,'Value');
+if(Val == 0)
+    handles.settings.modules.wp4.datatype = 0;
+else
+    handles.settings.modules.wp4.datatype = 1;
+end
+guidata(gcf,handles);
