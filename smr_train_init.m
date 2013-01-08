@@ -16,4 +16,6 @@ mtpath_include('$SMR_TRAIN_ROOT/visualization/');
 mtpath_include('$SMR_TRAIN_ROOT/toolboxes/');
 
 mtpath_include('$SMR_TRAIN_ROOT/modules/smr/');
+mtpath_include('$SMR_TRAIN_ROOT/modules/wp4/');
+mtpath_include('$SMR_TRAIN_ROOT/modules/eegc2/');
 mtpath_include('$SMR_TRAIN_ROOT/modules/cl/');
