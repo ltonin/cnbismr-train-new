@@ -146,8 +146,23 @@ end
 % Find the labels of EEG samples (time domain)
 data.lbl_sample = zeros(1, size(data.eeg,1));
 data.trial_idx = zeros(1, size(data.eeg,1));
-printf('[eegc3_smr_simloop] Labeling raw EEG data according to protocol');
+printf('[eegc3_smr_simloop] Labeling raw EEG data according to protocol\n');
 data = eegc3_smr_labelEEG(data, protocol_label, bci.settings);
+
+
+% Open text file, save line with run id and update it with the number of
+% deliveries
+if sum(data.hdr.EVENT.TYP == 770) > 0
+    EVENTTYPE = 770;
+else
+    EVENTTYPE = 771;
+end
+
+performance.Ndeliveries = sum(data.hdr.EVENT.TYP == 33549);
+performance.Ntrials = sum(data.hdr.EVENT.TYP == EVENTTYPE);
+
+printf('BCI Performance in this run\n')
+disp(performance);
 
 % Calculate spectrum
 % Use only the pure MI trials, not the whole recording
