@@ -1,7 +1,8 @@
-function bci = eegc3_smr_simloop_fast(filexdf, filetxt, filemat, ... 
+function bci = eegc3_smr_simloop(filexdf, filetxt, filemat, ... 
 	rejection, integration, doplot, resetevents, recompute)
-% 2012 Simis for compatibility with eegc3_smr_train
-% 2011 Michele Tavella <michele.tavella@epfl.ch>
+% 2010-11-05  Michele Tavella <michele.tavella@epfl.ch>
+%
+% Edited by Simis for compatibility with eegc3_smr_train
 %
 % IMPORTANT: This function is used BOTH for protocol simulation reasons 
 % (when the information of the settings, the classifier, the rejection and 
@@ -261,18 +262,14 @@ if(mod(bci.settings.modules.smr.psd.win*bci.settings.modules.smr.psd.ovl,...
     return;
 end
 
-% Preprocess batch 
-% TODO: HACK!! 16 channelsare hardcoded here
-bci.settings.acq.channels_eeg = 16
-warning('[eegc3_simloop_fast] Careful dude, I only work for gtec 16 electrodes!')
-data.eeg = eegc3_smr_preprocess(data.eeg(:,1:bci.settings.acq.channels_eeg), ...
+% Preprocess batch
+data.eeg = eegc3_smr_preprocess(data.eeg(:,1:end-1), ...
 	bci.settings.modules.smr.options.prep.dc, ...
 	bci.settings.modules.smr.options.prep.car, ...  
 	bci.settings.modules.smr.options.prep.laplacian, ...
 	bci.settings.modules.smr.laplacian);
 
 % Calculate all the internal PSD windows beforehand for speed
-% HACK: channels set to 16, check bci.settings.acq.channels_eeg, instead
 for ch=1:bci.settings.acq.channels_eeg
     disp(['[eegc3_smr_simloop_fast] Internal PSDs on electrode ' num2str(ch)]);
     [~,f,t,p(:,:,ch)] = spectrogram(data.eeg(:,ch), ...

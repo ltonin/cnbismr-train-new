@@ -17,4 +17,3 @@ mtpath_include('$SMR_TRAIN_ROOT/toolboxes/');
 
 mtpath_include('$SMR_TRAIN_ROOT/modules/smr/');
 mtpath_include('$SMR_TRAIN_ROOT/modules/cl/');
-mtpath_include('$SMR_TRAIN_ROOT/modules/eegc2/');

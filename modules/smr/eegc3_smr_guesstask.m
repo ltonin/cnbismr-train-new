@@ -1,5 +1,4 @@
-% 2012 Andrea Biasiucci <andrea.biasiucci@epfl.ch>
-% 2010 Michele Tavella <michele.tavella@epfl.ch>
+% 2010-11-27  Michele Tavella <michele.tavella@epfl.ch>
 function [taskset, resetevents, protocol_label] = eegc3_smr_guesstask(labels)
 
 taskset = [];
@@ -148,22 +147,6 @@ while(true)
 		taskset.cues(1) = cues.both_hands_mi;
 		taskset.cues(2) = cues.both_feet_mi;
 		break;
-	end
-    if((did.right_hand_mi && did.rest_mi) || ...
-            (did.right_hand_mi && ~did.rest_mi && ~did.left_hand_mi ...
-            && ~did.both_feet_mi && ~did.both_hands_mi))
-        printf('rhrst\n');
-        taskset.cues(1) = cues.right_hand_mi;
-        taskset.cues(2) = cues.rest_mi;
-        break;
-    end
-    if( (did.left_hand_mi && did.rest_mi) || ...
-            (did.left_hand_mi && ~did.rest_mi && ~did.right_hand_mi ...
-            && ~did.both_feet_mi && ~did.both_hands_mi))
-        printf('lhrst\n');
-        taskset.cues(1) = cues.rest_mi;
-        taskset.cues(2) = cues.left_hand_mi;
-        break;
 	end
 	break;
 end
