@@ -1,22 +1,22 @@
 function [dataset] = eegc3_smr_extract(Paths, settings, usedlg)
 % Edited by S. Perdikis <serafeim.perdikis@epfl.ch> on 29/01/11
 %
-% EEGC3_SMR_EXTRACT is the eegc3 function that prepares the dataset (data 
+% EEGC3_SMR_EXTRACT is the eegc3 function that prepares the dataset (data
 % and labels) for classifier training. The input arguments can be collected
 % by using eegc3_train_gui. Paths is a cell array containing the filepaths
 % of the GDF file(s) (runs) to be used for feature extraction. Settings is
-% a structure (of the type returned by eegc3_settings and 
+% a structure (of the type returned by eegc3_settings and
 % eegc3_smr_settings) containing the necessary settings for feature
 % extraction.
 %
 % function [data labels] = eegc3_smr_extract(Paths, settings)
-%    
+%
 %    Accepts:
 %       PATHS      cell array
 %       SETTINGS   struct
 %
 %    Returns:
-%       DATASET    struct  
+%       DATASET    struct
 %
 
 if(nargin < 3)
@@ -51,22 +51,22 @@ else
     if(~isequal(settings.info.subject,ID))
         
         if(usedlg)
-             Ans = questdlg(['[eegc3_smr_extract] It seems that you might'...
-                 'have set a subject code'...
-            ' other than the one which performed the selected runs... Are you'...
-            ' sure you want to continue?'],'Attention!','Yes','No','No');
+            Ans = questdlg(['[eegc3_smr_extract] It seems that you might'...
+                'have set a subject code'...
+                ' other than the one which performed the selected runs... Are you'...
+                ' sure you want to continue?'],'Attention!','Yes','No','No');
         else
             disp(['[eegc3_smr_extract] It seems that you requested a classifier for a subject'...
-            ' other than the one which performed the selected runs...']);
+                ' other than the one which performed the selected runs...']);
             Ans = 'Yes';
         end
-    
+        
         if(strcmp(Ans,'No'))
             dataset = [];
             return;
-        end 
+        end
     end
- 
+    
 end
 
 % Check that all runs used the same sampling frequency and channels
@@ -76,7 +76,7 @@ for i=2:FileNum
     
     [New_Fs New_ChanNum] = eegc3_GDFInfo(Paths{i});
     if((New_Fs ~= Curr_Fs) || (New_ChanNum ~= Curr_ChanNum))
-    
+        
         disp(['[eegc3_smr_extract] Runs with different sampling frequency'...
             'and/or channel configuration detected! Script exiting...']);
         return;
@@ -87,9 +87,20 @@ dataset.run = {};
 
 for i=1:FileNum
     if(settings.modules.smr.options.extraction.fast)
-        bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[]);
+        if (settings.modules.wp4.datatype)
+            disp('WP4 Online Data - using eegc3_wp4_simloop_fast')
+            % Compute ST performance
+            eegc3_wp4_trialPerf(Paths{i});
+            %bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[]);
+        else
+            bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[]);
+        end
     else
-        bci = eegc3_smr_simloop(Paths{i},[],settings,[],[]);
+        if (settings.modules.wp4.datatype)
+            error('WP4 Online Data - no "slow" method for this, use the fast training, instead')
+        else
+            bci = eegc3_smr_simloop(Paths{i},[],settings,[],[]); 
+        end
     end
     
     disp(['[eegc3_smr_extract] Extracting/loading features for: ' ...
@@ -117,15 +128,19 @@ for i=1:FileNum
     
     
     % Check that the requested settings are the same as those used for the
-    % feature computation (in case features are precomputed and only loaded 
+    % feature computation (in case features are precomputed and only loaded
     % by this script)
     
-    % Exclude incopatibility due to subject code (it has been questioned 
+    % Exclude incopatibility due to subject code (it has been questioned
     % before)
     tmp1 = settings;
     tmp2 = bci.settings;
     tmp1.info.subject = [];
     tmp2.info.subject = [];
+    
+    % HACK TO MAKE THIS WORK WITH 32 ELECTRODES
+    tmp1.acq.channels_eeg = 16;
+
     isCompatible = eegc3_smr_comparesettings(tmp1, tmp2);
     if(~isCompatible)
         
@@ -141,17 +156,28 @@ for i=1:FileNum
                 'have requested. Features will be recomputed']);
             Ans = 'Yes';
         end
-    
+        
         if(strcmp(Ans,'Yes'))
             % Recompute with current settings
             if(settings.modules.smr.options.extraction.fast)
-                bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[],...
-                    false, [781 898 897], 1);
+                if (settings.modules.wp4.datatype)
+                    disp('WP4 Online Data - using eegc3_wp4_simloop_fast')
+                    eegc3_wp4_trialPerf(Paths{i});
+%                     bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[],...
+%                         false, [781 898 897], 1);
+                else
+                    bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[],...
+                        false, [781 898 897], 1);
+                end
             else
-                bci = eegc3_smr_simloop(Paths{i},[],settings,[],[],...
+                if (settings.modules.wp4.datatype)
+                    error('WP4 Online Data - no "slow" method for this, use the fast training, instead')
+                else
+                    bci = eegc3_smr_simloop(Paths{i},[],settings,[],[],...
                     false, [781 898 897], 1);
+                end
             end
-        end 
+        end
     end
     
     dataset.run{i}.data = bci.afeats;

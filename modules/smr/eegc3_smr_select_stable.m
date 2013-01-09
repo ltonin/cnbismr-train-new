@@ -38,8 +38,8 @@ end
 
 % Now compute the discriminant power accross all runs
 % based on the gamma-s and st_mat-s
-% HACK: only works for 16 electrodes!! check where settings.acq.channels_ee
-% is set, instead
+
+% HACK TO MAKE IT WORK WITH 16
 settings.acq.channels_eeg = 16;
 Alldp_nom = zeros(settings.acq.channels_eeg*...
     length(settings.modules.smr.psd.freqs),1);

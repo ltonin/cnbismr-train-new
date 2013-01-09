@@ -13,8 +13,10 @@ mtpath_include('$SMR_TRAIN_ROOT/performance/');
 mtpath_include('$SMR_TRAIN_ROOT/preprocessing/');
 mtpath_include('$SMR_TRAIN_ROOT/tools/');
 mtpath_include('$SMR_TRAIN_ROOT/visualization/');
+mtpath_include('$SMR_TRAIN_ROOT/toolboxes/mtmatlab');
 mtpath_include('$SMR_TRAIN_ROOT/toolboxes/');
 
 mtpath_include('$SMR_TRAIN_ROOT/modules/smr/');
-mtpath_include('$SMR_TRAIN_ROOT/modules/cl/');
+mtpath_include('$SMR_TRAIN_ROOT/modules/wp4/');
 mtpath_include('$SMR_TRAIN_ROOT/modules/eegc2/');
+mtpath_include('$SMR_TRAIN_ROOT/modules/cl/');

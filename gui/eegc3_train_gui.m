@@ -22,7 +22,7 @@ function varargout = eegc3_train_gui(varargin)
 
 % Edit the above text to modify the response to help eegc3_train_gui
 
-% Last Modified by GUIDE v2.5 08-Nov-2012 18:24:47
+% Last Modified by GUIDE v2.5 08-Jan-2013 18:42:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,8 +83,8 @@ handles = load_listbox(dir,handles);
 
 
 % Prepare the Classifier cell array for requested classifiers
-Classifier = cell(1,5);
-for i=1:5
+Classifier = cell(1,7);
+for i=1:7
     Classifier{i}.Enable = false;
     Classifier{i}.filename = '';
     Classifier{i}.filepath = '';
@@ -93,8 +93,10 @@ end
 Classifier{1}.modality = 'rhlh';
 Classifier{2}.modality = 'rhbf';
 Classifier{3}.modality = 'lhbf';
-Classifier{4}.modality = 'mod1';
-Classifier{5}.modality = 'mod2';
+Classifier{4}.modality = 'rhrst';
+Classifier{5}.modality = 'lhrst';
+Classifier{6}.modality = 'mod1';
+Classifier{7}.modality = 'mod2';
 
 Classifier{1}.task_right = 770;
 Classifier{1}.task_left = 769;
@@ -105,11 +107,17 @@ Classifier{2}.task_left = 771;
 Classifier{3}.task_right = 771;
 Classifier{3}.task_left = 769;
 
-Classifier{4}.task_right = 0;
-Classifier{4}.task_left = 0;
+Classifier{4}.task_right = 770;
+Classifier{4}.task_left = 783;
 
-Classifier{5}.task_right = 0;
-Classifier{5}.task_left = 0;
+Classifier{5}.task_right = 783;
+Classifier{5}.task_left = 769;
+
+Classifier{6}.task_right = 0;
+Classifier{6}.task_left = 0;
+
+Classifier{7}.task_right = 0;
+Classifier{7}.task_left = 0;
 
 handles.Classifier = Classifier;
 
@@ -593,6 +601,32 @@ else
 end
 guidata(gcf,handles);
 
+% --- Executes on button press in LdClassRHRST.
+function LdClassRHRST_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassRHRST (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[handles.Classifier{4}.filepath handles.Classifier{4}.filename] = eegc3_gui_initclass();
+if(~isempty(handles.Classifier{4}.filepath))
+    set(handles.ClassLbl_rhrst,'String',handles.Classifier{4}.filename);
+else
+    set(handles.ClassLbl_rhrst,'String','None');
+end
+guidata(gcf,handles);
+
+% --- Executes on button press in LdClassRHRST.
+function LdClassLHRST_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassLHRST (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[handles.Classifier{5}.filepath handles.Classifier{5}.filename] = eegc3_gui_initclass();
+if(~isempty(handles.Classifier{5}.filepath))
+    set(handles.ClassLbl_lhrst,'String',handles.Classifier{5}.filename);
+else
+    set(handles.ClassLbl_lhrst,'String','None');
+end
+guidata(gcf,handles);
+
 function Mod1Ltrig_Callback(hObject, eventdata, handles)
 % hObject    handle to Mod1Ltrig (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -604,11 +638,11 @@ function Mod1Ltrig_Callback(hObject, eventdata, handles)
 if(~isempty(get(hObject,'String')) && ~isnan(str2double(get(hObject,'String'))) && ...
         str2double(get(hObject,'String')) > 0 )
 
-        handles.Classifier{4}.task_left  = str2double(get(hObject,'String'));
+        handles.Classifier{6}.task_left  = str2double(get(hObject,'String'));
 else
     uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
     set(hObject,'String','0');
-    handles.Classifier{4}.task_left  = 0;
+    handles.Classifier{6}.task_left  = 0;
 end
 guidata(gcf,handles);
 
@@ -638,11 +672,11 @@ function Mod2Rtrig_Callback(hObject, eventdata, handles)
 % Reserved for multiple classes as "right"
 if(~isempty(get(hObject,'String')))
 
-        handles.Classifier{5}.task_right  = str2double(get(hObject,'String'));
+        handles.Classifier{7}.task_right  = str2double(get(hObject,'String'));
 else
     uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
     set(hObject,'String','0');
-    handles.Classifier{5}.task_right  = 0;
+    handles.Classifier{7}.task_right  = 0;
 end
 guidata(gcf,handles);
 
@@ -670,11 +704,11 @@ function Mod2Ltrig_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of Mod2Ltrig as a double
 if(~isempty(get(hObject,'String')))
 
-        handles.Classifier{5}.task_left  = str2double(get(hObject,'String'));
+        handles.Classifier{7}.task_left  = str2double(get(hObject,'String'));
 else
     uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
     set(hObject,'String','0');
-    handles.Classifier{5}.task_left  = 0;
+    handles.Classifier{7}.task_left  = 0;
 end
 guidata(gcf,handles);
 
@@ -704,11 +738,11 @@ function Mod1Rtrig_Callback(hObject, eventdata, handles)
 if(~isempty(get(hObject,'String')) && ~isnan(str2double(get(hObject,'String'))) && ...
         str2double(get(hObject,'String')) > 0 )
 
-        handles.Classifier{4}.task_right  = str2double(get(hObject,'String'));
+        handles.Classifier{6}.task_right  = str2double(get(hObject,'String'));
 else
     uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
     set(hObject,'String','0');
-    handles.Classifier{4}.task_right  = 0;
+    handles.Classifier{6}.task_right  = 0;
 end
 
 guidata(gcf,handles);
@@ -738,10 +772,10 @@ function Mod2Lbl_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of Mod2Lbl as a double
 if(isempty(get(hObject,'String')) || (~isnan(str2double(get(hObject,'String')))))
     uiwait(msgbox('Modality should be alphanumeric and not empty!','Attention!','error'));
-    handles.Classifier{5}.modality = 'mod2';
+    handles.Classifier{7}.modality = 'mod2';
     set(hObject,'String','mod2');
 else
-    handles.Classifier{5}.modality = get(hObject,'String');
+    handles.Classifier{7}.modality = get(hObject,'String');
 end
 guidata(gcf,handles);
 
@@ -769,10 +803,10 @@ function Mod1Lbl_Callback(hObject, eventdata, handles)
 
 if(isempty(get(hObject,'String')) || (~isnan(str2double(get(hObject,'String')))))
     uiwait(msgbox('Modality should be alphanumeric and not empty!','Attention!','error'));
-    handles.Classifier{4}.modality = 'mod1';
+    handles.Classifier{6}.modality = 'mod1';
     set(hObject,'String','mod1');
 else
-    handles.Classifier{4}.modality = get(hObject,'String');
+    handles.Classifier{6}.modality = get(hObject,'String');
 end
 
 guidata(gcf,handles);
@@ -804,14 +838,14 @@ if(get(handles.Mod2Check,'Value')==1)
     set(handles.Mod2Lbl,'Enable','on');
     set(handles.Mod2Rtrig,'Enable','on');
     set(handles.Mod2Ltrig,'Enable','on');
-    handles.Classifier{5}.Enable = true;
+    handles.Classifier{7}.Enable = true;
 else
     set(handles.LdClassMod2,'Enable','off');
     set(handles.Mod2Check,'Value',0);
     set(handles.Mod2Lbl,'Enable','off');
     set(handles.Mod2Rtrig,'Enable','off');
     set(handles.Mod2Ltrig,'Enable','off');
-    handles.Classifier{5}.Enable = false;
+    handles.Classifier{7}.Enable = false;
 end
 guidata(gcf,handles);
 
@@ -829,14 +863,14 @@ if(get(handles.Mod1Check,'Value')==1)
     set(handles.Mod1Lbl,'Enable','on');
     set(handles.Mod1Rtrig,'Enable','on');
     set(handles.Mod1Ltrig,'Enable','on');
-    handles.Classifier{4}.Enable = true;
+    handles.Classifier{6}.Enable = true;
 else
     set(handles.LdClassMod1,'Enable','off');
     set(handles.Mod1Check,'Value',0);
     set(handles.Mod1Lbl,'Enable','off');
     set(handles.Mod1Rtrig,'Enable','off');
     set(handles.Mod1Ltrig,'Enable','off');
-    handles.Classifier{4}.Enable = false;
+    handles.Classifier{6}.Enable = false;
 end
 guidata(gcf,handles);
 
@@ -894,7 +928,41 @@ else
 end
 guidata(gcf,handles);
 
+% --- Executes on button press in RHRSTCheck.
+function RHRSTCheck_Callback(hObject, eventdata, handles)
+% hObject    handle to RHRSTCheck (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+% Hint: get(hObject,'Value') returns toggle state of RHRSTCheck
+if(get(handles.RHRSTCheck,'Value')==1)
+    set(handles.LdClassRHRST,'Enable','on');
+    set(handles.RHRSTCheck,'Value',1);
+    handles.Classifier{4}.Enable = true;
+else
+    set(handles.LdClassRHRST,'Enable','off');
+    set(handles.RHRSTCheck,'Value',0);
+    handles.Classifier{4}.Enable = false;
+end
+guidata(gcf,handles);
+
+% --- Executes on button press in LHRSTCheck.
+function LHRSTCheck_Callback(hObject, eventdata, handles)
+% hObject    handle to LHRSTCheck (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of LHRSTCheck
+if(get(handles.LHRSTCheck,'Value')==1)
+    set(handles.LdClassLHRST,'Enable','on');
+    set(handles.LHRSTCheck,'Value',1);
+    handles.Classifier{5}.Enable = true;
+else
+    set(handles.LdClassLHRST,'Enable','off');
+    set(handles.LHRSTCheck,'Value',0);
+    handles.Classifier{5}.Enable = false;
+end
+guidata(gcf,handles);
 
 function Feat_Win_Callback(hObject, eventdata, handles)
 % hObject    handle to Feat_Win (see GCBO)
@@ -1319,7 +1387,7 @@ end
 
 % Warn that only features will be computed
 isEnabled = false;
-for i=1:5
+for i=1:7
     if(handles.Classifier{i}.Enable)
         isEnabled = true;
     end
@@ -1441,5 +1509,20 @@ if(Val == 0)
 else
     handles.settings.modules.smr.options.extraction.fast = 1;
     set(handles.OnlyTrials, 'Enable','off');
+end
+guidata(gcf,handles);
+
+% --- Executes on button press in FastTrain.
+function WP4CheckBox_Callback(hObject, eventdata, handles)
+% hObject    handle to FastTrain (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of FastTrain
+Val = get(hObject,'Value');
+if(Val == 0)
+    handles.settings.modules.wp4.datatype = 0;
+else
+    handles.settings.modules.wp4.datatype = 1;
 end
 guidata(gcf,handles);
