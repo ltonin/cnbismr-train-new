@@ -134,6 +134,10 @@ for i=1:FileNum
     tmp2 = bci.settings;
     tmp1.info.subject = [];
     tmp2.info.subject = [];
+    
+    % HACK TO MAKE THIS WORK WITH 32 ELECTRODES
+    tmp1.acq.channels_eeg = 16;
+
     isCompatible = eegc3_smr_comparesettings(tmp1, tmp2);
     if(~isCompatible)
         

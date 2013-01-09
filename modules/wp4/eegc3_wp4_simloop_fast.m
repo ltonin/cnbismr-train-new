@@ -63,34 +63,34 @@ bci.trace.eegc3_smr_simloop.figbasename = ...
 	strrep([extra.directory '/' extra.basename], '.gdf', '');
 
 if(~isempty(bci.trace.eegc3_smr_simloop.integration))
-    printf('[eegc3_smr_simloop] Running simulated SMR-BCI loop:\n');
+    printf('[eegc3_wp4_simloop_fast] Running simulated SMR-BCI loop:\n');
     printf(' < GDF:         %s\n', bci.trace.eegc3_smr_simloop.filexdf);
     printf(' < TXT:         %s\n', bci.trace.eegc3_smr_simloop.filetxt);
     printf(' > MAT:         %s\n', bci.trace.eegc3_smr_simloop.filemat);
     printf(' - Rejection:   %f\n', bci.trace.eegc3_smr_simloop.rejection);
     printf(' - Integration: %f\n', bci.trace.eegc3_smr_simloop.integration);
 else
-    printf('[eegc3_smr_simloop] Running training SMR-BCI loop:\n');
-    printf('[eegc3_smr_simloop] Potential existing TXT file, rejection and integration params are ignored.\n');
+    printf('[eegc3_wp4_simloop_fast] Running training SMR-BCI loop:\n');
+    printf('[eegc3_wp4_simloop_fast] Potential existing TXT file, rejection and integration params are ignored.\n');
     printf(' < GDF:         %s\n', bci.trace.eegc3_smr_simloop.filexdf);
     printf(' > MAT:         %s\n', bci.trace.eegc3_smr_simloop.filemat);    
 end
 
 % TODO: HACK, put plot spectrum here
 if(exist(bci.trace.eegc3_smr_simloop.filemat, 'file') && (~recompute))
-	printf('[eegc3_smr_simloop] Loading precomputed MAT: %s\n', ...
+	printf('[eegc3_wp4_simloop_fast] Loading precomputed MAT: %s\n', ...
 		bci.trace.eegc3_smr_simloop.filemat);
 	load(bci.trace.eegc3_smr_simloop.filemat);
     
 %     % Plot spectrum
-%     printf('[eegc3_smr_simloop] Plotting precomputed EEG spectrum');
+%     printf('[eegc3_wp4_simloop_fast] Plotting precomputed EEG spectrum');
 %     eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
 %         bci.settings.modules.smr.montage);
 % 	return;
 end
 
 % Import all the data we need
-printf('[eegc3_smr_simloop] Loading GDF/TXT files... ');
+printf('[eegc3_wp4_simloop_fast] Loading GDF/TXT files... ');
 [data.eeg, data.hdr] = sload(filexdf);
 if(~isempty(bci.trace.eegc3_smr_simloop.filetxt))
 	data.aprobs = importdata(filetxt);
@@ -146,7 +146,7 @@ end
 % Find the labels of EEG samples (time domain)
 data.lbl_sample = zeros(1, size(data.eeg,1));
 data.trial_idx = zeros(1, size(data.eeg,1));
-printf('[eegc3_smr_simloop] Labeling raw EEG data according to protocol\n');
+printf('[eegc3_wp4_simloop_fast] Labeling raw EEG data according to protocol\n');
 data = eegc3_smr_labelEEG(data, protocol_label, bci.settings);
 
 
@@ -158,15 +158,15 @@ else
     EVENTTYPE = 771;
 end
 
+% Compute Single Trial performance (#of correct deliveries)
 performance.Ndeliveries = sum(data.hdr.EVENT.TYP == 33549);
 performance.Ntrials = sum(data.hdr.EVENT.TYP == EVENTTYPE);
-
 printf('BCI Performance in this run\n')
 disp(performance);
 
 % Calculate spectrum
 % Use only the pure MI trials, not the whole recording
-printf('[eegc3_smr_simloop] Calculating and plotting EEG spectrum');
+printf('[eegc3_wp4_simloop_fast] Calculating and plotting EEG spectrum');
 % [bci.MI bci.nonMI info] = ...
 %     eegc3_smr_spectrum(data.eeg(:,1:end-1), data.trial_idx,...
 %     data.lbl_sample, 1, bci.settings, protocol_label, taskset);
@@ -218,11 +218,11 @@ if(isempty(filetxt) == false)
 	align.eeg = size(data.eeg, 1)/bci.frames;
 	align.prb = size(data.aprobs, 1);
 	align.delta = align.eeg-align.prb;
-	printf('[eegc3_smr_simloop] Mismatch: EEG/PRB = %d/%d, Delta=%d\n', ...
+	printf('[eegc3_wp4_simloop_fast] Mismatch: EEG/PRB = %d/%d, Delta=%d\n', ...
 		align.eeg, align.prb, align.delta);
 
 	if(align.delta)
-		printf('[eegc3_smr_simloop] Error: mismatch detected');
+		printf('[eegc3_wp4_simloop_fast] Error: mismatch detected');
 		align.notaligned = true;
 	end
 end
@@ -230,7 +230,7 @@ end
 
 % Simulate BCI loop
 trgdetect = [];
-printf('[eegc3_smr_simloop] Calculating trigger places and extracting labels\n');
+printf('[eegc3_wp4_simloop_fast] Calculating trigger places and extracting labels\n');
 for i = 1:1:bci.framet
     
     % Get EEG frame
@@ -257,7 +257,7 @@ for i = 1:1:bci.framet
             end
         end
 	elseif(trgdetect.tnow > 1)
-		printf('[eegc3_smr_simloop] Found >1 trigger in a single frame!\n');
+		printf('[eegc3_wp4_simloop_fast] Found >1 trigger in a single frame!\n');
 		return;
     end
     
@@ -277,8 +277,8 @@ bci = eegc3_smr_labelPSD(bci, protocol_label);
 
 if(mod(bci.settings.modules.smr.psd.win*bci.settings.modules.smr.psd.ovl,...
         bci.settings.modules.smr.win.size*bci.settings.modules.smr.win.shift) ~= 0)
-    disp(['[eegc3_smr_simloop_fast] The fast PSD method cannot be applied with the current settings!']);
-    disp(['[eegc3_smr_simloop_fast] The internal welch window shift has to be a multiple of the overall feature window shift!']);
+    disp(['[eegc3_wp4_simloop_fast] The fast PSD method cannot be applied with the current settings!']);
+    disp(['[eegc3_wp4_simloop_fast] The internal welch window shift has to be a multiple of the overall feature window shift!']);
     return;
 end
 
@@ -291,7 +291,7 @@ data.eeg = eegc3_smr_preprocess(data.eeg(:,1:bci.settings.acq.channels_eeg), ...
 
 % Calculate all the internal PSD windows beforehand for speed
 for ch=1:bci.settings.acq.channels_eeg
-    disp(['[eegc3_smr_simloop_fast] Internal PSDs on electrode ' num2str(ch)]);
+    disp(['[eegc3_wp4_simloop_fast] Internal PSDs on electrode ' num2str(ch)]);
     [~,f,t,p(:,:,ch)] = spectrogram(data.eeg(:,ch), ...
         bci.settings.acq.sf*bci.settings.modules.smr.psd.win, ...
         bci.settings.acq.sf*(bci.settings.modules.smr.psd.win-bci.settings.modules.smr.win.shift),...
@@ -351,7 +351,7 @@ if(doplot && isempty(filetxt) == false && align.notaligned == false);
 		[bci.trace.eegc3_smr_simloop.figbasename '.simloop.png']);
 end
 
-printf('[eegc3_smr_simloop] Saving SMR-BCI structure: %s\n', ...
+printf('[eegc3_wp4_simloop_fast] Saving SMR-BCI structure: %s\n', ...
 	bci.trace.eegc3_smr_simloop.filemat);
 save(bci.trace.eegc3_smr_simloop.filemat, 'bci');
 toc

@@ -39,7 +39,7 @@ cdataset.trial = [];
 cdataset.Paths = {};
 
 % HACK TO MAKE IT WORK WITH 16
-Settings.acq.channels_eeg = 32
+settings.acq.channels_eeg = 16;
 ChNum = settings.acq.channels_eeg;
 
 for i=1:RunNum
