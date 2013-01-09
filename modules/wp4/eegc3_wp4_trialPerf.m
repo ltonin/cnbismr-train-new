@@ -18,7 +18,11 @@ perf.Ntrials = sum(data.hdr.EVENT.TYP == EVENTTYPE);
 printf('BCI Performance in this run\n')
 disp(perf);
 
-fileID = fopen([fileid '_performance.txt'],'w');
+% Create folder to save performance results
+if (~exist('perf','dir'))
+    mkdir('perf')
+end
+fileID = fopen(['perf/' fileid '_performance.txt'],'w');
 
 % Add New Lines
 fprintf(fileID,[fileid '\n']);

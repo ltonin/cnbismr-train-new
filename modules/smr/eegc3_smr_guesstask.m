@@ -1,5 +1,6 @@
-% 2010-11-27  Michele Tavella <michele.tavella@epfl.ch>
 function [taskset, resetevents, protocol_label] = eegc3_smr_guesstask(labels)
+% 2013  Andrea Biasiucci <andrea.biasiucci@epfl.ch>
+% 2010  Michele Tavella <michele.tavella@epfl.ch>
 
 taskset = [];
 resetevents = [];
@@ -31,9 +32,9 @@ printf('[eegc3_smr_guesstask] Guessing protocol: ');
 if(has.inc)
     
     if(has.trialend)
-         protocol_label = 'INCMT2_eegc3';
-         printf('INCMT2 online [eegc v3]\n');
-         resetevents = ...
+        protocol_label = 'INCMT2_eegc3';
+        printf('INCMT2 online [eegc v3]\n');
+        resetevents = ...
             [protocol.cfeedback protocol.targethit protocol.targetmiss];
     else
         % Old INC protocol
@@ -50,9 +51,9 @@ else
         % New loop eegc3 protocols
         if(has.targetmiss || has.targethit)
             protocol_label = 'SMR_Online_eegc3';
-			printf('SMR online [eegc v3]\n');
-			resetevents = ...
-				[protocol.cfeedback protocol.targethit protocol.targetmiss];
+            printf('SMR online [eegc v3]\n');
+            resetevents = ...
+                [protocol.cfeedback protocol.targethit protocol.targetmiss];
         else
             protocol_label = 'SMR_Offline_eegc3';
             printf('SMR offline [eegc v3]\n');
@@ -62,9 +63,9 @@ else
         % Old loop eegc2 protocols
         if(has.cfeedback)
             protocol_label = 'SMR_Online_eegc2';
-			printf('SMR online [eegc v2]\n');
-			resetevents = ...
-				[protocol.cfeedback protocol.targethit protocol.targetmiss];
+            printf('SMR online [eegc v2]\n');
+            resetevents = ...
+                [protocol.cfeedback protocol.targethit protocol.targetmiss];
         else
             protocol_label = 'SMR_Offline_eegc2';
             printf('SMR offline [eegc v2]\n');
@@ -82,41 +83,41 @@ did.rest_mi 		= false;
 did.tongue_mi 		= false;
 
 for l = ulabels
-	did.right_hand_mi 	= did.right_hand_mi || (l == cues.right_hand_mi);
-	did.left_hand_mi 	= did.left_hand_mi || (l == cues.left_hand_mi);
-	did.both_hands_mi 	= did.both_hands_mi || (l == cues.both_hands_mi);
-	did.both_feet_mi 	= did.both_feet_mi || (l == cues.both_feet_mi);
-	did.rest_mi 		= did.rest_mi || (l == cues.rest_mi);
+    did.right_hand_mi 	= did.right_hand_mi || (l == cues.right_hand_mi);
+    did.left_hand_mi 	= did.left_hand_mi || (l == cues.left_hand_mi);
+    did.both_hands_mi 	= did.both_hands_mi || (l == cues.both_hands_mi);
+    did.both_feet_mi 	= did.both_feet_mi || (l == cues.both_feet_mi);
+    did.rest_mi 		= did.rest_mi || (l == cues.rest_mi);
     did.tongue_mi 		= did.tongue_mi || (l == cues.tongue_mi);
 end
 
 printf('[eegc3_smr_guesstask] Guessing taskset:  ');
 taskset.cues = zeros(1, 16);
 while(true)
-	if(did.right_hand_mi && did.left_hand_mi && did.both_feet_mi && did.rest_mi)
-		printf('rlfr\n');
-		taskset.cues(1) = cues.right_hand_mi;
-		taskset.cues(2) = cues.left_hand_mi;
-		taskset.cues(3) = cues.rest_mi;
-		taskset.cues(4) = cues.both_feet_mi;
-		break;
+    if(did.right_hand_mi && did.left_hand_mi && did.both_feet_mi && did.rest_mi)
+        printf('rlfr\n');
+        taskset.cues(1) = cues.right_hand_mi;
+        taskset.cues(2) = cues.left_hand_mi;
+        taskset.cues(3) = cues.rest_mi;
+        taskset.cues(4) = cues.both_feet_mi;
+        break;
     end
-	if(did.right_hand_mi && did.left_hand_mi && did.both_feet_mi && did.tongue_mi)
-		printf('rltf\n');
-		taskset.cues(1) = cues.right_hand_mi;
-		taskset.cues(2) = cues.left_hand_mi;
-		taskset.cues(3) = cues.tongue_mi;
-		taskset.cues(4) = cues.both_feet_mi;
-		break;
-	end    
-	if(did.right_hand_mi && did.left_hand_mi && did.both_feet_mi)
-		printf('rlbf\n');
-		taskset.cues(1) = cues.right_hand_mi;
-		taskset.cues(2) = cues.left_hand_mi;
-		taskset.cues(3) = cues.both_feet_mi;
-		break;
-	end
-	if(did.right_hand_mi && did.left_hand_mi)
+    if(did.right_hand_mi && did.left_hand_mi && did.both_feet_mi && did.tongue_mi)
+        printf('rltf\n');
+        taskset.cues(1) = cues.right_hand_mi;
+        taskset.cues(2) = cues.left_hand_mi;
+        taskset.cues(3) = cues.tongue_mi;
+        taskset.cues(4) = cues.both_feet_mi;
+        break;
+    end
+    if(did.right_hand_mi && did.left_hand_mi && did.both_feet_mi)
+        printf('rlbf\n');
+        taskset.cues(1) = cues.right_hand_mi;
+        taskset.cues(2) = cues.left_hand_mi;
+        taskset.cues(3) = cues.both_feet_mi;
+        break;
+    end
+    if(did.right_hand_mi && did.left_hand_mi)
         if(did.rest_mi)
             printf('rhlhrest\n');
             taskset.cues(1) = cues.right_hand_mi;
@@ -127,29 +128,47 @@ while(true)
             taskset.cues(1) = cues.right_hand_mi;
             taskset.cues(2) = cues.left_hand_mi;
         end
-
-		break;
-	end
-	if(did.both_feet_mi && did.left_hand_mi)
-		printf('bflh\n');
-		taskset.cues(1) = cues.both_feet_mi;
-		taskset.cues(2) = cues.left_hand_mi;
-		break;
-	end
-	if(did.both_feet_mi && did.right_hand_mi)
-		printf('rhbf\n');
-		taskset.cues(1) = cues.right_hand_mi;
-		taskset.cues(2) = cues.both_feet_mi;
-		break;
-	end
-	if(did.both_feet_mi && did.both_hands_mi)
-		printf('bhbf\n');
-		taskset.cues(1) = cues.both_hands_mi;
-		taskset.cues(2) = cues.both_feet_mi;
-		break;
-	end
-	break;
+        
+        break;
+    end
+    if(did.both_feet_mi && did.left_hand_mi)
+        printf('bflh\n');
+        taskset.cues(1) = cues.both_feet_mi;
+        taskset.cues(2) = cues.left_hand_mi;
+        break;
+    end
+    if(did.both_feet_mi && did.right_hand_mi)
+        printf('rhbf\n');
+        taskset.cues(1) = cues.right_hand_mi;
+        taskset.cues(2) = cues.both_feet_mi;
+        break;
+    end
+    if(did.both_feet_mi && did.both_hands_mi)
+        printf('bhbf\n');
+        taskset.cues(1) = cues.both_hands_mi;
+        taskset.cues(2) = cues.both_feet_mi;
+        break;
+    end
+    if((did.right_hand_mi && did.rest_mi) || ...
+            (did.right_hand_mi && ~did.rest_mi && ~did.left_hand_mi ...
+            && ~did.both_feet_mi && ~did.both_hands_mi))
+        printf('rhrst\n');
+        taskset.cues(1) = cues.right_hand_mi;
+        taskset.cues(2) = cues.rest_mi;
+        break;
+    end
+    if( (did.left_hand_mi && did.rest_mi) || ...
+            (did.left_hand_mi && ~did.rest_mi && ~did.right_hand_mi ...
+            && ~did.both_feet_mi && ~did.both_hands_mi))
+        printf('lhrst\n');
+        taskset.cues(1) = cues.rest_mi;
+        taskset.cues(2) = cues.left_hand_mi;
+        break;
+    end
+    break;
 end
+
+
 
 taskset.bar.right = taskset.cues(1);
 taskset.bar.left  = taskset.cues(2);
@@ -164,11 +183,11 @@ r = [201 49 43]/255;
 b = [0 27 91]/255;
 y = [184 71 0]/255;
 switch(taskset.tot)
-	case 4
-		taskset.colors = {r b g y};
-	case 3
-		taskset.colors = {r b g};
-	case 2
-		taskset.colors = {r b};
+    case 4
+        taskset.colors = {r b g y};
+    case 3
+        taskset.colors = {r b g};
+    case 2
+        taskset.colors = {r b};
 end
 

@@ -36,9 +36,14 @@ else
     PosMat = config;
 end
 
+% In the case of WP4 online data, we only have 1 class, either 770 or 771
+if (bci.MI.task(1) == 783 || bci.MI.task(2) == 783)
+        bci.MI.task = setdiff(bci.MI.task,783);
+end
 
 % Find min and max
 for class = 1:length(bci.MI.task)
+    
     
     Max = max(max(bci.MI.spectrum{class}(:)), max(bci.nonMI.spectrum{class}(:)) );
     Min = min(min(bci.MI.spectrum{class}(:)), min(bci.nonMI.spectrum{class}(:)) );
