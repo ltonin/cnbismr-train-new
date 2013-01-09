@@ -89,7 +89,9 @@ for i=1:FileNum
     if(settings.modules.smr.options.extraction.fast)
         if (settings.modules.wp4.datatype)
             disp('WP4 Online Data - using eegc3_wp4_simloop_fast')
-            bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[]);
+            % Compute ST performance
+            eegc3_wp4_trialPerf(Paths{i});
+            %bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[]);
         else
             bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[]);
         end
@@ -100,6 +102,7 @@ for i=1:FileNum
             bci = eegc3_smr_simloop(Paths{i},[],settings,[],[]); 
         end
     end
+    
     disp(['[eegc3_smr_extract] Extracting/loading features for: ' ...
         bci.trace.eegc3_smr_simloop.filexdf]);
     
@@ -159,8 +162,9 @@ for i=1:FileNum
             if(settings.modules.smr.options.extraction.fast)
                 if (settings.modules.wp4.datatype)
                     disp('WP4 Online Data - using eegc3_wp4_simloop_fast')
-                    bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[],...
-                        false, [781 898 897], 1);
+                    eegc3_wp4_trialPerf(Paths{i});
+%                     bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[],...
+%                         false, [781 898 897], 1);
                 else
                     bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[],...
                         false, [781 898 897], 1);

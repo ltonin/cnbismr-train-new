@@ -142,7 +142,8 @@ for i = 1:length(Classifiers)
         % Save classifier settings
         Csettings{class_idx} = settings;
         
-        
+        %TODO: remove HACK and do classifier for wp4 online data
+        return
         disp('[eegc3_smr_train] Preparing dataset for feature selection');
         [udataset ndataset] = eegc3_smr_data4selection(dataset, Classifiers{i},...
             settings.modules.smr.options.selection.norm);

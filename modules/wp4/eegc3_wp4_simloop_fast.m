@@ -149,21 +149,6 @@ data.trial_idx = zeros(1, size(data.eeg,1));
 printf('[eegc3_wp4_simloop_fast] Labeling raw EEG data according to protocol\n');
 data = eegc3_smr_labelEEG(data, protocol_label, bci.settings);
 
-
-% Open text file, save line with run id and update it with the number of
-% deliveries
-if sum(data.hdr.EVENT.TYP == 770) > 0
-    EVENTTYPE = 770;
-else
-    EVENTTYPE = 771;
-end
-
-% Compute Single Trial performance (#of correct deliveries)
-performance.Ndeliveries = sum(data.hdr.EVENT.TYP == 33549);
-performance.Ntrials = sum(data.hdr.EVENT.TYP == EVENTTYPE);
-printf('BCI Performance in this run\n')
-disp(performance);
-
 % Calculate spectrum
 % Use only the pure MI trials, not the whole recording
 printf('[eegc3_wp4_simloop_fast] Calculating and plotting EEG spectrum');
