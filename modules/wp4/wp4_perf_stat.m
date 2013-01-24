@@ -14,9 +14,8 @@
 % perf{x}.hits: number of hits
 % perf{x}.tot: number of trials in the run
 
-function perf = wp4_perf_stat(Path)
+function [acc hits tot id] = wp4_perf_stat(Path)
 % 2013 Andrea Biasiucci <andrea.biasiucci@epfl.ch>
-perf = [];
 
 d = dir(Path);
 isub = [d(:).isdir]; %# returns logical vector
@@ -50,6 +49,11 @@ for dir_idx = 1:Ndirs
         gdfs_idx = find(isGdf == 1);
         Ngdfs = length(gdfs_idx);
         
+        acc = zeros(1,Ngdfs);
+        hits = zeros(1,Ngdfs); 
+        tot = zeros(1,Ngdfs); 
+        id = cell(1,Ngdfs);
+        
         % Extract the names of online gdf files
         gdfFiles = cell(1,Ngdfs);
         for cur_file = 1:Ngdfs
@@ -58,12 +62,12 @@ for dir_idx = 1:Ndirs
         
         % iterate files and compute performance
         for cur_file = 1:Ngdfs
-            [acc hits tot id] = ...
+            [acc(cur_file) hits(cur_file) tot(cur_file) id{cur_file}] = ...
                 wp4_performance(gdfFiles{cur_file});
             printf(['File: ' id '\n']);
             printf('Accuracy: %.1f \n Hits: %.0f \n Tot: %.0f \n',...
                 acc,hits,tot);
-            perf = [perf acc];
+            
         end
         
     end

@@ -1,4 +1,11 @@
+% WP4_PERFORMANCE single-trial performance for wp4 online data
+%
+% USAGE:
+% [acc hits tot fileid] = wp4_performance(filePath);
+% 
+
 function [acc hits tot fileid] = wp4_performance(filePath);
+% 2013 Andrea Biasiucci <andrea.biasiucci@epfl.ch>
 
 [data.eeg, data.hdr] = sload(filePath);
 fileid = filePath(1:end-4);
@@ -12,7 +19,14 @@ end
 % Compute Single Trial performance (#of correct deliveries)
 hits = sum(data.hdr.EVENT.TYP == 33549);
 tot = sum(data.hdr.EVENT.TYP == EVENTTYPE);
-acc = hits / tot;
+
+% Check if the number of deliveries is 15, else discard the run!
+if (tot == 15)
+	acc = hits / tot;
+else 
+	acc = [];
+	hits = [];
+end
 %printf('BCI Performance in this run\n')
 %disp(acc);
 
