@@ -22,7 +22,7 @@ function varargout = eegc3_gui_initclass(varargin)
 
 % Edit the above text to modify the response to help eegc3_gui_initclass
 
-% Last Modified by GUIDE v2.5 21-Jan-2011 20:17:46
+% Last Modified by GUIDE v2.5 26-Mar-2013 11:34:48
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -120,7 +120,7 @@ if  handles.is_dir(handles.sorted_index(index_selected))
     cd (filename)
     handles = load_listbox(pwd,handles);
 else
-    [path,name,ext,ver] = fileparts(filename);
+    [path,name,ext] = fileparts(filename);
     if(strcmp(ext,'.mat'))
         
         % Edit the "selected" list

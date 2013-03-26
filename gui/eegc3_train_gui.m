@@ -159,7 +159,7 @@ if  handles.is_dir(handles.sorted_index(index_selected))
     handles = load_listbox(pwd,handles);
     guidata(gcf,handles);
 else
-    [path,name,ext,ver] = fileparts(filename);
+    [path,name,ext] = fileparts(filename);
     if(strcmp(ext,'.gdf'))
         
         % Edit the "selected" list
