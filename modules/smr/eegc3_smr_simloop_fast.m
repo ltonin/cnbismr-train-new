@@ -255,10 +255,14 @@ bci.trial_idx = zeros(size(bci.afeats,1),1)';
 % to the structure
 bci = eegc3_smr_labelPSD(bci, protocol_label);
 
-if(mod(bci.settings.modules.smr.psd.win*bci.settings.modules.smr.psd.ovl,...
-        bci.settings.modules.smr.win.size*bci.settings.modules.smr.win.shift) ~= 0)
+% Useful params for PSD extraction with the fast algorithm
+psdshift = bci.settings.acq.sf*...
+     bci.settings.modules.smr.psd.win*bci.settings.modules.smr.psd.ovl;
+winshift = bci.settings.acq.sf*bci.settings.modules.smr.win.shift;
+
+if((mod(psdshift,winshift) ~=0) && (mod(winshift,psdshift) ~=0))
     disp(['[eegc3_smr_simloop_fast] The fast PSD method cannot be applied with the current settings!']);
-    disp(['[eegc3_smr_simloop_fast] The internal welch window shift has to be a multiple of the overall feature window shift!']);
+    disp(['[eegc3_smr_simloop_fast] The internal welch window shift must be a multiple of the overall feature window shift (or vice versa)!']);
     return;
 end
 
@@ -269,40 +273,66 @@ data.eeg = eegc3_smr_preprocess(data.eeg(:,1:end-1), ...
 	bci.settings.modules.smr.options.prep.laplacian, ...
 	bci.settings.modules.smr.laplacian);
 
-% Calculate all the internal PSD windows beforehand for speed
-for ch=1:bci.settings.acq.channels_eeg
-    disp(['[eegc3_smr_simloop_fast] Internal PSDs on electrode ' num2str(ch)]);
-    [~,f,t,p(:,:,ch)] = spectrogram(data.eeg(:,ch), ...
-        bci.settings.acq.sf*bci.settings.modules.smr.psd.win, ...
-        bci.settings.acq.sf*(bci.settings.modules.smr.psd.win-bci.settings.modules.smr.win.shift),...
-        [], bci.settings.acq.sf);        
+
+% Create arguments for spectrogram
+spec_win = bci.settings.acq.sf*bci.settings.modules.smr.psd.win;
+% Careful here: The overlapping depends on whether the winshift or the
+% psdshift is smaller. Some calculated internal windows will be redundant,
+% but the speed is much faster anyway
+
+if(psdshift <= winshift)
+    spec_ovl = spec_win - psdshift;
+else
+    spec_ovl = spec_win - winshift;
 end
 
+% Calculate all the internal PSD windows
+for ch=1:bci.settings.acq.channels_eeg
+    disp(['[eegc3_smr_simloop_fast] Internal PSDs on electrode ' num2str(ch)]);
+    [~,f,t,p(:,:,ch)] = spectrogram(data.eeg(:,ch), spec_win, spec_ovl,...
+        [], bci.settings.acq.sf);
+end
+
+% Keep only desired frequencies
 p = p(find(ismember(f,bci.settings.modules.smr.psd.freqs)),:,:);
 
-% Moving average
-SpecWinStep = bci.settings.modules.smr.psd.win*bci.settings.modules.smr.psd.ovl/...
-    bci.settings.modules.smr.win.shift;
-SpecWinNum = (bci.settings.modules.smr.win.size/bci.settings.modules.smr.win.shift)/...
-    SpecWinStep - 1;
-
-FiltB = zeros(1,SpecWinStep*SpecWinNum);
-FiltB(1:SpecWinStep:end) = 1/SpecWinNum;
+% Setup moving average filter parameters
 FiltA = 1;
+if(winshift >= psdshift)
+    % Case where internal windows are shifted according to psdshift
+    MAsize = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/psdshift - 1;   
+    FiltB = (1/MAsize)*ones(1,MAsize);
+    MAstep = winshift/psdshift;
+else
+    % Case where internal windows are shifted according to winshift
+    FiltStep = psdshift/winshift;
+    MAsize = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/winshift - FiltStep;   
+    FiltB = zeros(1,MAsize);
+    FiltB(1:FiltStep:end-1) = 1;
+    MAnum = sum(FiltB);
+    FiltB = FiltB/MAnum;
+    MAstep = 1;
+end
+
 bci.afeats = filter(FiltB,FiltA,p,[],2);
 bci.afeats = permute(bci.afeats, [2 1 3]);
-% Get rid of the first samples before window is full
-discardInd = find(FiltB>0);
-discardInd = discardInd(end);
-bci.afeats = bci.afeats(discardInd:end,:,:);
+
+% In case of psdshift, there will be redundant windows. Remove them
+if(MAstep > 1)
+    bci.afeats = bci.afeats(1:MAstep:end,:,:);
+end
+
+% Get rid of the first samples before window is full and set them to NaN
+% for compatibility with the "old" slow version
+if(winshift >= psdshift)
+    discardInd = MAsize-1;
+else
+    discardInd = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/winshift - 1;
+end
+bci.afeats(1:discardInd,:,:) = nan(discardInd,size(bci.afeats,2),size(bci.afeats,3));
 
 % Take the log
 bci.afeats = log(bci.afeats);
-
-% Set NaNs to the first WinFrameSize-1 feature matrices, just for compatibility
-% with the per sample extraction
-WinFrameSize = bci.settings.modules.smr.win.size/bci.settings.modules.smr.win.shift - 1;
-bci.afeats = cat(1,nan(WinFrameSize,23,16), bci.afeats);
 
 if(doplot && isempty(filetxt) == false && align.notaligned == false);
 	eegc3_figure(doplot);
