@@ -309,29 +309,32 @@ else
     MAsize = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/winshift - FiltStep;   
     FiltB = zeros(1,MAsize);
     FiltB(1:FiltStep:end-1) = 1;
-    MAnum = sum(FiltB);
-    FiltB = FiltB/MAnum;
     MAstep = 1;
 end
 
+StartInd = find(FiltB==1);
+StartInd = StartInd(end);
+
 bci.afeats = filter(FiltB,FiltA,p,[],2);
 bci.afeats = permute(bci.afeats, [2 1 3]);
+
+% Get rid of initial filter byproducts
+bci.afeats = bci.afeats(StartInd:end,:,:);
 
 % In case of psdshift, there will be redundant windows. Remove them
 if(MAstep > 1)
     bci.afeats = bci.afeats(1:MAstep:end,:,:);
 end
 
-% Get rid of the first samples before window is full and set them to NaN
-% for compatibility with the "old" slow version
+% Add NaNs for compatibility with the old version
 if(winshift >= psdshift)
-    discardInd = MAsize-1;
+    discardInd = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/psdshift - 1;
 else
     discardInd = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/winshift - 1;
 end
-bci.afeats(1:discardInd,:,:) = nan(discardInd,size(bci.afeats,2),size(bci.afeats,3));
+bci.afeats = [nan(discardInd,size(bci.afeats,2),size(bci.afeats,3)) ; bci.afeats];
 
-% Take the log
+% Take the log as final feature values
 bci.afeats = log(bci.afeats);
 
 if(doplot && isempty(filetxt) == false && align.notaligned == false);
