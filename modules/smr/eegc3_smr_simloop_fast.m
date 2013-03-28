@@ -309,10 +309,11 @@ else
     MAsize = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/winshift - FiltStep;   
     FiltB = zeros(1,MAsize);
     FiltB(1:FiltStep:end-1) = 1;
+    FiltB = FiltB/sum(FiltB);
     MAstep = 1;
 end
 
-StartInd = find(FiltB==1);
+StartInd = find(FiltB~=0);
 StartInd = StartInd(end);
 
 bci.afeats = filter(FiltB,FiltA,p,[],2);
@@ -323,15 +324,11 @@ bci.afeats = bci.afeats(StartInd:end,:,:);
 
 % In case of psdshift, there will be redundant windows. Remove them
 if(MAstep > 1)
-    bci.afeats = bci.afeats(1:MAstep:end,:,:);
+   bci.afeats = bci.afeats(1:MAstep:end,:,:);
 end
 
 % Add NaNs for compatibility with the old version
-if(winshift >= psdshift)
-    discardInd = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/psdshift - 1;
-else
-    discardInd = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/winshift - 1;
-end
+discardInd = (bci.settings.acq.sf*bci.settings.modules.smr.win.size)/winshift - 1;
 bci.afeats = [nan(discardInd,size(bci.afeats,2),size(bci.afeats,3)) ; bci.afeats];
 
 % Take the log as final feature values
