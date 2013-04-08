@@ -53,17 +53,17 @@ try
             outputAll{sub} = 0;
             continue; % Skip them!
         elseif sub == 2
-            FilePaths = '/mnt/data/abiasiuc/raw/clinics/toledo/Sub2/20111122/AR/';
-            files = dir('/mnt/data/abiasiuc/raw/clinics/toledo/Sub2/20111122/AR/*.gdf');
+            FilePaths = [getenv('TOLEDO_DATA') '/Sub2/20111122/AR/'];
+            files = dir([FilePaths '*.gdf']);
         elseif sub == 4 || sub == 6 || sub == 7
-            FilePaths =  ['/mnt/data/abiasiuc/raw/clinics/toledo/Sub' num2str(sub) '/20111123/AR/'];
-            files = dir(['/mnt/data/abiasiuc/raw/clinics/toledo/Sub' num2str(sub) '/20111123/AR/*.gdf']);
+            FilePaths =  [getenv('TOLEDO_DATA') '/Sub' num2str(sub) '/20111123/AR/'];
+            files = dir([FilePaths '*.gdf']);
         elseif sub == 5
-            FilePaths =  ['/mnt/data/abiasiuc/raw/clinics/toledo/Sub' num2str(sub) '/20111123/'];
-            files = dir(['/mnt/data/abiasiuc/raw/clinics/toledo/Sub' num2str(sub) '/20111123/*.gdf']);
+            FilePaths =  [getenv('TOLEDO_DATA') '/Sub' num2str(sub) '/20111123/'];
+            files = dir([FilePaths '*.gdf']);
         else % For all the remaining subjects...
-            FilePaths =  ['/mnt/data/abiasiuc/raw/clinics/toledo/Sub' num2str(sub) '/AR/'];
-            files = dir(['/mnt/data/abiasiuc/raw/clinics/toledo/Sub' num2str(sub) '/AR/*.gdf']);
+            FilePaths =  [getenv('TOLEDO_DATA') '/Sub' num2str(sub) '/AR/'];
+            files = dir([FilePaths '*.gdf']);
         end
         
         
@@ -80,8 +80,8 @@ try
                 aucSub(1,1) = 0; % Skip Session 1!
                 sessionNum = 2;
                 %               [auc,output] = Myeegc3_smr_autotrain(paths,sessionNum);
-                [auc,output] = Myeegc3_smr_autotrain_UseLda(paths,sessionNum);
-                %               [auc,output] = Myeegc3_smr_autotrain_UseGau(paths,sessionNum);
+                %[auc,output] = Myeegc3_smr_autotrain_UseLda(paths,sessionNum);
+                               [auc,output] = Myeegc3_smr_autotrain_UseGau(paths,sessionNum);
                 auc
                 aucSub(1,sessionNum) = auc;
                 outputSub{sessionNum} = output;
@@ -131,7 +131,9 @@ try
 %     nameOutput = ['outputAll_' num2str(numSub_start) '_' num2str(numSub) '.mat'];
 %     save(['/homes/vliakoni/Results_GAU_Rejection/' nameAuc], 'aucAll');
 %     save(['/homes/vliakoni/Results_GAU_Rejection/' nameOutput], 'outputAll');
-catch
+catch error
     disp(['Stopped at Subject: ' num2str(sub)]);
+    disp(['The following error was detected:  ' error.message])
+    
 end
 
