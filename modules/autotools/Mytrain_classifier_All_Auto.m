@@ -132,6 +132,6 @@ try
 %     save(['/homes/vliakoni/Results_GAU_Rejection/' nameAuc], 'aucAll');
 %     save(['/homes/vliakoni/Results_GAU_Rejection/' nameOutput], 'outputAll');
 catch
-    disp(['Stopped at Subject: ' num2str(sub)']);
+    disp(['Stopped at Subject: ' num2str(sub)]);
 end
 
