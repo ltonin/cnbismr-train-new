@@ -25,7 +25,9 @@ header = sopen(GDFPath);
 
 SR = header.SampleRate;
 
-EEGChanNum = length(find(header.CHANTYP == 'E'));
+% Wrong! This mixes EEG and EMG. Hardcoding it to 16
+% EEGChanNum = length(find(header.CHANTYP == 'E'));
+EEGChanNum = 16;
 TrigChanNum = length(find(header.CHANTYP == 'T'));
 
 

@@ -91,7 +91,9 @@ for i=1:FileNum
             disp('WP4 Online Data - using eegc3_wp4_simloop_fast')
             % Compute ST performance
             eegc3_wp4_trialPerf(Paths{i});
-            %bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[]);
+            
+            % extract features
+            bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[]);
         else
             bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[]);
         end
@@ -137,9 +139,6 @@ for i=1:FileNum
     tmp2 = bci.settings;
     tmp1.info.subject = [];
     tmp2.info.subject = [];
-    
-    % HACK TO MAKE THIS WORK WITH 32 ELECTRODES
-    tmp1.acq.channels_eeg = 16;
 
     isCompatible = eegc3_smr_comparesettings(tmp1, tmp2);
     if(~isCompatible)
@@ -163,8 +162,8 @@ for i=1:FileNum
                 if (settings.modules.wp4.datatype)
                     disp('WP4 Online Data - using eegc3_wp4_simloop_fast')
                     eegc3_wp4_trialPerf(Paths{i});
-%                     bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[],...
-%                         false, [781 898 897], 1);
+                    bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[],...
+                        false, [781 898 897], 1);
                 else
                     bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[],...
                         false, [781 898 897], 1);

@@ -8,8 +8,8 @@ function [MI nMI info] = eegc3_smr_spectrum(eeg, trial_idx, labels, winsize, set
 %
 % Function to plot the spectrum of all channels
 %
-% Inputs: 
-% 
+% Inputs:
+%
 % eeg: Matrix channels x time of raw EEG data
 %
 % trial_idx: Trial index of samples, 0 for inter-trial intervals
@@ -21,8 +21,8 @@ function [MI nMI info] = eegc3_smr_spectrum(eeg, trial_idx, labels, winsize, set
 
 % Check integrity if loaded EEG data according to settings
 if(size(eeg,2) ~= settings.acq.channels_eeg)
-    disp(['[eegc3_smr_spectrum] Number of channels inconsistent with loaded '...
-        ' EEG matrix. Returning empty...' ]);
+    disp(['[eegc3_smr_spectrum] Number of channels in "settings" is '...
+        'different from the EEG matrix. You could be using emg channels...' ]);
 end
 
 if(nargin < 8)
@@ -37,7 +37,7 @@ LblNum = length(taskset.cues);
 switch(protocol)
     
     case {'SMR_Offline_eegc2','SMR_Offline_eegc3','SMR_Online_eegc3'}
-        % trial starts 1 sec after the cue (either cfeedback or1 sec after 
+        % trial starts 1 sec after the cue (either cfeedback or1 sec after
         % for eegc2_Offline)
         DistFromCue = 1;
     case {'SMR_Online_eegc2','INC_Online'}
@@ -49,7 +49,13 @@ switch(protocol)
         disp('[eegc3_smr_spectrum] Unkown protocol! Exiting...');
         return;
 end
-                   
+
+% In the case of WP4 online data, we only have 1 class, either 770 or 771
+if (exist('settings.modules.wp4.datatype','var'))
+    if settings.modules.wp4.datatype
+        taskset.cues = setdiff(taskset.cues,783);
+    end
+end
 
 for ch = 1:settings.acq.channels_eeg
     chspectrum = cell(1, length(taskset.cues));
@@ -64,7 +70,7 @@ for ch = 1:settings.acq.channels_eeg
         TrInd = find(trial_idx==tr);
         TrBegin = TrInd(1) - DistFromCue*settings.acq.sf;
         TrEnd = TrInd(end);
-
+        
         % Find kind of trial
         tr_lbl = labels(TrInd(1));
         
@@ -85,10 +91,11 @@ for ch = 1:settings.acq.channels_eeg
     end
     
     for class = 1:length(taskset.cues)
-        MI.spectrum{class}(:,ch) = mean(chspectrum{class}); 
+        MI.spectrum{class}(:,ch) = mean(chspectrum{class});
         MI.phase{class}(:,ch) = mean(chphase{class});
         MI.task(class) = taskset.cues(class);
-        nMI.spectrum{class}(:,ch) = mean(chspectrumB1{class}); 
+        nMI.spectrum{class}(:,ch) = mean(chspectrumB1{class});
         nMI.phase{class}(:,ch) = mean(chphaseB1{class});
     end
+end
 end
