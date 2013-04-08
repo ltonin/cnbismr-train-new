@@ -1,22 +1,21 @@
-% Import all directories but modules
-[file, basename] = mtpath_basename(which('smr_train_init'));
+smr_train_root = getenv('SMR_TRAIN_ROOT');
 
-mtpath_include('$SMR_TRAIN_ROOT/classification/');
-mtpath_include('$SMR_TRAIN_ROOT/configuration/');
-mtpath_include('$SMR_TRAIN_ROOT/dataset/');
-mtpath_include('$SMR_TRAIN_ROOT/featureextraction/');
-mtpath_include('$SMR_TRAIN_ROOT/featureselection/');
-mtpath_include('$SMR_TRAIN_ROOT/gui/');
-mtpath_include('$SMR_TRAIN_ROOT/inputoutput/');
-mtpath_include('$SMR_TRAIN_ROOT/integration/');
-mtpath_include('$SMR_TRAIN_ROOT/performance/');
-mtpath_include('$SMR_TRAIN_ROOT/preprocessing/');
-mtpath_include('$SMR_TRAIN_ROOT/tools/');
-mtpath_include('$SMR_TRAIN_ROOT/visualization/');
-mtpath_include('$SMR_TRAIN_ROOT/toolboxes/mtmatlab');
-mtpath_include('$SMR_TRAIN_ROOT/toolboxes/');
+addpath([smr_train_root '/classification/']);
+addpath([smr_train_root '/configuration/']);
+addpath([smr_train_root '/dataset/']);
+addpath([smr_train_root '/featureextraction/']);
+addpath([smr_train_root '/featureselection/']);
+addpath([smr_train_root '/gui/']);
+addpath([smr_train_root '/inputoutput/']);
+addpath([smr_train_root '/integration/']);
+addpath([smr_train_root '/performance/']);
+addpath([smr_train_root '/preprocessing/']);
+addpath([smr_train_root '/tools/']);
+addpath([smr_train_root '/visualization/']);
+addpath([smr_train_root '/toolboxes/mtmatlab']);
+addpath([smr_train_root '/toolboxes/']);
 
-mtpath_include('$SMR_TRAIN_ROOT/modules/smr/');
-mtpath_include('$SMR_TRAIN_ROOT/modules/wp4/');
-mtpath_include('$SMR_TRAIN_ROOT/modules/eegc2/');
-mtpath_include('$SMR_TRAIN_ROOT/modules/cl/');
+addpath([smr_train_root '/modules/smr/']);
+addpath([smr_train_root '/modules/wp4/']);
+addpath([smr_train_root '/modules/eegc2/']);
+addpath([smr_train_root '/modules/cl/']);
