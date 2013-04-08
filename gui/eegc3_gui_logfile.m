@@ -22,7 +22,7 @@ function varargout = eegc3_gui_logfile(varargin)
 
 % Edit the above text to modify the response to help eegc3_gui_logfile
 
-% Last Modified by GUIDE v2.5 25-Jan-2011 14:00:29
+% Last Modified by GUIDE v2.5 26-Mar-2013 11:35:18
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -121,7 +121,7 @@ if  handles.is_dir(handles.sorted_index(index_selected))
     cd (filename)
     handles = load_listbox(pwd,handles);
 else
-    [path,name,ext,ver] = fileparts(filename);
+    [path,name,ext] = fileparts(filename);
     if(strcmp(ext,'.log'))
         
         % Edit the "selected" list

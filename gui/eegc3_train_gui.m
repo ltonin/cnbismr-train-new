@@ -61,7 +61,7 @@ settings = eegc3_smr_newsettings(settings);
 handles.settings = settings;
 
 handles.settings.modules.smr.options.selection.usegui = 1;
-handles.settings.modules.smr.options.extraction.trials = 1;
+handles.settings.modules.smr.options.extraction.trials = 0;
 handles.usedlg = false;
 
 set(handles.Prep_DC,'Value',1);
@@ -69,7 +69,7 @@ set(handles.Prep_Laplacian,'Value',1);
 set(handles.UseDlg,'Value',0);
 set(handles.SelectGUI,'Value',1);
 set(handles.EnableSettings,'Value',0);
-set(handles.OnlyTrials,'Value',1);
+set(handles.OnlyTrials,'Value',0);
 set(handles.OnlyTrials,'Enable','off');
 set(handles.FastTrain,'Value',1);
 set(handles.FeaturePanel,'Visible','off');
@@ -159,7 +159,7 @@ if  handles.is_dir(handles.sorted_index(index_selected))
     handles = load_listbox(pwd,handles);
     guidata(gcf,handles);
 else
-    [path,name,ext,ver] = fileparts(filename);
+    [path,name,ext] = fileparts(filename);
     if(strcmp(ext,'.gdf'))
         
         % Edit the "selected" list
