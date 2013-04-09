@@ -2,8 +2,7 @@
 % FILEPATHS -> File location. 
 %--------------------------------------------------------------------------
 FilePaths = {...
-%     '/homes/abiasiuc/Desktop/Sub15/AR/Sub15.20111212.133013.offline.mi.mi_rlrest.gdf'...
-   '/homes/abiasiuc/Desktop/Sub33/AR/Sub33.20120113.114835.offline.mi.mi_rlrest.gdf'...
+'/mnt/data/abiasiuc/processed/toledo/Sub10/AR/Sub10.20111124.161048.offline.mi.mi_rlrest.gdf'
 };
 
 %--------------------------------------------------------------------------

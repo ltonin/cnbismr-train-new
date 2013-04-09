@@ -120,7 +120,7 @@ if  handles.is_dir(handles.sorted_index(index_selected))
     cd (filename)
     handles = load_listbox(pwd,handles);
 else
-    [path,name,ext,ver] = fileparts(filename);
+    [path,name,ext] = fileparts(filename);
     if(strcmp(ext,'.mat'))
         
         % Edit the "selected" list
