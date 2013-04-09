@@ -200,9 +200,12 @@ ind = strfind(bci.trace.eegc3_smr_simloop.filemat,'eegc3');
 name = bci.trace.eegc3_smr_simloop.filemat(ind+6:end);
 %name = bci.trace.eegc3_smr_simloop.filemat(ind+3:end);
 
+% printf('[eegc3_smr_simloop] Saving SMR-BCI structure: %s\n', ...
+% 	['/homes/vliakoni/Results_GAU_Rejection/' name '.mat']);
 printf('[eegc3_smr_simloop] Saving SMR-BCI structure: %s\n', ...
-	['/homes/vliakoni/Results_GAU_Rejection/' name '.mat']);
-save(['/homes/vliakoni/Results_GAU_Rejection/' name '.mat'], 'bci');
+	[getenv('TOLEDO_DATA') '/Results/' name(1:find (name=='.')-1) '/Results_GAU_Rejection_'  name]);
+save([getenv('TOLEDO_DATA') '/Results/' name(1:find (name=='.')-1) '/Results_GAU_Rejection_'  name], 'bci');
+%save(['/homes/vliakoni/Results_GAU_Rejection/' name '.mat'], 'bci'); 
 % printf('[eegc3_smr_simloop] Saving SMR-BCI structure: %s\n', ...
 % 	['/homes/vliakoni/Results_GAU_Offline/' name '.mat']);
 % save(['/homes/vliakoni/Results_GAU_Offline/' name '.mat'], 'bci');

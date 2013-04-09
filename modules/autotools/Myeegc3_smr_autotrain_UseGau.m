@@ -321,8 +321,8 @@ for i = 1:length(Classifiers)
             
             %%% Vasia:
             %save(['/homes/vliakoni/Results_LDA_Offline/' NameAnalysis], 'analysis');
-            save(['/homes/vliakoni/Results_GAU_Rejection/' NameAnalysis], 'analysis');
-            
+            %save(['/homes/vliakoni/Results_GAU_Rejection/' NameAnalysis], 'analysis');
+            save([getenv('TOLEDO_DATA') '/Results/' NameAnalysis(1:find (NameAnalysis=='_')-1) '/Results_GAU_Rejection_'  NameAnalysis], 'analysis');
             disp(['[eegc3_smr_autotrain] Saved eegc2 classifier ' ...
                 Classifiers{i}.modality ': ' NameAnalysis]);
         end 

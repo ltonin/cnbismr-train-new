@@ -127,10 +127,12 @@ try
         outputAll{sub} = outputSub;
     end
     % Save mat files...
-%     nameAuc = ['aucAll_' num2str(numSub_start) '_' num2str(numSub) '.mat'];
-%     nameOutput = ['outputAll_' num2str(numSub_start) '_' num2str(numSub) '.mat'];
-%     save(['/homes/vliakoni/Results_GAU_Rejection/' nameAuc], 'aucAll');
-%     save(['/homes/vliakoni/Results_GAU_Rejection/' nameOutput], 'outputAll');
+     nameAuc = ['aucAll_' num2str(numSub_start) '_' num2str(numSub) '.mat'];
+     nameOutput = ['outputAll_' num2str(numSub_start) '_' num2str(numSub) '.mat'];
+     %save(['/homes/vliakoni/Results_GAU_Rejection/' nameAuc], 'aucAll');
+     save([getenv('TOLEDO_DATA') '/Results/All/Results_GAU_Rejection_'  nameAuc], 'aucAll');
+     %save(['/homes/vliakoni/Results_GAU_Rejection/' nameOutput], 'outputAll');
+     save([getenv('TOLEDO_DATA') '/Results/All/Results_GAU_Rejection_'  nameOutput], 'outputAll');
 catch error
     disp(['Stopped at Subject: ' num2str(sub)]);
     disp(['The following error was detected:  ' error.message])
