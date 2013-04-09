@@ -98,10 +98,12 @@ for i = 1:length(Classifiers)
                 Csettings{class_idx} = eegc3_smr_selection(ndataset, Csettings{class_idx});                
             end
             
-            %% Applying Preset tools 
-            Csettings{class_idx}.bci.smr.channels = presets.channels;
-            Csettings{class_idx}.bci.smr.bands = presets.bands;
-            settings.bci.smr.taskset.classes = [770 769];
+            %% Applying Presets
+            if ~presets.usecva
+                Csettings{class_idx}.bci.smr.channels = presets.channels;
+                Csettings{class_idx}.bci.smr.bands = presets.bands;
+                settings.bci.smr.taskset.classes = [770 769];
+            end
             %%
             
             % Reshape dataset for classifier training
