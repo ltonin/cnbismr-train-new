@@ -160,7 +160,7 @@ bci.afeats = log(bci.afeats);
 % Set NaNs to the first WinFrameSize-1 feature matrices, just for compatibility
 % with the per sample extraction
 WinFrameSize = bci.settings.modules.smr.win.size/bci.settings.modules.smr.win.shift - 1;
-bci.afeats = cat(1,nan(WinFrameSize,23,16), bci.afeats);
+bci.afeats = cat(1,nan(WinFrameSize,length(bci.settings.modules.smr.psd.freqs),16), bci.afeats);
 % 
 % if(doplot && isempty(filetxt) == false && align.notaligned == false);
 % 	eegc3_figure(doplot);
@@ -204,7 +204,7 @@ name = bci.trace.eegc3_smr_simloop.filemat(ind+6:end);
 % 	['/homes/vliakoni/Results_GAU_Rejection/' name '.mat']);
 printf('[eegc3_smr_simloop] Saving SMR-BCI structure: %s\n', ...
 	[getenv('TOLEDO_DATA') '/Results/' name(1:find (name=='.')-1) '/Results_GAU_Rejection_'  name]);
-save([getenv('TOLEDO_DATA') '/Results/' name(1:find (name=='.')-1) '/Results_GAU_Rejection_'  name], 'bci');
+save([getenv('TOLEDO_DATA') '/Results/' name(1:find (name=='.')-1) '/Results_GAU_CVA_Rejection_'  name], 'bci');
 %save(['/homes/vliakoni/Results_GAU_Rejection/' name '.mat'], 'bci'); 
 % printf('[eegc3_smr_simloop] Saving SMR-BCI structure: %s\n', ...
 % 	['/homes/vliakoni/Results_GAU_Offline/' name '.mat']);

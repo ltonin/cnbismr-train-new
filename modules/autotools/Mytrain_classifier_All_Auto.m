@@ -1,4 +1,4 @@
-function [aucAll outputAll] = Mytrain_classifier_All_Auto(numSub_start, numSub)
+function [aucAll , outputAll] = Mytrain_classifier_All_Auto(numSub_start, numSub)
 
 %% Usage: [aucAll_1_9 outputAll_1_9] = Mytrain_classifier_All_Auto(1, 9)
 
@@ -118,10 +118,13 @@ try
             %[auc,output] = Myeegc3_smr_autotrain_UseLda(paths,sessionNum);
             [auc,output] = Myeegc3_smr_autotrain_UseGau(paths,sessionNum);
             auc
+            % 
+            output=rmfield(output,'data_New');
+            output=rmfield(output,'data_Or');
+            %
             aucSub(1,sessionNum) = auc;
             outputSub{sessionNum} = output;
         end
-        
         
         aucAll(sub,:) = aucSub;
         outputAll{sub} = outputSub;
@@ -129,10 +132,8 @@ try
     % Save mat files...
      nameAuc = ['aucAll_' num2str(numSub_start) '_' num2str(numSub) '.mat'];
      nameOutput = ['outputAll_' num2str(numSub_start) '_' num2str(numSub) '.mat'];
-     %save(['/homes/vliakoni/Results_GAU_Rejection/' nameAuc], 'aucAll');
-     save([getenv('TOLEDO_DATA') '/Results/All/Results_GAU_Rejection_'  nameAuc], 'aucAll');
-     %save(['/homes/vliakoni/Results_GAU_Rejection/' nameOutput], 'outputAll');
-     save([getenv('TOLEDO_DATA') '/Results/All/Results_GAU_Rejection_'  nameOutput], 'outputAll');
+     save([getenv('TOLEDO_DATA') '/Results/All/Results_GAU_CVA_Rejection_'  nameAuc], 'aucAll');
+     save([getenv('TOLEDO_DATA') '/Results/All/Results_GAU_CVA_Rejection_'  nameOutput], 'outputAll','-v7.3');
 catch error
     disp(['Stopped at Subject: ' num2str(sub)]);
     disp(['The following error was detected:  ' error.message])

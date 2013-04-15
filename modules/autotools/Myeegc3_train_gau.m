@@ -231,7 +231,7 @@ title('ROC Curve (Gaussian Classifier)')
 disp(['[Myeegc3_train_lda2] Saving ROC curve']);
 
 %saveas(figNum,['/homes/vliakoni/Results_GAU_Rejection/' SubID{1,1} '_' 'Session' num2str(sessionNum) '_GAU' '.png'])
-saveas(figNum,[getenv('TOLEDO_DATA') '/Results/' SubID{1,1} '/Results_GAU_Rejection_'  SubID{1,1} '_' 'Session' num2str(sessionNum) '_GAU' '.png']);
+saveas(figNum,[getenv('TOLEDO_DATA') '/Results/' SubID{1,1} '/Results_GAU_CVA_Rejection_'  SubID{1,1} '_' 'Session' num2str(sessionNum) '_GAU' '.png']);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [perf, rej] = eval_GAU2(settings, dataset, labels, M, C)

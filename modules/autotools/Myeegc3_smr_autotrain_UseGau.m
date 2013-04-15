@@ -42,7 +42,14 @@ presets.bands = {...
         [8 10 12] [8 10 12] [] [8 10 12] [8 10 12] ... 
            []      [10 12]  []  [10 12]     [] ...
            };
-
+%--------------------------------------------------------------------------
+% presets.usecva -> use - not use CVA selection of features 
+%                   if 'true', presets.channels and presets.bands will be
+%                   automagically selected and the manual selection will be
+%                   ignored
+%--------------------------------------------------------------------------
+presets.usecva = true;
+settings.modules.smr.psd.freqs		= [8:2:12];
 
 % Extract features and labels (prepare dataset)
 disp('[eegc3_smr_autotrain] Extracting/loading features from provided runs...');
@@ -79,11 +86,12 @@ for i = 1:length(Classifiers)
             end
             
             %% HACK: preset tools
-            Csettings{class_idx}.bci.smr.channels = presets.channels;
-            Csettings{class_idx}.bci.smr.bands = presets.bands;
-            settings.bci.smr.taskset.classes = [770 769];
-            %%
-            
+            if ~presets.usecva
+                Csettings{class_idx}.bci.smr.channels = presets.channels;
+                Csettings{class_idx}.bci.smr.bands = presets.bands;
+                settings.bci.smr.taskset.classes = [770 769];
+            end
+                        
             % Reshape dataset for classifier training
             disp(['[eegc3_smr_autotrain] Reshaping dataset according to feature'...
                 ' selection for classifier: ' Classifiers{i}.modality]);
@@ -179,7 +187,7 @@ for i = 1:length(Classifiers)
             analysis = eegc3_downgrade_settings(settings);
             NameAnalysis = [SubjectID{1} '_' Modality '_' 'Session' num2str(sessionNum) '_' Date '_auto.mat'];
             
-            save([getenv('TOLEDO_DATA') '/Results/' NameAnalysis(1:find (NameAnalysis=='_')-1) '/Results_GAU_Rejection_'  NameAnalysis], 'analysis');
+            save([getenv('TOLEDO_DATA') '/Results/' NameAnalysis(1:find (NameAnalysis=='_')-1) '/Results_GAU_CVA_Rejection_'  NameAnalysis], 'analysis');
             disp(['[eegc3_smr_autotrain] Saved eegc2 classifier ' ...
                 Classifiers{i}.modality ': ' NameAnalysis]);
         end 
