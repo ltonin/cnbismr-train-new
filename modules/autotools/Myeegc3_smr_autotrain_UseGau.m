@@ -76,7 +76,7 @@ for i = 1:length(Classifiers)
         ndataset.settings = settings;
 
         if(isempty(Classifiers{i}.filepath))
-            % Feature selection
+            %% Feature selection
             % where the CVA select the 16th most discriminant features!
             % refer to eegc3_smr_select_up_to_best_16.m
             disp(['[eegc3_smr_autotrain] Feature selection for classifier: '...
