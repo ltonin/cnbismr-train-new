@@ -2,7 +2,8 @@ function [settings] = Myeegc3_smr_selection(dataset, settings)
 
 % function [settings] = eegc3_smr_selection(dataset, settings)
 %
-% Function performing feature selection on provided runs 
+% Function performing feature selection on provided runs (up to the best
+% 16th features)
 %
 % Inputs: 
 %
@@ -25,7 +26,7 @@ function [settings] = Myeegc3_smr_selection(dataset, settings)
 
 if(settings.modules.smr.options.selection.stability)
     disp('[eegc3_smr_selection] Running feature selection: stability');
-    selection = eegc3_smr_select_stable(dataset, settings);
+    selection = eegc3_smr_select_up_to_best_16(dataset, settings);
     
     % Put into settings structure the result of selection
     settings.bci.smr.channels = selection.Allchannels;

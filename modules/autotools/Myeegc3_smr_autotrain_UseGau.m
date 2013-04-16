@@ -77,6 +77,8 @@ for i = 1:length(Classifiers)
 
         if(isempty(Classifiers{i}.filepath))
             % Feature selection
+            % where the CVA select the 16th most discriminant features!
+            % refer to eegc3_smr_select_up_to_best_16.m
             disp(['[eegc3_smr_autotrain] Feature selection for classifier: '...
                 Classifiers{i}.modality]);
             if(~settings.modules.smr.options.selection.norm)
