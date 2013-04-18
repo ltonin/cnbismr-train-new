@@ -15,12 +15,13 @@ presets.bands = {...
         [8 10 12] [8 10 12] [] [8 10 12] [8 10 12] ... 
            []      [10 12]  []  [10 12]     [] ...
            };
+
 %--------------------------------------------------------------------------
 % presets.usecva -> use - not use CVA selection of features 
 %                   if 'true', presets.channels and presets.bands will be
 %                   automagically selected and the manual selection will be
 %                   ignored
 %--------------------------------------------------------------------------
-presets.usecva = true;
+presets.usecva = false;
 
 eegc3_smr_autotrain(FilePaths,presets);
