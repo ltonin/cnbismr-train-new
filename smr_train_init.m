@@ -22,6 +22,7 @@ addpath([smr_train_root '/modules/cl/']);
 
 addpath([smr_train_root '/toolboxes/biosig']);
 addpath([smr_train_root '/toolboxes/biosig/t200']);
+addpath([smr_train_root '/toolboxes/biosig/t250']);
 addpath([smr_train_root '/toolboxes/cva']);
 addpath([smr_train_root '/toolboxes/dptools']);
 addpath([smr_train_root '/toolboxes/gaussian']);
