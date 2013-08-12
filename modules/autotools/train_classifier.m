@@ -1,9 +1,14 @@
 %--------------------------------------------------------------------------
 % FILEPATHS -> File location. 
 %--------------------------------------------------------------------------
-FilePaths = {...
-'/mnt/data/abiasiuc/processed/toledo/Sub10/AR/Sub10.20111124.161048.offline.mi.mi_rlrest.gdf'
-};
+[files, paths]= uigetfile(...
+    '*.gdf','Choose files to train a BCI Classifier','MultiSelect','on');
+
+Nfiles = length(files);
+FilePaths = cell(1,Nfiles);
+for f = 1:Nfiles
+    FilePaths{f} = [paths files{f}];
+end
 
 %--------------------------------------------------------------------------
 % PRESETS -> Trains a Classifier using these features, only. 

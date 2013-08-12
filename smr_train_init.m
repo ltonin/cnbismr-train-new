@@ -1,4 +1,5 @@
 smr_train_root = getenv('SMR_TRAIN_ROOT');
+addpath('/usr/share/cnbiloop/cnbitkmat/mtpath/');
 
 addpath([smr_train_root '/classification/']);
 addpath([smr_train_root '/configuration/']);
@@ -30,3 +31,4 @@ addpath([smr_train_root '/toolboxes/gdfmatlab']);
 addpath([smr_train_root '/toolboxes/gkde']);
 addpath([smr_train_root '/toolboxes/subdir']);
 addpath([smr_train_root '/toolboxes/xml4mat']);
+
