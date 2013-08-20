@@ -16,15 +16,11 @@ function eegc3_smr_plotPSD(bci, GDFName, config, taskset, info)
 %
 
 % Find number of channels
-Nelec = bci.settings.acq.channels_eeg;
-freqs = bci.settings.modules.smr.psd.freqs;
-trial_length = bci.dur(4)+1; % Continuous control event
-CLOW = -7;
-CHIGH = 7;
+CLOW = -5;
+CHIGH = 5;
 % new_colormap = 'GrMg_16';
 new_colormap = 'BuDRd_18';
-% Consider 0.5 seconds pretrial
-preTime = 16;
+Nelec = bci.settings.acq.channels_eeg;
 
 % Plot all channels
 if(nargin < 3 || length(find(config==1))~= Nelec)
@@ -52,59 +48,22 @@ end
 
 %%% Average PSDs
 %% MI Right 770
-tmp_idx = find(bci.lbl_sample ==  bci.MI.task(1));
-tmp_trials_number = length(tmp_idx)/trial_length;
-% include 0.5s of preparation
-tmp_prep_idx = [];
-tmp_evt = bci.evt(find(bci.lbl == 770));
-tmp_Ntr = length(find(bci.lbl == 770));
-for i = 1: tmp_Ntr
-    tmp_prep_idx = [tmp_prep_idx tmp_evt(i)-((1:preTime) -3)];
-end
-tmp_idx = [tmp_prep_idx tmp_idx'];
-% Spectrogram
-tmp_spectrogram = bci.afeats(tmp_idx,:,:);
-tmp_spectrogram = reshape(tmp_spectrogram,...
-    [tmp_trials_number, trial_length+preTime, length(freqs), Nelec]);
-avg_spectrogram_right = squeeze((mean(tmp_spectrogram)));
-
+avg_spectrogram_right = eegc3_smr_spectrogramToPlot (...
+bci.afeats, bci.lbl_sample,bci.lbl, bci.evt, bci.MI.task(1), ...
+   bci.settings.acq.channels_eeg, bci.settings.modules.smr.psd.freqs, ...
+  bci.dur(4)+1);
 
 %% MI Left 769
-tmp_idx = find(bci.lbl_sample ==  bci.MI.task(2));
-tmp_trials_number = length(tmp_idx)/trial_length;
-
-% include 0.5s of preparation
-tmp_prep_idx = [];
-tmp_evt = bci.evt(find(bci.lbl == 769));
-tmp_Ntr = length(find(bci.lbl == 769));
-for i = 1: tmp_Ntr
-    tmp_prep_idx = [tmp_prep_idx tmp_evt(i)-((1:preTime) -3)];
-end
-tmp_idx = [tmp_prep_idx tmp_idx'];
-% Spectrogram
-tmp_spectrogram = bci.afeats(tmp_idx,:,:);
-tmp_spectrogram = reshape(tmp_spectrogram,...
-    [tmp_trials_number, trial_length+preTime, length(freqs), Nelec]);
-avg_spectrogram_left = squeeze((mean(tmp_spectrogram)));
+avg_spectrogram_left = eegc3_smr_spectrogramToPlot (...
+bci.afeats, bci.lbl_sample,bci.lbl, bci.evt, bci.MI.task(2), ...
+  bci.settings.acq.channels_eeg, bci.settings.modules.smr.psd.freqs, ...
+  bci.dur(4)+1);
 
 %% MI Rest
-tmp_idx = find(bci.lbl_sample ==  bci.MI.task(3));
-tmp_trials_number = length(tmp_idx)/trial_length;
-
-% include 0.5s of preparation
-tmp_prep_idx = []
-tmp_evt = bci.evt(find(bci.lbl == 783));
-tmp_Ntr = length(find(bci.lbl == 783));
-for i = 1: tmp_Ntr
-    tmp_prep_idx = [tmp_prep_idx tmp_evt(i)-((1:preTime) -3)];
-end
-tmp_idx = [tmp_prep_idx tmp_idx'];
-% Spectrogram
-tmp_spectrogram = bci.afeats(tmp_idx,:,:);
-tmp_spectrogram = reshape(tmp_spectrogram,...
-    [tmp_trials_number, trial_length+preTime, length(freqs), Nelec]);
-avg_spectrogram_rest = squeeze((mean(tmp_spectrogram)));
-
+avg_spectrogram_rest = eegc3_smr_spectrogramToPlot (...
+bci.afeats, bci.lbl_sample,bci.lbl, bci.evt, bci.MI.task(1), ...
+  bci.settings.acq.channels_eeg, bci.settings.modules.smr.psd.freqs, ...
+  bci.dur(4)+1);
 
 %% Compute differences among spectrograms
 spectrogram_differenceRL = avg_spectrogram_right - avg_spectrogram_left;
@@ -122,12 +81,12 @@ width = (1-rightspace - leftspace - (Ncol-1)*hinterspace)/Ncol;
 height = (1-topspace - bottomspace - (Nrows-1)*vinterspace)/Nrows;
 
 %% right - left
-f1 = eegc3_figure;
+eegc3_figure;
 eegc3_publish(12,12,2,2);
 ha=[];
 el=0;
 % Plot line for trial start
-x = 17* ones([10]);
+x = 33* ones([10]);
 y = [1 :23/10: 23];
 for i=1:Nrows
     for j=1:Ncol
