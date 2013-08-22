@@ -28,7 +28,7 @@ end
 Classes = [770 769 783];
 avg_erds = cell([1  length(Classes)]);
 
-win_size = [-1 4.75]; % epochs to be considered (in seconds)
+win_size = [-3 4.75]; % epochs to be considered (in seconds)
 epochs = cell([1  length(Classes)]);
 for cl = 1: length(Classes)
     events = data.hdr.EVENT.POS(find(data.hdr.EVENT.TYP == Classes(cl)));
@@ -44,21 +44,28 @@ for cl = 1: length(Classes)
         tmp_idxs = [tmp_idxs idxs+events(tr)];
     end
     
-    epochs{cl} = tmp_s(tmp_idxs,:);
-
     % Build epochs
-    epochs{cl} = reshape(epochs{cl}',...
-        Ntrials, (win_size(2)-win_size(1))*fs, size(tmp_s,2));    
+    tmp_epochs = tmp_s(tmp_idxs,:);
+    epochs{cl} = nan([Ntrials,(win_size(2)-win_size(1))*fs, size(tmp_s,2)]);
+    
+    for trials = 1:Ntrials
+        for time = 1:(win_size(2)-win_size(1))*fs
+            for elec = 1: size(tmp_s,2)
+                epochs{cl}(trials,time,elec) = tmp_epochs(time+(win_size(2)-win_size(1))*fs*(trials-1),elec);
+            end
+        end
+        
+    end
     
     % Averaging
-    tmp_avg = squeeze(mean(epochs{cl},1));
+    epochs_avg = squeeze(mean(epochs{cl},1));
     
     % Relative power
-    bl_win = 1:512; % baseline period [-1 0]s
-    baseline =mean(tmp_avg(bl_win,:),1);
-    avg_erds{cl} = zeros(size(tmp_avg));
-    for ch = 1:size(tmp_avg,2)
-        avg_erds{cl}(:,ch) = (tmp_avg(:,ch)-baseline(ch))./baseline(ch)*100;
+    bl_win = 1:512; % baseline period [-4.5 -3.5]s
+    baseline =mean(epochs_avg(bl_win,:),1);
+    avg_erds{cl} = zeros(size(epochs_avg));
+    for ch = 1:size(epochs_avg,2)
+        avg_erds{cl}(:,ch) = (epochs_avg(:,ch)-baseline(ch))./baseline(ch)*100;
     end
 end
 
