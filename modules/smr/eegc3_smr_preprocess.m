@@ -28,5 +28,5 @@ if(opt_car)
 end
 
 if(opt_laplacian)
-	data = data * laplacian;
+	data = data(:,1:16) * laplacian;
 end
