@@ -16,8 +16,8 @@ function eegc3_smr_plotPSD(bci, GDFName, config, taskset, info)
 %
 
 % Find number of channels
-CLOW = -5;
-CHIGH = 5;
+CLOW = -1;
+CHIGH = 1;
 % new_colormap = 'GrMg_16';
 new_colormap = 'BuDRd_18';
 Nelec = bci.settings.acq.channels_eeg;
@@ -61,7 +61,7 @@ bci.afeats, bci.lbl_sample,bci.lbl, bci.evt, bci.MI.task(2), ...
 
 %% MI Rest
 avg_spectrogram_rest = eegc3_smr_spectrogramToPlot (...
-bci.afeats, bci.lbl_sample,bci.lbl, bci.evt, bci.MI.task(1), ...
+bci.afeats, bci.lbl_sample,bci.lbl, bci.evt, bci.MI.task(3), ...
   bci.settings.acq.channels_eeg, bci.settings.modules.smr.psd.freqs, ...
   bci.dur(4)+1);
 
@@ -100,7 +100,7 @@ for i=1:Nrows
                 width height]);
             imagesc(squeeze(spectrogram_differenceRL(:,:,el))', [CLOW CHIGH] );
             hold on, plot(x,y,'k.');
-            set(ha(el),'Xtick',[1 17 33 49 65],'XTickLabel',{'[-1 0]', '[0 1]s','[1 2]s','[2 3]s','[3 4]s'})
+            set(ha(el),'Xtick',[1 17 33 49 65 81],'XTickLabel',{'[-2 -1]','[-1 0]', '[0 1]s','[1 2]s','[2 3]s','[3 4]s'})
             set(ha(el),'Ytick',[1 5 11 17 23],'YTickLabel',{[4 12 24 36 48]})
         end
     end
@@ -142,7 +142,7 @@ for i=1:Nrows
                 width height]);
             imagesc(squeeze(spectrogram_differenceRRst(:,:,el))', [CLOW CHIGH] );
             hold on, plot(x,y,'k.');
-            set(ha(el),'Xtick',[1 17 33 49 65],'XTickLabel',{'[-1 0]', '[0 1]s','[1 2]s','[2 3]s','[3 4]s'})
+            set(ha(el),'Xtick',[1 17 33 49 65 81],'XTickLabel',{'[-2 -1]','[-1 0]', '[0 1]s','[1 2]s','[2 3]s','[3 4]s'})
             set(ha(el),'Ytick',[1 5 11 17 23],'YTickLabel',{[4 12 24 36 48]})
         end
     end
@@ -183,7 +183,7 @@ for i=1:Nrows
                 width height]);
             imagesc(squeeze(spectrogram_differenceLRst(:,:,el))', [CLOW CHIGH] );
             hold on, plot(x,y,'k.');
-            set(ha(el),'Xtick',[1 17 33 49 65],'XTickLabel',{'[-1 0]', '[0 1]s','[1 2]s','[2 3]s','[3 4]s'})
+            set(ha(el),'Xtick',[1 17 33 49 65 81],'XTickLabel',{'[-2 -1]','[-1 0]', '[0 1]s','[1 2]s','[2 3]s','[3 4]s'})
             set(ha(el),'Ytick',[1 5 11 17 23],'YTickLabel',{[4 12 24 36 48]})
         end
     end
