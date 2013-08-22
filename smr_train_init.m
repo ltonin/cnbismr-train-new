@@ -31,4 +31,4 @@ addpath([smr_train_root '/toolboxes/gdfmatlab']);
 addpath([smr_train_root '/toolboxes/gkde']);
 addpath([smr_train_root '/toolboxes/subdir']);
 addpath([smr_train_root '/toolboxes/xml4mat']);
-addpath('/home/scratch/abiasiuc/Repos/cnbi-users/trunk/abiasiuc/pubs/BCI-FES/CaseReport2013/matlab/othercolor')
+addpath('/home/scratch/abiasiuc/Dropbox/CNBI/Include/matlab/othercolor')
