@@ -26,6 +26,7 @@ has.inc = has.inc || ismember(protocol.inc, l);
 has.cross = has.cross || ismember(protocol.cross, l);
 has.trialend = has.trialend || ismember(protocol.trialend, l);
 
+Nr_BCI_cues = length(intersect(ulabels,struct2array(cues)));
 
 printf('[eegc3_smr_guesstask] Guessing protocol: ');
 
@@ -50,10 +51,17 @@ else
         
         % New loop eegc3 protocols
         if(has.targetmiss || has.targethit)
-            protocol_label = 'SMR_Online_eegc3';
-            printf('SMR online [eegc v3]\n');
-            resetevents = ...
-                [protocol.cfeedback protocol.targethit protocol.targetmiss];
+            if Nr_BCI_cues==1
+                protocol_label = 'WP4_Online_eegc3';
+                printf('WP4 online [eegc v3]\n');
+                resetevents = ...
+                    [protocol.cfeedback protocol.targethit protocol.targetmiss];
+            else
+                protocol_label = 'SMR_Online_eegc3';
+                printf('SMR online [eegc v3]\n');
+                resetevents = ...
+                    [protocol.cfeedback protocol.targethit protocol.targetmiss];
+            end
         else
             protocol_label = 'SMR_Offline_eegc3';
             printf('SMR offline [eegc v3]\n');
@@ -90,7 +98,7 @@ for l = ulabels
     did.rest_mi 		= did.rest_mi || (l == cues.rest_mi);
     did.tongue_mi 		= did.tongue_mi || (l == cues.tongue_mi);
 end
-
+                
 printf('[eegc3_smr_guesstask] Guessing taskset:  ');
 taskset.cues = zeros(1, 16);
 while(true)
@@ -165,6 +173,30 @@ while(true)
         taskset.cues(2) = cues.left_hand_mi;
         break;
     end
+%     if(did.right_hand_mi && did.rest_mi)
+%         printf('rhrst\n');
+%         taskset.cues(1) = cues.right_hand_mi;
+%         taskset.cues(2) = cues.rest_mi;
+%         break;
+%     end
+%     if(did.left_hand_mi && did.rest_mi) 
+%         printf('lhrst\n');
+%         taskset.cues(1) = cues.rest_mi;
+%         taskset.cues(2) = cues.left_hand_mi;
+%         break;
+%     end
+%     if(did.right_hand_mi && has.cross) 
+%         printf('rhcross\n');
+%         taskset.cues(1) = cues.right_hand_mi;
+%         taskset.cues(2) = 786;
+%         break;
+%     end
+%     if(did.left_hand_mi && has.cross) 
+%         printf('lhcross\n');
+%         taskset.cues(1) = 786;
+%         taskset.cues(2) = cues.left_hand_mi;
+%         break;
+%     end
     break;
 end
 

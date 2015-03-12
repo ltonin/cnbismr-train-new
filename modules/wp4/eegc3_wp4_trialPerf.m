@@ -9,11 +9,11 @@ fileid = filexdf(slashes(end)+1:end-4);
 if sum(data.hdr.EVENT.TYP == 770) > 0
     EVENTTYPE = 770;
 else
-    EVENTTYPE = 771;
+    EVENTTYPE = 769;
 end
 
 % Compute Single Trial performance (#of correct deliveries)
-perf.Ndeliveries = sum(data.hdr.EVENT.TYP == 33549);
+perf.Ndeliveries = sum(data.hdr.EVENT.TYP == 897);
 perf.Ntrials = sum(data.hdr.EVENT.TYP == EVENTTYPE);
 printf('BCI Performance in this run\n')
 disp(perf);

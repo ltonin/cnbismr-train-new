@@ -43,17 +43,20 @@ switch(protocol)
     case {'SMR_Online_eegc2','INC_Online'}
         % trial starts at cfeedback, cfeedback 1 sec away for eegc3
         DistFromCue = 0.9375;
-    case {'INCMT2_eegc3'}
+    case {'INCMT2_eegc3','WP4_Online_eegc3'}
         DistFromCue = 0;
     otherwise
         disp('[eegc3_smr_spectrum] Unkown protocol! Exiting...');
         return;
 end
 
-% In the case of WP4 online data, we only have 1 class, either 770 or 771
-if (exist('settings.modules.wp4.datatype','var'))
-    if settings.modules.wp4.datatype
-        taskset.cues = setdiff(taskset.cues,783);
+% In the case of WP4 online data, we only have 1 class, either 770 or 769
+if isfield(settings.modules,'wp4')
+    if isfield(settings.modules.wp4,'datatype')
+        if settings.modules.wp4.datatype
+            %taskset.cues = setdiff(taskset.cues,783);
+            %taskset.cues = setdiff(taskset.cues,786);
+        end
     end
 end
 

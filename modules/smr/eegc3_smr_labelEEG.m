@@ -71,6 +71,25 @@ function data = eegc3_smr_labelEEG(data, protocol_label, settings)
                 data.trial_idx(data.pos(i):data.pos(i) + data.dur(i)) = trial;
             end
         end
+    elseif(strcmp(protocol_label,'WP4_Online_eegc3'))
+        
+        trial = 0;
+        for i=1:length(data.lbl)
+            
+            if(data.lbl(i) == 786)
+                % Cross fixation period used as rest
+                trial = trial + 1;
+                %data.lbl_sample(data.pos(i):data.pos(i) + data.dur(i)) = data.lbl(i);
+                data.lbl_sample(data.pos(i):data.pos(i) + data.dur(i)) = 783;
+                data.trial_idx(data.pos(i):data.pos(i) + data.dur(i)) = trial;
+            end
+            if(data.lbl(i) == 781)
+                % New trial
+                trial = trial + 1;
+                data.lbl_sample(data.pos(i):data.pos(i) + data.dur(i)) = data.lbl(i-1);
+                data.trial_idx(data.pos(i):data.pos(i) + data.dur(i)) = trial;
+            end
+        end
     elseif(strcmp(protocol_label,'INCMT2_eegc3'))
         trial = 0;
         for i=1:length(data.lbl)
