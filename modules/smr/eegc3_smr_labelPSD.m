@@ -74,8 +74,8 @@ function bci = eegc3_smr_labelPSD(bci, protocol_label)
     elseif(strcmp(protocol_label,'WP4_Online_eegc3'))      
         trial = 0;
         for i=1:length(bci.lbl)            
-            if(bci.lbl(i) == 786)
-                % Cross fixation period used as rest
+            if(bci.lbl(i) == 1)
+                % Wait period used as rest
                 trial = trial + 1;
                 %bci.lbl_sample(bci.evt(i):bci.evt(i) + bci.dur(i)) = bci.lbl(i);
                 bci.lbl_sample(bci.evt(i):bci.evt(i) + bci.dur(i)) = 783;

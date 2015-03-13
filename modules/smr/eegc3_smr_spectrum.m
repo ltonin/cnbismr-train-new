@@ -36,14 +36,14 @@ LblNum = length(taskset.cues);
 
 switch(protocol)
     
-    case {'SMR_Offline_eegc2','SMR_Offline_eegc3','SMR_Online_eegc3'}
+    case {'SMR_Offline_eegc2','SMR_Offline_eegc3','SMR_Online_eegc3','WP4_Online_eegc3'}
         % trial starts 1 sec after the cue (either cfeedback or1 sec after
         % for eegc2_Offline)
         DistFromCue = 1;
     case {'SMR_Online_eegc2','INC_Online'}
         % trial starts at cfeedback, cfeedback 1 sec away for eegc3
         DistFromCue = 0.9375;
-    case {'INCMT2_eegc3','WP4_Online_eegc3'}
+    case {'INCMT2_eegc3'}
         DistFromCue = 0;
     otherwise
         disp('[eegc3_smr_spectrum] Unkown protocol! Exiting...');

@@ -76,8 +76,8 @@ function data = eegc3_smr_labelEEG(data, protocol_label, settings)
         trial = 0;
         for i=1:length(data.lbl)
             
-            if(data.lbl(i) == 786)
-                % Cross fixation period used as rest
+            if(data.lbl(i) == 1)
+                % Wait period used as rest
                 trial = trial + 1;
                 %data.lbl_sample(data.pos(i):data.pos(i) + data.dur(i)) = data.lbl(i);
                 data.lbl_sample(data.pos(i):data.pos(i) + data.dur(i)) = 783;
