@@ -58,5 +58,9 @@ tmp2.modules.smr.gau.somunits = settings2.modules.smr.gau.somunits;
 tmp1.modules.smr.options.selection = [];
 tmp2.modules.smr.options.selection = [];
 
+
+tmp1.modules.smr.options.extraction.trials =[];
+tmp2.modules.smr.options.extraction.trials =[];
+
 % Now compare
 isCompatible = isequal(tmp1,tmp2);

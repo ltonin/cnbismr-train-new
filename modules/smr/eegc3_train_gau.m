@@ -1,4 +1,4 @@
-function gau = eegc3_train_gau(settings, data, labels, trial, has_init)
+function [gau, performace] = eegc3_train_gau(settings, data, labels, trial, has_init)
 
 % function gau = eegc3_train_gau(settings, data, labels, has_init)
 %
@@ -190,6 +190,12 @@ fprintf('  Epoch %d: %.3f/%.3f [%.3f/%.3f %.3f/%.3f]\n', ...
 	perfP(epMax), rejP(epMax), ...
 	perfT(epMax), rejT(epMax));
 
+performace.ccP = ccP(epMax);
+performace.ccT = ccT(epMax);
+performace.perfP = perfP(epMax);
+performace.rejP = rejP(epMax);
+performace.perfT = perfT(epMax);
+performace.rejT = rejT(epMax);
 
 function [perf, rej] = eval_GAU2(settings, dataset, labels, M, C)
 	

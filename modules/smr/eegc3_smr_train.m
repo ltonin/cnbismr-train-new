@@ -434,13 +434,14 @@ for i = 1:length(Classifiers)
             
             % Train classifier
             disp(['[eegc3_smr_train] Training CNBI Gaussian classifier: ' Classifiers{i}.modality]);
-            gau = eegc3_train_gau(Csettings{class_idx}, cndataset.data, ...
+            [gau, performace] = eegc3_train_gau(Csettings{class_idx}, cndataset.data, ...
                 cndataset.labels, cndataset.trial, hasInitClassifier);
             
             Csettings{class_idx}.bci.smr.gau = gau;
          
             % Add trace
             Csettings{class_idx}.bci.smr.trace.Paths = cndataset.Paths;
+            Csettings{class_idx}.bci.smr.trace.performace = performace;
         
             % Add modality
             Csettings{class_idx}.bci.smr.taskset.modality = Classifiers{i}.modality;
