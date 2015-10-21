@@ -1,4 +1,5 @@
-smr_train_root = getenv('SMR_TRAIN_ROOT');
+%smr_train_root = getenv('SMR_TRAIN_ROOT');
+smr_train_root = '/home/rleeb/Git/smr_train';
 addpath('/usr/share/cnbiloop/cnbitkmat/mtpath/');
 
 addpath([smr_train_root '/classification/']);
@@ -31,4 +32,4 @@ addpath([smr_train_root '/toolboxes/gdfmatlab']);
 addpath([smr_train_root '/toolboxes/gkde']);
 addpath([smr_train_root '/toolboxes/subdir']);
 addpath([smr_train_root '/toolboxes/xml4mat']);
-addpath('/home/scratch/abiasiuc/Dropbox/CNBI/Include/matlab/othercolor')
+%addpath('/home/scratch/abiasiuc/Dropbox/CNBI/Include/matlab/othercolor')
