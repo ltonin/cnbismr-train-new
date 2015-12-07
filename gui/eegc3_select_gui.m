@@ -65,7 +65,6 @@ handles.output = hObject;
 	handles.SelectedMat = varargin{3};
 	handles.settings = varargin{4};
 
-
     set(handles.ModeGroup,'SelectionChangeFcn',@ModeChangeFcn);
     % Set mode to automatic
     handles.mode = 'auto';
@@ -75,8 +74,8 @@ handles.output = hObject;
     % SessionPlots is a cell array of matrices (DPa mats)
     DPLength = length(handles.SessionPlotMats);
     for i=1:DPLength
-        subplot(1,DPLength,i,'Parent',handles.SessionPlot),...
-            imagesc(handles.SessionPlotMats{i});
+        spax(i) = subplot(1,DPLength,i,'Parent',handles.SessionPlot);
+        imagesc(handles.SessionPlotMats{i},'Parent',spax(i));
         set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
         set(gca, 'YTickLabel', {});
         set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
@@ -121,36 +120,49 @@ ImageHandle = event_obj.Target;
 
 Pos = get(event_obj,'Position');
 txt = {['Frequency bin: ' num2str(Pos(1))], ['Electrode: ' num2str(Pos(2))]};
+get(get(ImageHandle,'Parent'),'Tag')
+if(strcmp(get(get(ImageHandle,'Parent'),'Tag'),'SelectionPlot')) % Means it is the Selection Plot
 
-
-if(~strcmp(get(get(ImageHandle,'Parent'),'Tag'),'SelectionPlot')) % Means it is not the Selection Plot
-
-    % Only way I found to retrieve the GUI handle in this callback
-    
-    if(strcmp(get(get(ImageHandle,'Parent'),'Tag'),'DPPlot'))        
-        GUIHandle = get(get(ImageHandle,'Parent'),'Parent');
-    else
-        GUIHandle = get(get(get(ImageHandle,'Parent'),'Parent'),'Parent');
-    end
-    
+    % Only way I found to retrieve the GUI handle in this callback     
+    GUIHandle = get(get(ImageHandle,'Parent'),'Parent');
     GUIdata = guidata(GUIHandle);
+    
     SelPlotImHandle = findobj(findobj(GUIHandle,'Tag','SelectionPlot'),'Type','image');
     SelectedData = get(SelPlotImHandle,'CData');
-    
-    
-    % Toggle selection
-    if(SelectedData(Pos(2),Pos(1)) == 0)
-        SelectedData(Pos(2),Pos(1)) = 1;
-    else
-        SelectedData(Pos(2),Pos(1)) = 0;
-    end
-    
+
+    % Remove selection
+    SelectedData(Pos(2),Pos(1)) = 0;
     set(SelPlotImHandle,'CData',SelectedData);
     guidata(GUIHandle,GUIdata);
     return;
-else
+elseif(strcmp(get(get(ImageHandle,'Parent'),'Tag'),'DPPlot')) % Means it is the DPPlot
+ 
+    % Only way I found to retrieve the GUI handle in this callback     
+    GUIHandle = get(get(ImageHandle,'Parent'),'Parent');
+    GUIdata = guidata(GUIHandle);
+    
+    SelPlotImHandle = findobj(findobj(GUIHandle,'Tag','SelectionPlot'),'Type','image');
+    SelectedData = get(SelPlotImHandle,'CData');
+
+    % Perform selection
+    SelectedData(Pos(2),Pos(1)) = 1;
+    set(SelPlotImHandle,'CData',SelectedData);
+    guidata(GUIHandle,GUIdata);
     return;
-    % Do nothing
+    
+else % It is the per session plots
+    % Only way I found to retrieve the GUI handle in this callback     
+    GUIHandle = get(get(get(ImageHandle,'Parent'),'Parent'),'Parent');
+    GUIdata = guidata(GUIHandle);
+    
+    SelPlotImHandle = findobj(findobj(GUIHandle,'Tag','SelectionPlot'),'Type','image');
+    SelectedData = get(SelPlotImHandle,'CData');
+
+    % Perform selection
+    SelectedData(Pos(2),Pos(1)) = 1;
+    set(SelPlotImHandle,'CData',SelectedData);
+    guidata(GUIHandle,GUIdata);
+    return;
 end
 
 
