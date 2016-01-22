@@ -322,7 +322,7 @@ for i = 1:length(logfiles)
             end
             f = f + 1;
             
-            [taskset, resetevents] = eegc3_smr_guesstask(bci.lbl);
+            [taskset, resetevents] = eegc3_smr_guesstask(bci.lbl, bci.settings);
             eegc3_smr_simprotocol(bci, taskset.cues, taskset.colors, ...
              [], [], 1, 2000 + f);
               f = f + 1;

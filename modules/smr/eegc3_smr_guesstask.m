@@ -1,4 +1,4 @@
-function [taskset, resetevents, protocol_label] = eegc3_smr_guesstask(labels)
+function [taskset, resetevents, protocol_label] = eegc3_smr_guesstask(labels, settings)
 % 2013  Andrea Biasiucci <andrea.biasiucci@epfl.ch>
 % 2010  Michele Tavella <michele.tavella@epfl.ch>
 
@@ -51,7 +51,7 @@ else
         
         % New loop eegc3 protocols
         if(has.targetmiss || has.targethit)
-            if Nr_BCI_cues==1
+            if isfield(settings.modules,'wp4')
                 protocol_label = 'WP4_Online_eegc3';
                 printf('WP4 online [eegc v3]\n');
                 resetevents = ...
@@ -63,8 +63,23 @@ else
                     [protocol.cfeedback protocol.targethit protocol.targetmiss];
             end
         else
-            protocol_label = 'SMR_Offline_eegc3';
-            printf('SMR offline [eegc v3]\n');
+            if(isfield(settings.modules,'wp4'))
+                if(settings.modules.wp4.datatype==1)
+                    protocol_label = 'WP4_Online_eegc3';
+                    printf('WP4 online [eegc v3]\n');
+                    resetevents = ...
+                        [protocol.cfeedback protocol.targethit protocol.targetmiss];
+                else
+                    protocol_label = 'SMR_Offline_eegc3';
+                    printf('SMR offline [eegc v3]\n');
+                end
+
+            else
+                protocol_label = 'SMR_Offline_eegc3';
+                printf('SMR offline [eegc v3]\n');
+            end
+
+
         end
     else
         
