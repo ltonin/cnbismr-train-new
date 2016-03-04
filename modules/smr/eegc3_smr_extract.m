@@ -109,11 +109,8 @@ for i=1:FileNum
         bci.trace.eegc3_smr_simloop.filexdf]);
     
     % Extract per trial performances for this run, if it is online
-<<<<<<< HEAD
     [tkset, rev, prot_label] = eegc3_smr_guesstask(bci.lbl, bci.settings);
-=======
-    [tkset, rev, prot_label] = eegc3_smr_guesstask(bci.lbl, settings);
->>>>>>> 8018a2423d7af4b4303421dc58bf5b250a3f2484
+
     if(strcmp(prot_label,'SMR_Online_eegc3'))
         % Performance of different classes
         corr = zeros(length(tkset.cues),1);
