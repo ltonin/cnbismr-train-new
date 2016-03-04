@@ -12,7 +12,11 @@
 function [basename basepath] = mtpath_basename(path)
 
 path = mtpath_clean(path);
-slashes = strfind(path, '/');
+if(isunix)
+	slashes = strfind(path, '/');
+else
+	slashes = strfind(path, '\');
+end
 basename = path(slashes(end)+1:end);
 basepath = strrep(path, basename, '');
 basepath = mtpath_clean(basepath);
