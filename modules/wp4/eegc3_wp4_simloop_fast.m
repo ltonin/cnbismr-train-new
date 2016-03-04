@@ -140,7 +140,11 @@ else
 end
 
 % Find the protocol
+<<<<<<< HEAD
 [taskset, resetevents, protocol_label] = eegc3_smr_guesstask(data.lbl',bci.settings);
+=======
+[taskset, resetevents, protocol_label] = eegc3_smr_guesstask(data.lbl', bci.settings);
+>>>>>>> 8018a2423d7af4b4303421dc58bf5b250a3f2484
 
 % Find the labels of EEG samples (time domain)
 data.lbl_sample = zeros(1, size(data.eeg,1));

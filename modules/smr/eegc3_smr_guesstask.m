@@ -51,7 +51,7 @@ else
         
         % New loop eegc3 protocols
         if(has.targetmiss || has.targethit)
-            if Nr_BCI_cues==1
+            if isfield(settings.modules,'wp4')
                 protocol_label = 'WP4_Online_eegc3';
                 printf('WP4 online [eegc v3]\n');
                 resetevents = ...
@@ -63,15 +63,34 @@ else
                     [protocol.cfeedback protocol.targethit protocol.targetmiss];
             end
         else
+<<<<<<< HEAD
             if(settings.modules.wp4.datatype==1) % Hack for WP4 with only timeouts
                 protocol_label = 'WP4_Online_eegc3';
                 printf('WP4 online [eegc v3]\n');
                 resetevents = ...
                     [protocol.cfeedback protocol.targethit protocol.targetmiss];
+=======
+            if(isfield(settings.modules,'wp4'))
+                if(settings.modules.wp4.datatype==1)
+                    protocol_label = 'WP4_Online_eegc3';
+                    printf('WP4 online [eegc v3]\n');
+                    resetevents = ...
+                        [protocol.cfeedback protocol.targethit protocol.targetmiss];
+                else
+                    protocol_label = 'SMR_Offline_eegc3';
+                    printf('SMR offline [eegc v3]\n');
+                end
+
+>>>>>>> 8018a2423d7af4b4303421dc58bf5b250a3f2484
             else
                 protocol_label = 'SMR_Offline_eegc3';
                 printf('SMR offline [eegc v3]\n');
             end
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 8018a2423d7af4b4303421dc58bf5b250a3f2484
         end
     else
         
