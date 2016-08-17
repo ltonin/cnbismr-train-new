@@ -24,6 +24,10 @@ function [] = eegc3_smr_train(FilePaths, settings, Classifiers, usedlg)
 %
 % task_left: GDF Event for "left" task
 %
+% task_top: GDF Event for "top" task, -1 for non-existing
+%
+% task_left: GDF Event for "bottom" task, -1 for non-existing
+%
 % filepath, filename: Filepath and filename for precomputed classifier of
 % this modality. SOM initialization will be used if filepath is empty ('')
 %
@@ -76,6 +80,13 @@ if(nargin == 2)
     Classifiers{2}.task_left = 771;
     Classifiers{3}.task_left = 769;
     
+    Classifiers{1}.task_top = -1;
+    Classifiers{2}.task_top = -1;
+    Classifiers{3}.task_top = -1;    
+    
+    Classifiers{1}.task_bottom = -1;
+    Classifiers{2}.task_bottom = -1;
+    Classifiers{3}.task_bottom = -1;  
     
     Classifiers{1}.filename = '';
     Classifiers{2}.filename = '';
@@ -118,7 +129,9 @@ for i = 1:length(Classifiers)
         disp(['[eegc3_smr_train] Training classifier: [Modality: '...
             Classifiers{i}.modality ' Task GDF events: '...
             num2str(Classifiers{i}.task_right) ' '...
-            num2str(Classifiers{i}.task_left) ']']);
+            num2str(Classifiers{i}.task_left) ' '...
+            num2str(Classifiers{i}.task_top) ' '...
+            num2str(Classifiers{i}.task_bottom) ']']);
        
         % Prepare dataset for feature selection or dataset cropping
         
@@ -228,7 +241,8 @@ for i = 1:length(Classifiers)
             % Enrich the modules.classes with the currently requested
             % classes
             settings.modules.smr.taskset.classes = ...
-                [Classifiers{i}.task_right Classifiers{i}.task_left];
+                [Classifiers{i}.task_right Classifiers{i}.task_left ...
+                Classifiers{i}.task_top Classifiers{i}.task_bottom];
             
             % Compare settings to identify incompatibility between the
             % requested settings and those used to train the initial
@@ -247,7 +261,9 @@ for i = 1:length(Classifiers)
                     ' classifier which is not'...
                     ' compatible with the requested settings.'...
                     ' Building classifier [' num2str(Classifiers{i}.task_right)...
-                    ' ' num2str(Classifiers{i}.task_left) '] will be omitted!']);
+                    ' ' num2str(Classifiers{i}.task_left)...
+                    ' ' num2str(Classifiers{i}.task_top)...
+                    ' ' num2str(Classifiers{i}.task_bottom) '] will be omitted!']);
                 continue;
             end
             
@@ -308,13 +324,24 @@ for i = 1:length(Classifiers)
         
         eegc3_figure(10 + i);
         eegc3_publish(14,14,3,3);
-        [pdf1 pdf2] = eegc3_smr_cvaspace(cdataset.data,cdataset.labels,[1 2]);
-        plot(pdf1.x,pdf1.f,'b',pdf2.x,pdf2.f,'r')
-        title([Classifiers{i}.modality ' dataset in canonical space -- Unnormalized']);
-        xlabel('1st canonical dimension');
-        ylabel('PDF');
-        legend('Class 1','Class2');
-        
+        if(length(unique(cdataset.labels))==2)
+            [pdf1 pdf2] = eegc3_smr_cvaspace(cdataset.data,cdataset.labels,[1 2]);
+            plot(pdf1.x,pdf1.f,'b',pdf2.x,pdf2.f,'r')
+            title([Classifiers{i}.modality ' dataset in canonical space -- Unnormalized']);
+            xlabel('1st canonical dimension');
+            ylabel('PDF');
+            legend('Class 1','Class2');
+        elseif(length(unique(cdataset.labels))==3)
+            [pdf1 pdf2 pdf3] = eegc3_smr_cvaspace(cdataset.data,cdataset.labels,[1 2 3]);
+            plot(pdf1.x,pdf1.f,'b',pdf2.x,pdf2.f,'r',pdf3.x,pdf3.f,'k')
+            title([Classifiers{i}.modality ' dataset in canonical space -- Unnormalized']);
+            xlabel('1st canonical dimension');
+            ylabel('PDF');
+            legend('Class 1','Class2','Class3');
+        else
+            disp(['[eegc3_smr_train] Cannot support figure for 4 classes']);
+        end
+
         % Ask whether it should normalize before classification
         if(usedlg)
             Ans = questdlg(['Do you want to normalize for classification?'], 'Attention!','Yes','No','No');
@@ -364,15 +391,6 @@ for i = 1:length(Classifiers)
             cndataset = cdataset;
             cndataset.settings = Csettings{class_idx};
         end        
-
-        eegc3_figure(20 + i);
-        eegc3_publish(14,14,3,3);
-        [npdf1 npdf2] = eegc3_smr_cvaspace(cndataset.data,cndataset.labels,[1 2]);
-        plot(npdf1.x,npdf1.f,'b',npdf2.x,npdf2.f,'r')
-        title([Classifiers{i}.modality ' dataset in canonical space']);
-        xlabel('1st canonical dimension');
-        ylabel('PDF');
-        legend('Class 1','Class2');
         
         if(usedlg)
             Ans = questdlg(['Do you want to train a CNBI Gaussian classifier for modality ' Classifiers{i}.modality...
@@ -447,9 +465,18 @@ for i = 1:length(Classifiers)
             Csettings{class_idx}.bci.smr.taskset.modality = Classifiers{i}.modality;
         
             % Add taskset (modality) class GDF events
-            Csettings{class_idx}.bci.smr.taskset.classes = [Classifiers{i}.task_right ...
-                Classifiers{i}.task_left];
-
+            if(Classifiers{i}.task_bottom == -1)
+                if(Classifiers{i}.task_top == -1)
+                    Csettings{class_idx}.bci.smr.taskset.classes = [Classifiers{i}.task_right ...
+                    Classifiers{i}.task_left];
+                else
+                    Csettings{class_idx}.bci.smr.taskset.classes = [Classifiers{i}.task_right ...
+                    Classifiers{i}.task_left Classifiers{i}.task_top];        
+                end
+            else
+                Csettings{class_idx}.bci.smr.taskset.classes = [Classifiers{i}.task_right ...
+                Classifiers{i}.task_left Classifiers{i}.task_top Classifiers{i}.task_bottom];
+            end
         end
 
         
@@ -486,7 +513,7 @@ for i = 1:length(Classifiers)
         
             % Add taskset (modality) class GDF events
             Csettings{class_idx}.bci.smr.taskset.classes = [Classifiers{i}.task_right ...
-                Classifiers{i}.task_left];
+                Classifiers{i}.task_left Classifiers{i}.task_top Classifiers{i}.task_bottom];
         end
         
         
@@ -524,7 +551,7 @@ for i = 1:length(Classifiers)
         
             % Add taskset (modality) class GDF events
             Csettings{class_idx}.bci.smr.taskset.classes = [Classifiers{i}.task_right ...
-                Classifiers{i}.task_left];
+                Classifiers{i}.task_left Classifiers{i}.task_top Classifiers{i}.task_bottom];
 
         end   
         

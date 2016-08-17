@@ -87,10 +87,10 @@ for ch = 1:settings.acq.channels_eeg
         % Find label index in taskset
         tasksetPos = find(taskset.cues==tr_lbl);
         
-        [chspectrum{tasksetPos}(end+1,:) chphase{tasksetPos}(end+1,:) MI.f info] = ...
-            eegc3_fft(eeg(TrEnd-winsize*settings.acq.sf:TrEnd-1,ch), settings.acq.sf, bands);
-        [chspectrumB1{tasksetPos}(end+1,:) chphaseB1{tasksetPos}(end+1,:) nMI.f] = ...
-            eegc3_fft(eeg(TrBegin-winsize*settings.acq.sf:TrBegin-1,ch), settings.acq.sf, bands);
+%        [chspectrum{tasksetPos}(end+1,:) chphase{tasksetPos}(end+1,:) MI.f info] = ...
+%            eegc3_fft(eeg(TrEnd-winsize*settings.acq.sf:TrEnd-1,ch), settings.acq.sf, bands);
+%        [chspectrumB1{tasksetPos}(end+1,:) chphaseB1{tasksetPos}(end+1,:) nMI.f] = ...
+%            eegc3_fft(eeg(TrBegin-winsize*settings.acq.sf:TrBegin-1,ch), settings.acq.sf, bands);
     end
     
     for class = 1:length(taskset.cues)

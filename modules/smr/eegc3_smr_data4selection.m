@@ -39,15 +39,33 @@ for i=1:RunNum
     % Search for the classes
     Right = find(ismember(dataset.run{i}.labels, Classifier.task_right));
     Left = find(ismember(dataset.run{i}.labels, Classifier.task_left));
-    LeftOrRight = find(ismember(dataset.run{i}.labels,...
-        [Classifier.task_left Classifier.task_right]));
+    Top = find(ismember(dataset.run{i}.labels, Classifier.task_top));
+    Bottom = find(ismember(dataset.run{i}.labels, Classifier.task_bottom));
+    
+    if(Classifier.task_bottom == -1)
+        if(Classifier.task_top == -1)
+            AllClasses = find(ismember(dataset.run{i}.labels,...
+            [Classifier.task_right Classifier.task_left]));
+        else
+            AllClasses = find(ismember(dataset.run{i}.labels,...
+            [Classifier.task_right Classifier.task_left Classifier.task_top]));
+        end
+    else
+        AllClasses = find(ismember(dataset.run{i}.labels,...
+        [Classifier.task_right Classifier.task_left ...
+        Classifier.task_top Classifier.task_bottom]));
+    end
+    
     
     NRight  = length(Right);
     NLeft  = length(Left);
+    NTop  = length(Top);
+    NBottom  = length(Bottom);
     
-    if(NRight == 0 || NLeft == 0)
+    if((NRight == 0) || (NLeft == 0) || (NTop == 0 && Classifier.task_top~=-1) || ...
+            (NBottom == 0 && Classifier.task_bottom~=-1))
         disp(['[eegc3_smr_data4selection] Run ' dataset.run{i}.path...
-            ' does not contain one or both of the requested classes!!'...
+            ' does not contain one of the requested classes!!'...
             ' This run will be ommited from further processing']);
         
     else
@@ -58,17 +76,23 @@ for i=1:RunNum
         disp('[eegc3_smr_data4selection] Remapping labels');
         dataset.run{i}.labels(Right) = 1;
         dataset.run{i}.labels(Left) = 2;
+        if(Classifier.task_top ~= -1)
+            dataset.run{i}.labels(Top) = 3;
+        end
+        if(Classifier.task_bottom ~= -1)
+            dataset.run{i}.labels(Bottom) = 4;
+        end        
         
         
         % Keep only class data
         disp(['[eegc3_smr_data4selection] Cropping out irrelevant data']);
         cdataset.run{UsedRun}.data = ...
-            dataset.run{i}.data(LeftOrRight,:,:);
+            dataset.run{i}.data(AllClasses,:,:);
         cdataset.run{UsedRun}.labels = ...
-            dataset.run{i}.labels(LeftOrRight);
+            dataset.run{i}.labels(AllClasses);
         cdataset.run{UsedRun}.path = dataset.run{i}.path;
         cdataset.run{UsedRun}.trial = ...
-            dataset.run{i}.trial(LeftOrRight);
+            dataset.run{i}.trial(AllClasses);
         
         
         if(norm)

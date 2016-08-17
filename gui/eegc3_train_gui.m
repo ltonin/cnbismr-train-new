@@ -22,7 +22,7 @@ function varargout = eegc3_train_gui(varargin)
 
 % Edit the above text to modify the response to help eegc3_train_gui
 
-% Last Modified by GUIDE v2.5 08-Jan-2013 18:42:11
+% Last Modified by GUIDE v2.5 15-Aug-2016 13:54:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -100,24 +100,38 @@ Classifier{7}.modality = 'mod2';
 
 Classifier{1}.task_right = 770;
 Classifier{1}.task_left = 769;
+Classifier{1}.task_top = -1;
+Classifier{1}.task_bottom = -1;
 
 Classifier{2}.task_right = 770;
 Classifier{2}.task_left = 771;
+Classifier{2}.task_top = -1;
+Classifier{2}.task_bottom = -1;
 
 Classifier{3}.task_right = 771;
 Classifier{3}.task_left = 769;
+Classifier{3}.task_top = -1;
+Classifier{3}.task_bottom = -1;
 
 Classifier{4}.task_right = 770;
 Classifier{4}.task_left = 783;
+Classifier{4}.task_top = -1;
+Classifier{4}.task_bottom = -1;
 
 Classifier{5}.task_right = 783;
 Classifier{5}.task_left = 769;
+Classifier{5}.task_top = -1;
+Classifier{5}.task_bottom = -1;
 
-Classifier{6}.task_right = 0;
-Classifier{6}.task_left = 0;
+Classifier{6}.task_right = -1;
+Classifier{6}.task_left = -1;
+Classifier{6}.task_top = -1;
+Classifier{6}.task_bottom = -1;
 
-Classifier{7}.task_right = 0;
-Classifier{7}.task_left = 0;
+Classifier{7}.task_right = -1;
+Classifier{7}.task_left = -1;
+Classifier{7}.task_top = -1;
+Classifier{7}.task_bottom = -1;
 
 handles.Classifier = Classifier;
 
@@ -540,9 +554,9 @@ function LdClassMod2_Callback(hObject, eventdata, handles)
 % hObject    handle to LdClassMod2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[handles.Classifier{5}.filepath handles.Classifier{5}.filename] = eegc3_gui_initclass();
-if(~isempty(handles.Classifier{5}.filepath))
-    set(handles.ClassLbl_Mod2,'String',handles.Classifier{5}.filename);
+[handles.Classifier{7}.filepath handles.Classifier{7}.filename] = eegc3_gui_initclass();
+if(~isempty(handles.Classifier{7}.filepath))
+    set(handles.ClassLbl_Mod2,'String',handles.Classifier{7}.filename);
 else
     set(handles.ClassLbl_Mod2,'String','None');
 end
@@ -553,9 +567,9 @@ function LdClassMod1_Callback(hObject, eventdata, handles)
 % hObject    handle to LdClassMod1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[handles.Classifier{4}.filepath handles.Classifier{4}.filename] = eegc3_gui_initclass();
-if(~isempty(handles.Classifier{4}.filepath))
-    set(handles.ClassLbl_Mod1,'String',handles.Classifier{4}.filename);
+[handles.Classifier{6}.filepath handles.Classifier{6}.filename] = eegc3_gui_initclass();
+if(~isempty(handles.Classifier{6}.filepath))
+    set(handles.ClassLbl_Mod1,'String',handles.Classifier{6}.filename);
 else
     set(handles.ClassLbl_Mod1,'String','None');
 end
@@ -642,7 +656,7 @@ if(~isempty(get(hObject,'String')) && ~isnan(str2double(get(hObject,'String'))) 
 else
     uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
     set(hObject,'String','0');
-    handles.Classifier{6}.task_left  = 0;
+    handles.Classifier{6}.task_left  = -1;
 end
 guidata(gcf,handles);
 
@@ -676,7 +690,7 @@ if(~isempty(get(hObject,'String')))
 else
     uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
     set(hObject,'String','0');
-    handles.Classifier{7}.task_right  = 0;
+    handles.Classifier{7}.task_right  = -1;
 end
 guidata(gcf,handles);
 
@@ -708,7 +722,7 @@ if(~isempty(get(hObject,'String')))
 else
     uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
     set(hObject,'String','0');
-    handles.Classifier{7}.task_left  = 0;
+    handles.Classifier{7}.task_left  = -1;
 end
 guidata(gcf,handles);
 
@@ -742,7 +756,7 @@ if(~isempty(get(hObject,'String')) && ~isnan(str2double(get(hObject,'String'))) 
 else
     uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
     set(hObject,'String','0');
-    handles.Classifier{6}.task_right  = 0;
+    handles.Classifier{6}.task_right  = -1;
 end
 
 guidata(gcf,handles);
@@ -838,6 +852,8 @@ if(get(handles.Mod2Check,'Value')==1)
     set(handles.Mod2Lbl,'Enable','on');
     set(handles.Mod2Rtrig,'Enable','on');
     set(handles.Mod2Ltrig,'Enable','on');
+    set(handles.Mod2Ttrig,'Enable','on');
+    set(handles.Mod2Btrig,'Enable','on');    
     handles.Classifier{7}.Enable = true;
 else
     set(handles.LdClassMod2,'Enable','off');
@@ -845,6 +861,8 @@ else
     set(handles.Mod2Lbl,'Enable','off');
     set(handles.Mod2Rtrig,'Enable','off');
     set(handles.Mod2Ltrig,'Enable','off');
+    set(handles.Mod2Ttrig,'Enable','off');
+    set(handles.Mod2Btrig,'Enable','off');        
     handles.Classifier{7}.Enable = false;
 end
 guidata(gcf,handles);
@@ -1385,6 +1403,30 @@ if(isempty(handles.SelectedPaths))
     return;
 end
 
+if(handles.Classifier{7}.Enable == 1)
+    % Check if classes are specified in order right/left/top/bottom
+    if(handles.Classifier{7}.task_right == -1)
+        msg = 'Task Right cannot be empty! Fill classes in order: right, left, top, bottom. Set -1 for the class(es) you do not want to use.';
+        disp(msg);
+        uiwait(msgbox(msg,'Attention!','error'));
+        return;
+    else
+        if(handles.Classifier{7}.task_left == -1)
+            msg = 'Task Left cannot be empty! Fill classes in order: right, left, top, bottom. Set -1 for the class(es) you do not want to use.';
+            disp(msg);
+            uiwait(msgbox(msg,'Attention!','error'));
+            return;
+        else
+            if((handles.Classifier{7}.task_top == -1) && (handles.Classifier{7}.task_bottom ~= -1))
+                msg = 'Task Bootom cannot be filled before Task Top! Fill classes in order: right, left, top, bottom.';
+                disp(msg);
+                uiwait(msgbox(msg,'Attention!','error'));
+                return;
+            end
+        end
+    end
+end
+
 % Warn that only features will be computed
 isEnabled = false;
 for i=1:7
@@ -1526,3 +1568,63 @@ else
     handles.settings.modules.wp4.datatype = 1;
 end
 guidata(gcf,handles);
+
+
+
+function Mod2Ttrig_Callback(hObject, eventdata, handles)
+% hObject    handle to Mod2Ttrig (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Mod2Ttrig as text
+%        str2double(get(hObject,'String')) returns contents of Mod2Ttrig as a double
+if(~isempty(get(hObject,'String')))
+        handles.Classifier{7}.task_top  = str2double(get(hObject,'String'));
+else
+    uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
+    set(hObject,'String','0');
+    handles.Classifier{7}.task_top  = -1;
+end
+guidata(gcf,handles);
+
+% --- Executes during object creation, after setting all properties.
+function Mod2Ttrig_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Mod2Ttrig (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function Mod2Btrig_Callback(hObject, eventdata, handles)
+% hObject    handle to Mod2Btrig (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Mod2Btrig as text
+%        str2double(get(hObject,'String')) returns contents of Mod2Btrig as a double
+if(~isempty(get(hObject,'String')))
+        handles.Classifier{7}.task_bottom  = str2double(get(hObject,'String'));
+else
+    uiwait(msgbox('Trigger code should be a positive integer!','Attention!','error'));
+    set(hObject,'String','0');
+    handles.Classifier{7}.task_bottom  = -1;
+end
+guidata(gcf,handles);
+
+% --- Executes during object creation, after setting all properties.
+function Mod2Btrig_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Mod2Btrig (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

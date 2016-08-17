@@ -1,6 +1,6 @@
 % Edited by M. Tavella <michele.tavella@epfl.ch> on 28/07/09 12:13:05
 
-function [pdf1, pdf2] = eegc3_smr_cvaspace(data, labels, classes, fig, tit)
+function [pdf1, pdf2, pdf3] = eegc3_smr_cvaspace(data, labels, classes, fig, tit)
 
 if(nargin < 4)
 	fig = 0;
@@ -16,6 +16,7 @@ switch(labels_total)
 
 		pdf1 = gkdeb(d1);
 		pdf2 = gkdeb(d2);
+        pdf3 = NaN;
 
 		if(fig)
 			eegc2_figure(fig);
@@ -27,10 +28,14 @@ switch(labels_total)
 		end
 
 	case 3
-		 d1 = cs(find(labels == classes(1)), :);
-		 d2 = cs(find(labels == classes(2)), :);
-		 d3 = cs(find(labels == classes(3)), :);
+		 d1 = cs(find(labels == classes(1)), 1);
+		 d2 = cs(find(labels == classes(2)), 1);
+		 d3 = cs(find(labels == classes(3)), 1);
 		
+		pdf1 = gkdeb(d1);
+		pdf2 = gkdeb(d2);
+		pdf3 = gkdeb(d3);
+
 		 if(fig)
 			eegc2_figure(fig);
 			plot(d1(:,1), d1(:,2), 'r.'); hold on;

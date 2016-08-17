@@ -95,6 +95,7 @@ end
 did.right_hand_mi 	= false;
 did.left_hand_mi 	= false;
 did.both_hands_mi 	= false;
+did.both_hands_both_feet_mi = false;
 did.both_feet_mi 	= false;
 did.rest_mi 		= false;
 did.tongue_mi 		= false;
@@ -103,6 +104,7 @@ for l = ulabels
     did.right_hand_mi 	= did.right_hand_mi || (l == cues.right_hand_mi);
     did.left_hand_mi 	= did.left_hand_mi || (l == cues.left_hand_mi);
     did.both_hands_mi 	= did.both_hands_mi || (l == cues.both_hands_mi);
+    did.both_hands_both_feet_mi 	= did.both_hands_both_feet_mi || (l == cues.both_hands_both_feet_mi);
     did.both_feet_mi 	= did.both_feet_mi || (l == cues.both_feet_mi);
     did.rest_mi 		= did.rest_mi || (l == cues.rest_mi);
     did.tongue_mi 		= did.tongue_mi || (l == cues.tongue_mi);
@@ -119,6 +121,21 @@ while(true)
         taskset.cues(4) = cues.both_feet_mi;
         break;
     end
+    if(did.both_hands_mi && did.both_feet_mi && did.both_hands_both_feet_mi && did.rest_mi)
+        printf('bhbfallrst\n');
+        taskset.cues(1) = cues.both_hands_mi;
+        taskset.cues(2) = cues.both_feet_mi;
+        taskset.cues(3) = cues.rest_mi;
+        taskset.cues(4) = cues.both_hands_both_feet_mi;
+        break;
+    end
+    if(did.both_hands_mi && did.both_feet_mi && did.both_hands_both_feet_mi)
+        printf('bhbfall\n');
+        taskset.cues(1) = cues.both_hands_mi;
+        taskset.cues(2) = cues.both_feet_mi;
+        taskset.cues(3) = cues.both_hands_both_feet_mi;
+        break;
+    end        
     if(did.right_hand_mi && did.left_hand_mi && did.both_feet_mi && did.tongue_mi)
         printf('rltf\n');
         taskset.cues(1) = cues.right_hand_mi;
