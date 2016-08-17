@@ -59,57 +59,68 @@ end
 %         num2str(NTrial-NTrain) ' trials']);
 % end
 
-% Split possible 50/50
-% Find class samples
-C{1} = find(labels==1);
-C{2} = find(labels==2);
+if(unique(labels)==2) % 2-class case
+    % Split possible 50/50
+    % Find class samples
+    C{1} = find(labels==1);
+    C{2} = find(labels==2);
 
-% Find minimum
-[CminN Cmin]  = min([length(C{1}) length(C{2})]);
-[CmaxN Cmax]  = max([length(C{1}) length(C{2})]);
-disp(['[eegc3_train_gau] Dropping ' num2str(100*(CmaxN-CminN)/CmaxN) '% first'... 
-    ' coming data of class ' num2str(Cmax) ' to avoid unbalanced classes']);
-C{Cmax} = C{Cmax}(CmaxN-CminN+1:end);
-dataind = union(C{1},C{2});
-bdata = data(dataind,:);
-blabels = labels(dataind,:);
+    % Find minimum
+    [CminN Cmin]  = min([length(C{1}) length(C{2})]);
+    [CmaxN Cmax]  = max([length(C{1}) length(C{2})]);
+    disp(['[eegc3_train_gau] Dropping ' num2str(100*(CmaxN-CminN)/CmaxN) '% first'... 
+        ' coming data of class ' num2str(Cmax) ' to avoid unbalanced classes']);
+    C{Cmax} = C{Cmax}(CmaxN-CminN+1:end);
+    dataind = union(C{1},C{2});
+    bdata = data(dataind,:);
+    blabels = labels(dataind,:);
 
-% Random permutation
-brand = randperm(length(blabels));
-blabels = blabels(brand);
-bdata = bdata(brand,:);
+    % Random permutation
+    brand = randperm(length(blabels));
+    blabels = blabels(brand);
+    bdata = bdata(brand,:);
 
-% Now split to training and testing set, 70/30 split
-Pind = [1:round(0.7*length(blabels))];
-Tind = [max(Pind)+1:length(blabels)];
+    % Now split to training and testing set, 70/30 split
+    Pind = [1:round(0.7*length(blabels))];
+    Tind = [max(Pind)+1:length(blabels)];
 
-P = bdata(Pind,:);
-Pk = blabels(Pind,:);
-   
-T = bdata(Tind,:);
-Tk = blabels(Tind,:);
+    P = bdata(Pind,:);
+    Pk = blabels(Pind,:);
 
-Size = size(bdata,1);
-TrSize = size(Pk,1);
+    T = bdata(Tind,:);
+    Tk = blabels(Tind,:);
 
-% Test the balance of samples in training set
-Pc1 = length(find(Pk==1))/TrSize;
-Pc2 = length(find(Pk==2))/TrSize;
-disp(['[eegc3_train_gau] Training samples (%): Class 1 vs Class 2: '...
-    num2str(100*Pc1) ' - ' num2str(100*Pc2)]);
-if(abs(Pc1-Pc2)>0.2)
-    disp(['[eegc3_train_gau] Warning: Training samples seem to be too unbalanced...']);
+    Size = size(bdata,1);
+    TrSize = size(Pk,1);
+
+    % Test the balance of samples in training set
+    Pc1 = length(find(Pk==1))/TrSize;
+    Pc2 = length(find(Pk==2))/TrSize;
+    disp(['[eegc3_train_gau] Training samples (%): Class 1 vs Class 2: '...
+        num2str(100*Pc1) ' - ' num2str(100*Pc2)]);
+    if(abs(Pc1-Pc2)>0.2)
+        disp(['[eegc3_train_gau] Warning: Training samples seem to be too unbalanced...']);
+    end
+
+    % Test the balance of samples in testing set
+    Tc1 = length(find(Tk==1))/(Size-TrSize);
+    Tc2 = length(find(Tk==2))/(Size-TrSize);
+    disp(['[eegc3_train_gau] Testing samples (%): Class 1 vs Class 2: '...
+        num2str(100*Tc1) ' - ' num2str(100*Tc2)]);
+    if(abs(Tc1-Tc2)>0.2)
+        disp(['[eegc3_train_gau] Warning: Testing samples seem to be too unbalanced...']);
+    end
+else
+    % Split to training and testing set, 70/30 split
+    Pind = [1:round(0.7*length(labels))];
+    Tind = [max(Pind)+1:length(labels)];
+
+    P = data(Pind,:);
+    Pk = labels(Pind,:);
+
+    T = data(Tind,:);
+    Tk = labels(Tind,:);
 end
-
-% Test the balance of samples in testing set
-Tc1 = length(find(Tk==1))/(Size-TrSize);
-Tc2 = length(find(Tk==2))/(Size-TrSize);
-disp(['[eegc3_train_gau] Testing samples (%): Class 1 vs Class 2: '...
-    num2str(100*Tc1) ' - ' num2str(100*Tc2)]);
-if(abs(Tc1-Tc2)>0.2)
-    disp(['[eegc3_train_gau] Warning: Testing samples seem to be too unbalanced...']);
-end
-
 
 gau = {};
 

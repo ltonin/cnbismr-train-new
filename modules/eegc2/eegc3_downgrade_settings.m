@@ -106,9 +106,16 @@ analysis.settings.classification.gau.th             = ...
 analysis.settings.classification.gau.terminate      = ...
     settings.modules.smr.gau.terminate;
 
-analysis.settings.task.classes                      = [1 3];
 analysis.settings.task.classes_old                  = ...
     settings.bci.smr.taskset.classes;
+if(length(settings.bci.smr.taskset.classes)==2)
+    analysis.settings.task.classes                      = [1 3]; % For historical reasons...does not affect anything if you put [1 2], since classes_old isused in fact
+elseif(length(settings.bci.smr.taskset.classes)==3)
+    analysis.settings.task.classes                      = [1 2 3];
+else
+    analysis.settings.task.classes                      = [1 2 3 4];
+end
+
 
 analysis.tools.features.channels  = settings.bci.smr.channels;
 analysis.tools.features.bands     = settings.bci.smr.bands;
