@@ -338,8 +338,15 @@ for i = 1:length(Classifiers)
             xlabel('1st canonical dimension');
             ylabel('PDF');
             legend('Class 1','Class2','Class3');
+        elseif(length(unique(cdataset.labels))==4)
+            [pdf1 pdf2 pdf3 pdf4] = eegc3_smr_cvaspace(cdataset.data,cdataset.labels,[1 2 3 4]);
+            plot(pdf1.x,pdf1.f,'b',pdf2.x,pdf2.f,'r',pdf3.x,pdf3.f,'k',pdf4.x,pdf4.f,'g')
+            title([Classifiers{i}.modality ' dataset in canonical space -- Unnormalized']);
+            xlabel('1st canonical dimension');
+            ylabel('PDF');
+            legend('Class 1','Class2','Class3','Class4');            
         else
-            disp(['[eegc3_smr_train] Cannot support figure for 4 classes']);
+            disp(['[eegc3_smr_train] Cannot support figure!']);
         end
 
         % Ask whether it should normalize before classification
