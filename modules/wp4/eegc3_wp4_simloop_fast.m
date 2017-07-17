@@ -81,10 +81,10 @@ if(exist(bci.trace.eegc3_smr_simloop.filemat, 'file') && (~recompute))
         bci.trace.eegc3_smr_simloop.filemat);
     load(bci.trace.eegc3_smr_simloop.filemat);
     
-    % Plot spectrum
-    printf('[eegc3_wp4_simloop_fast] Plotting precomputed EEG spectrum');
-    eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
-        bci.settings.modules.smr.montage);
+%    % Plot spectrum
+%    printf('[eegc3_wp4_simloop_fast] Plotting precomputed EEG spectrum');
+%    eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
+%        bci.settings.modules.smr.montage);
     return;
 end
 
@@ -148,15 +148,15 @@ data.trial_idx = zeros(1, size(data.eeg,1));
 printf('[eegc3_wp4_simloop_fast] Labeling raw EEG data according to protocol\n');
 data = eegc3_smr_labelEEG(data, protocol_label, bci.settings);
 
-% Calculate spectrum
-% Use only the pure MI trials, not the whole recording
-printf('[eegc3_wp4_simloop_fast] Calculating and plotting EEG spectrum\n');
-[bci.MI bci.nonMI info] = ...
-    eegc3_smr_spectrum(data.eeg(:,1:end-1), data.trial_idx,...
-    data.lbl_sample, 1, bci.settings, protocol_label, taskset);
-% Plot spectrum
-eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
-    bci.settings.modules.smr.montage, info);
+%% Calculate spectrum
+%% Use only the pure MI trials, not the whole recording
+%printf('[eegc3_wp4_simloop_fast] Calculating and plotting EEG spectrum\n');
+%[bci.MI bci.nonMI info] = ...
+%    eegc3_smr_spectrum(data.eeg(:,1:end-1), data.trial_idx,...
+%    data.lbl_sample, 1, bci.settings, protocol_label, taskset);
+%% Plot spectrum
+%eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
+%    bci.settings.modules.smr.montage, info);
 
 bci.eeg = ndf_ringbuffer(bci.settings.acq.sf, ...
     bci.settings.acq.channels_eeg, 1);
