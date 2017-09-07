@@ -21,7 +21,7 @@ function [lap, plot_index, n_rows, n_cols] = eegc3_montage(montage)
 %                   located  and zeros elsewhere can be used, assuming a 
 %                   increasing sequential order.
 %               (3) Furthermore some predifined layouts are supported via
-%                   a string (currently, '16ch', '22ch', '24ch', '28ch',
+%                   a string (currently, '16ch', '19ch', '22ch', '24ch', '28ch',
 %                    '30ch',  '58ch' and '60ch').
 %
 % Output parameters:
@@ -63,6 +63,15 @@ if (ischar(montage))  % Predefined layouts
                     1 1 1 1 1;...
                     0 1 1 1 0;...
                     0 0 1 0 0];
+            plot_index = find(temp' == 1);
+            n_rows = size(temp, 1);
+            n_cols = size(temp, 2);
+        case '19ch'
+            temp = [0 1 0 1 0 ;...
+                    1 1 1 1 1;...
+                    1 1 1 1 1;...
+                    1 1 1 1 1;...
+                    0 1 0 1 0];
             plot_index = find(temp' == 1);
             n_rows = size(temp, 1);
             n_cols = size(temp, 2);

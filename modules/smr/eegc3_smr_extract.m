@@ -91,7 +91,6 @@ for i=1:FileNum
             disp('WP4 Online Data - using eegc3_wp4_simloop_fast')
             % Compute ST performance
             eegc3_wp4_trialPerf(Paths{i});
-            
             % extract features
             bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[]);
         else
@@ -101,7 +100,7 @@ for i=1:FileNum
         if (settings.modules.wp4.datatype)
             error('WP4 Online Data - no "slow" method for this, use the fast training, instead')
         else
-            bci = eegc3_smr_simloop(Paths{i},[],settings,[],[]); 
+            bci = eegc3_smr_simloop(Paths{i},[],settings,[],[]);
         end
     end
     
@@ -110,7 +109,7 @@ for i=1:FileNum
     
     % Extract per trial performances for this run, if it is online
     [tkset, rev, prot_label] = eegc3_smr_guesstask(bci.lbl, bci.settings);
-
+    
     if(strcmp(prot_label,'SMR_Online_eegc3'))
         % Performance of different classes
         corr = zeros(length(tkset.cues),1);
@@ -140,7 +139,8 @@ for i=1:FileNum
     tmp2 = bci.settings;
     tmp1.info.subject = [];
     tmp2.info.subject = [];
-
+    tmp1.acq.sf = tmp2.acq.sf;
+    
     isCompatible = eegc3_smr_comparesettings(tmp1, tmp2);
     if(~isCompatible)
         
@@ -174,10 +174,16 @@ for i=1:FileNum
                     error('WP4 Online Data - no "slow" method for this, use the fast training, instead')
                 else
                     bci = eegc3_smr_simloop(Paths{i},[],settings,[],[],...
-                    false, [781 898 897], 1);
+                        false, [781 898 897], 1);
                 end
             end
         end
+    end
+    
+    if (isfield(bci, 'eegdata'))
+        dataset.run{i}.eegdata = bci.eegdata;
+    elseif isfield(bci, 'eeg')
+        dataset.run{i}.eegdata = bci.eeg;
     end
     
     dataset.run{i}.data = bci.afeats;

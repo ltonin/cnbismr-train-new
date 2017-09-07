@@ -204,6 +204,45 @@ for i = 1:length(Classifiers)
             end
         end
         
+        
+        
+%         
+% % ------> ALPHA WAVES THRESHOLD (MENTAL WORK)
+%         alpha_channel = 9;
+%         sp = 512;
+%         [b, a] = butter(4, [8 13]*2/sp);
+%         
+%         for r=1:length(dataset.run)
+%             rest_trials = find(dataset.run{r}.labels == 769);
+%             new_trial = find(diff(rest_trials) > 1);
+% 
+%             % Padding
+%             padded_data = padarray(dataset.run{r}.eegdata(:, alpha_channel),[256 0], 'symmetric', 'both');
+%             % Apply butterworth filter
+%             signal = filter(b,a, padded_data);
+%             % Compute signal envelope
+%             signal = abs(hilbert(signal(257:end-256,:)));
+%             
+%             % Keep rest trials
+%             begin = 1;
+%             for l=1:length(new_trial)
+%                 if(l==1 && r==1)
+%                     alpha_signal = signal(begin:32*rest_trials(new_trial(l)));
+%                 else
+%                     alpha_signal = [alpha_signal; signal(begin:32*rest_trials(new_trial(l)))];
+%                 end
+%                 begin = 32*rest_trials(new_trial(l)+1);
+%             end
+%         end
+% 
+%         alpha_mean = mean(alpha_signal,1);
+%         alpha_std = std(alpha_signal,1);
+%         
+%         % Saving to the xml file
+%         system(sprintf('xmlstarlet ed -L -u "cnbiconfig/online/mi/alpha_mean" -v %.2f mi_protocol.xml', alpha_mean))
+%         system(sprintf('xmlstarlet ed -L -u "cnbiconfig/online/mi/alpha_std" -v %.2f mi_protocol.xml',alpha_std))
+        
+        
         if(isempty(Classifiers{i}.filepath))
             
             % Feature selection

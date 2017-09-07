@@ -138,6 +138,20 @@ else
 
 end
 
+
+%% Resample if not power of two
+if(log2(bci.settings.acq.sf) ~= round(log2(bci.settings.acq.sf)))
+    % Resample to lowest existing power of two
+    oldfs = bci.settings.acq.sf;
+    bci.settings.acq.sf = 2^floor(log2(bci.settings.acq.sf));
+    data.eeg = resample(data.eeg,bci.settings.acq.sf,oldfs);
+    data.pos = round(data.pos*(bci.settings.acq.sf/oldfs));
+    data.dur = round(data.dur*(bci.settings.acq.sf/oldfs));
+    data.red = zeros(1,size(data.eeg,1));
+    data.red(data.pos)=1;
+end
+
+
 % Find the protocol
 [taskset, resetevents, protocol_label] = eegc3_smr_guesstask(data.lbl', bci.settings);
 
@@ -266,13 +280,14 @@ if((mod(psdshift,winshift) ~=0) && (mod(winshift,psdshift) ~=0))
     return;
 end
 
+bci.eegdata = data.eeg;
+
 % Preprocess batch
-data.eeg = eegc3_smr_preprocess(data.eeg(:,1:end-1), ...
+data.eeg = eegc3_smr_preprocess(data.eeg(:,1:bci.settings.acq.channels_eeg), ...
 	bci.settings.modules.smr.options.prep.dc, ...
 	bci.settings.modules.smr.options.prep.car, ...  
 	bci.settings.modules.smr.options.prep.laplacian, ...
 	bci.settings.modules.smr.laplacian);
-
 
 % Create arguments for spectrogram
 spec_win = bci.settings.acq.sf*bci.settings.modules.smr.psd.win;

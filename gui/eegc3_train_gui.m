@@ -1383,11 +1383,11 @@ function Ld_Montage_Callback(hObject, eventdata, handles)
 % hObject    handle to Ld_Montage (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[handles.settings.modules.smr.montage handles.settings.modules.smr.laplacian ...
+[handles.settings.modules.smr.montage handles.settings.modules.smr.laplacian...
     SelectedFileName] = eegc3_gui_montage();
 
 set(handles.Montage_File,'String',SelectedFileName);
-
+guidata(gcf,handles);
 
 % --- Executes on button press in Btn_Classify.
 function Btn_Classify_Callback(hObject, eventdata, handles)
