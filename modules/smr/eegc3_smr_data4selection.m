@@ -3,7 +3,7 @@ function [udataset ndataset]  = eegc3_smr_data4selection(dataset, Classifier, no
 % function [udataset ndataset] = eegc3_smr_data4selection(dataset,
 % Classifier)
 %
-% Function preparing the dataset for feature selection (CVA). 
+% Function preparing the dataset for feature selection (CVA).
 % 
 % Inputs: 
 %
