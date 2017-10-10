@@ -197,6 +197,7 @@ else
         [SR ChanNum TrChanNum] = eegc3_GDFInfo(file_path);
         handles.settings.acq.sf = SR;
         handles.settings.acq.channels_eeg = ChanNum;
+        handles.settings.acq.channels_tri = TrChanNum;
         set(handles.EEG_Fs,'String',SR);
         set(handles.EEG_Channels,'String',num2str(ChanNum));
         
@@ -1028,8 +1029,8 @@ if(~isempty(get(hObject,'String')) && ~isnan(str2double(get(hObject,'String'))) 
         handles.settings.modules.smr.win.shift  = str2double(get(hObject,'String'));
 else
     uiwait(msgbox('Window Shift should be a positive number (in seconds)!','Attention!','error'));
-    set(hObject,'String','0.0625');
-    handles.settings.modules.smr.win.shift  = 1/16;
+    set(hObject,'String','0.1');
+    handles.settings.modules.smr.win.shift  = 0.1;
 end
 guidata(gcf,handles);
 
@@ -1095,8 +1096,8 @@ if(~isempty(get(hObject,'String')) && ~isnan(str2double(get(hObject,'String'))) 
         handles.settings.modules.smr.psd.ovl  = str2double(get(hObject,'String'));
 else
     uiwait(msgbox('PSD Window Overlapping should be a positive number!','Attention!','error'));
-    set(hObject,'String','0.5');
-    handles.settings.modules.smr.psd.ovl  = 0.5;
+    set(hObject,'String','0.6');
+    handles.settings.modules.smr.psd.ovl  = 0.6;
 end
 guidata(gcf,handles);
 
@@ -1279,8 +1280,8 @@ if(~isempty(get(hObject,'String')) && ~isnan(str2double(get(hObject,'String'))) 
         handles.settings.acq.sf  = str2double(get(hObject,'String'));
 else
     uiwait(msgbox('Sampling frequency should be a positive integer (in Hz)!','Attention!','error'));
-    set(hObject,'String','512');
-    handles.settings.acq.sf  = 512;
+    set(hObject,'String','300');
+    handles.settings.acq.sf  = 300;
 end
 guidata(gcf,handles);
 
@@ -1340,16 +1341,16 @@ settings = eegc3_smr_newsettings(settings);
 handles.settings = settings;
 set(handles.Subject_code,'String','unknown');
 set(handles.Feat_Win,'String','1');
-set(handles.Feat_Win_Shift,'String','0.0625');
+set(handles.Feat_Win_Shift,'String','0.10');
 set(handles.PSD_Win,'String','0.5');
-set(handles.PSD_Overlap,'String','0.5');
+set(handles.PSD_Overlap,'String','0.6');
 set(handles.PSD_Freqs,'String','4:2:48');
 set(handles.Prep_DC,'Value',1);
 set(handles.Prep_CAR,'Value',0);
 set(handles.Prep_Laplacian,'Value',1);
-set(handles.EEG_Fs,'String','512');
-set(handles.EEG_Channels,'String','16');
-set(handles.Montage_File,'String','gTec16.mat');
+set(handles.EEG_Fs,'String','300');
+set(handles.EEG_Channels,'String','19');
+set(handles.Montage_File,'String','ws19.mat');
 set(handles.Lbl_Montage,'Enable','on');
 set(handles.Montage_File,'Enable','on');
 set(handles.Ld_Montage,'Enable','on');

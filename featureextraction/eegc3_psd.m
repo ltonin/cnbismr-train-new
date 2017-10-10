@@ -29,7 +29,12 @@ end
 if(dolog == true)
     psd = log(psd);
 end
-[val, set] = intersect(frq, frqs);
+%[val, set] = intersect(frq, frqs);
+set = [];
+for fr=1:length(frqs)
+    [~, set(fr)] = min(abs( frq - frqs(fr)));
+end
+
 
 if(length(set) ~= length(frqs))
 	disp('[eegc3_psd] Warning: cannot provide requested frequencies!');

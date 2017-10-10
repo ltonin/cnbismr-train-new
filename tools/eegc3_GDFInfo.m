@@ -27,7 +27,7 @@ SR = header.SampleRate;
 
 % Wrong! This mixes EEG and EMG. Hardcoding it to 16
 % EEGChanNum = length(find(header.CHANTYP == 'E'));
-EEGChanNum = 16;
+EEGChanNum = header.NS;
 TrigChanNum = length(find(header.CHANTYP == 'T'));
 
 

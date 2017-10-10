@@ -97,25 +97,6 @@ if(~isempty(bci.trace.eegc3_smr_simloop.filetxt))
 end
 printf('Done!\n');
 
-% Extract trigger informations
-data.lpt = data.eeg(:, end);
-data.lpt(find(data.lpt > 1)) = 1;		% To be changed = 0
-data.evt = gettrigger(data.lpt);
-data.red = zeros(1, size(data.eeg,1));
-
-if (length(data.evt) ~= length(data.hdr.EVENT.POS))
-    disp('It seems that HW triggers are missing. Using SW trigger positions and durations instead');
-    data.red(data.hdr.EVENT.POS) = 1;
-    data.pos = data.hdr.EVENT.POS;
-else
-    disp('Using HW trigger positions for precise timing');
-    data.red(data.evt) = 1;
-    data.pos = data.evt;
-end
-
-data.lbl = data.hdr.EVENT.TYP;
-data.dur = data.hdr.EVENT.DUR;
-
 % Set up simulated BCI
 if(isstruct(filemat))
     bci.settings = filemat;
@@ -137,6 +118,30 @@ else
     end
 
 end
+
+% Extract trigger informations
+if(bci.settings.acq.channels_tri ~= 0)
+    data.lpt = data.eeg(:, end);
+    data.eeg  = data.eeg(:,1:bci.settings.acq.channels_eeg);
+else
+    data.lpt = zeros(size(data.eeg,1),1);
+end
+data.lpt(find(data.lpt > 1)) = 1;		% To be changed = 0
+data.evt = gettrigger(data.lpt);
+data.red = zeros(1, size(data.eeg,1));
+
+if (length(data.evt) ~= length(data.hdr.EVENT.POS))
+    disp('It seems that HW triggers are missing. Using SW trigger positions and durations instead');
+    data.red(data.hdr.EVENT.POS) = 1;
+    data.pos = data.hdr.EVENT.POS;
+else
+    disp('Using HW trigger positions for precise timing');
+    data.red(data.evt) = 1;
+    data.pos = data.evt;
+end
+
+data.lbl = data.hdr.EVENT.TYP;
+data.dur = data.hdr.EVENT.DUR;
 
 % Find the protocol
 [taskset, resetevents, protocol_label] = eegc3_smr_guesstask(data.lbl', bci.settings);
@@ -267,7 +272,7 @@ if((mod(psdshift,winshift) ~=0) && (mod(winshift,psdshift) ~=0))
 end
 
 % Preprocess batch
-data.eeg = eegc3_smr_preprocess(data.eeg(:,1:end-1), ...
+data.eeg = eegc3_smr_preprocess(data.eeg, ...
 	bci.settings.modules.smr.options.prep.dc, ...
 	bci.settings.modules.smr.options.prep.car, ...  
 	bci.settings.modules.smr.options.prep.laplacian, ...
@@ -294,7 +299,14 @@ for ch=1:bci.settings.acq.channels_eeg
 end
 
 % Keep only desired frequencies
-p = p(find(ismember(f,bci.settings.modules.smr.psd.freqs)),:,:);
+%p = p(find(ismember(f,bci.settings.modules.smr.psd.freqs)),:,:);
+
+% Snap non-integer freqs to nearest desired freq amnd return indices
+set = [];
+for fr=1:length(bci.settings.modules.smr.psd.freqs)
+    [~, set(fr)] = min(abs( f - bci.settings.modules.smr.psd.freqs(fr)));
+end
+p = p(set,:,:);
 
 % Setup moving average filter parameters
 FiltA = 1;

@@ -21,9 +21,9 @@ function settings = eegc3_smr_newsettings(settings)
 
 % Default gTec SMR BCI
 settings.acq.id = 501;
-settings.acq.sf = 512;
-settings.acq.channels_eeg = 16;
-settings.acq.channels_tri = 1;
+settings.acq.sf = 300;
+settings.acq.channels_eeg = 19;
+settings.acq.channels_tri = 0;
 
 settings.modules.smr.options.prep.dc  			= false;
 settings.modules.smr.options.prep.car 			= false;
@@ -43,19 +43,20 @@ settings.modules.smr.options.classification.single 	= false;
 
 settings.modules.wp4.datatype = 0;
 
-settings.modules.smr.montage = 				[0 0 1 0 0; ...
-	 						1 1 1 1 1; ...
-	 						1 1 1 1 1;...
-     							1 1 1 1 1];
+settings.modules.smr.montage = [0 1 0 1 0 ;...
+                                1 1 1 1 1; ...
+                                1 1 1 1 1; ...
+                                1 1 1 1 1; ...
+                                0 1 0 1 0];
 settings.modules.smr.laplacian = ...
 	eegc3_montage(settings.modules.smr.montage);
 
 settings.modules.smr.win.size 		= 1.00;
-settings.modules.smr.win.shift		= 0.0625;
+settings.modules.smr.win.shift		= 0.1; % 0.0625;
 
 settings.modules.smr.psd.freqs		= [4:2:48];
 settings.modules.smr.psd.win 		= 0.50;
-settings.modules.smr.psd.ovl 		= 0.50;
+settings.modules.smr.psd.ovl 		= 0.60;
 
 settings.modules.smr.dp.threshold	= 0.50;
 
