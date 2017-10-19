@@ -118,7 +118,7 @@ else
     end
 end
 
- bci.settings.modules.smr.options.prep.filter = 1;
+ bci.settings.modules.smr.options.prep.filter.f = 1;
 
 % Extract trigger informations
 if(bci.settings.acq.channels_tri ~= 0)
