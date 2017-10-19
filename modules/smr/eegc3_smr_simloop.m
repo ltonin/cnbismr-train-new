@@ -135,8 +135,9 @@ else
         bci = [];
         return;
     end
-
 end
+
+[bci.analysis.options.prep.filter.a, user.bci.analysis.options.prep.filter.b] = butter(4,[1 40]./(user.bci.analysis.settings.eeg.fs/2), 'bandpass');
 
 % Find the protocol
 [taskset, resetevents, protocol_label] = eegc3_smr_guesstask(data.lbl');

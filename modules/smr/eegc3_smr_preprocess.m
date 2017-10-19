@@ -19,8 +19,8 @@ function data = eegc3_smr_preprocess(data, opt_dc, opt_car, opt_laplacian, opt_f
 %    Returns:
 %      RESULT         [samples x channels].
 
-if(opt_filter)
-	data = eegc3_filter(data);
+if(opt_filter.f)
+	data = eegc3_filter(data, opt_filter);
 end
 
 if(opt_dc)
