@@ -116,8 +116,9 @@ else
         bci = [];
         return;
     end
-
 end
+
+ bci.settings.modules.smr.options.prep.filter = 1;
 
 % Extract trigger informations
 if(bci.settings.acq.channels_tri ~= 0)
@@ -275,7 +276,8 @@ end
 data.eeg = eegc3_smr_preprocess(data.eeg, ...
 	bci.settings.modules.smr.options.prep.dc, ...
 	bci.settings.modules.smr.options.prep.car, ...  
-	bci.settings.modules.smr.options.prep.laplacian, 1, ...
+	bci.settings.modules.smr.options.prep.laplacian, ...
+    settings.modules.smr.options.prep.filter.f, ...
 	bci.settings.modules.smr.laplacian);
 
 
