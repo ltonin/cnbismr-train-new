@@ -1,4 +1,4 @@
-function data = eegc3_smr_preprocess(data, opt_dc, opt_car, opt_laplacian, laplacian)
+function data = eegc3_smr_preprocess(data, opt_dc, opt_car, opt_laplacian, opt_filter, laplacian)
 % Edited by M. Tavella <michele.tavella@epfl.ch> on 16/07/09 15:38:11
 %
 % EEGC2_PREPROCESS Runs DC, CAR and Laplacian filtering on EEG data
@@ -18,6 +18,10 @@ function data = eegc3_smr_preprocess(data, opt_dc, opt_car, opt_laplacian, lapla
 %
 %    Returns:
 %      RESULT         [samples x channels].
+
+if(opt_filter)
+	data = eegc3_filter(data);
+end
 
 if(opt_dc)
 	data = eegc3_dc(data);
