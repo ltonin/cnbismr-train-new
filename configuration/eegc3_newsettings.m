@@ -24,7 +24,7 @@ settings.info.date					= 'unknown';
 settings.info.basename 				= 'unknown';
 
 settings.acq.id                     = 0;
-settings.acq.sf                     = 0;
+settings.acq.sf                     = 300;
 settings.acq.channels_eeg			= 0;
 settings.acq.channels_exg           = 0;
 settings.acq.channels_tri           = 0;

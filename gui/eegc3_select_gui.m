@@ -87,7 +87,7 @@ handles.output = hObject;
     
     % Generate the overall DPPlot form the AllDPa matrix
     axes(handles.DPPlot);
-    imagesc(handles.DPPlotMat);
+    imagesc(handles.DPPlotMat,[0 3]);
     set(handles.DPPlot,'Tag','DPPlot');
     plotPresent(handles);
     
@@ -100,7 +100,7 @@ handles.output = hObject;
     
     % Set up selection plot
     axes(handles.SelectionPlot);
-    handles.SelectedHim = imagesc(handles.SelectedMat);
+    handles.SelectedHim = imagesc(handles.SelectedMat,[0 1]);
     set(handles.SelectionPlot,'Tag','SelectionPlot');
     computeSelection(hObject,handles);
     
@@ -333,7 +333,7 @@ for ch = cidx
 end
 
 axes(handles.SelectionPlot);
-handles.SelectedHim = imagesc(handles.SelectedMat);
+handles.SelectedHim = imagesc(handles.SelectedMat,[0 1]);
 set(handles.SelectionPlot,'Tag','SelectionPlot');
 plotPresent(handles);
 guidata(hObject,handles);

@@ -118,10 +118,6 @@ else
     end
 end
 
- bci.settings.modules.smr.options.prep.filter.f = 1;
- bci.settings.modules.smr.options.prep.filter.z = [];
-[bci.settings.modules.smr.options.prep.filter.b, bci.settings.modules.smr.options.prep.filter.a] = butter(4,[1 40]./(bci.settings.acq.sf/2), 'bandpass');
-
 % Extract trigger informations
 if(bci.settings.acq.channels_tri ~= 0)
     data.lpt = data.eeg(:, end);

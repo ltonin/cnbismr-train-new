@@ -25,9 +25,10 @@ settings.acq.sf = 300;
 settings.acq.channels_eeg = 19;
 settings.acq.channels_tri = 0;
 
-settings.modules.smr.options.prep.dc  			= false;
+settings.modules.smr.options.prep.dc  			= true; %% Wearable sensing needs this!!!!!!
 settings.modules.smr.options.prep.car 			= false;
 settings.modules.smr.options.prep.laplacian		= true;
+settings.modules.smr.options.prep.filter.f             = true;
 settings.modules.smr.options.extraction.trials 		= false;
 settings.modules.smr.options.extraction.fast 		= true;
 settings.modules.smr.options.selection.dpt   		= false;
@@ -50,6 +51,11 @@ settings.modules.smr.montage = [0 1 0 1 0 ;...
                                 0 1 0 1 0];
 settings.modules.smr.laplacian = ...
 	eegc3_montage(settings.modules.smr.montage);
+
+settings.modules.smr.options.prep.filter.z = [];
+[settings.modules.smr.options.prep.filter.b,...
+    settings.modules.smr.options.prep.filter.a] = ...
+    butter(4,[1 40]./(settings.acq.sf/2), 'bandpass'); % Hardcode for now
 
 settings.modules.smr.win.size 		= 1.00;
 settings.modules.smr.win.shift		= 0.1; % 0.0625;
