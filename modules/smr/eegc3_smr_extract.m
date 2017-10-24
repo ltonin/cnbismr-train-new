@@ -180,6 +180,7 @@ for i=1:FileNum
         end
     end
     
+    dataset.run{i}.orig_eeg = bci.orig_eeg;
     dataset.run{i}.eeg = bci.eeg;
     dataset.run{i}.eeglabels = bci.lbl_eeg;
     dataset.run{i}.data = bci.afeats;

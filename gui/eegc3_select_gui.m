@@ -88,6 +88,10 @@ handles.output = hObject;
     % Generate the overall DPPlot form the AllDPa matrix
     axes(handles.DPPlot);
     imagesc(handles.DPPlotMat,[0 3]);
+    set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
+    set(gca, 'YTickLabel', {});
+    set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
+    set(gca, 'XTickLabel', {});    
     set(handles.DPPlot,'Tag','DPPlot');
     plotPresent(handles);
     
@@ -101,6 +105,10 @@ handles.output = hObject;
     % Set up selection plot
     axes(handles.SelectionPlot);
     handles.SelectedHim = imagesc(handles.SelectedMat,[0 1]);
+    set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
+    set(gca, 'YTickLabel', {});
+    set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
+    set(gca, 'XTickLabel', {});        
     set(handles.SelectionPlot,'Tag','SelectionPlot');
     computeSelection(hObject,handles);
     
@@ -334,6 +342,10 @@ end
 
 axes(handles.SelectionPlot);
 handles.SelectedHim = imagesc(handles.SelectedMat,[0 1]);
+set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
+set(gca, 'YTickLabel', {});
+set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
+set(gca, 'XTickLabel', {});    
 set(handles.SelectionPlot,'Tag','SelectionPlot');
 plotPresent(handles);
 guidata(hObject,handles);
@@ -350,8 +362,8 @@ uiresume(hObject);
 
 function plotPresent(handles)
     set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
-    set(gca, 'YTickLabel', 1:handles.settings.acq.channels_eeg);
+    set(gca, 'YTickLabel', handles.settings.acq.channel_lbl);
     set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
-    set(gca, 'XTickLabel', handles.settings.modules.smr.psd.freqs);
+    set(gca, 'XTickLabel', {handles.settings.modules.smr.psd.freqs});
     xlabel('Band [Hz]');
     ylabel('Channel');

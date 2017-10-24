@@ -1,4 +1,3 @@
-
 function settings = eegc3_smr_newsettings(settings)
 %
 % function settings = eegc3_smr_newsettings()
@@ -24,6 +23,7 @@ settings.acq.id = 501;
 settings.acq.sf = 300;
 %settings.acq.channels_eeg = 19;
 settings.acq.channels_eeg = 8;
+settings.acq.channel_lbl = {'F3','F4','Cz','C3','C4','Pz','P3','P4'};
 settings.acq.channels_tri = 0;
 
 settings.modules.smr.options.prep.dc  			= true; %% Wearable sensing needs this!!!!!!

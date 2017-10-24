@@ -196,10 +196,10 @@ else
         
         [SR ChanNum TrChanNum] = eegc3_GDFInfo(file_path);
         handles.settings.acq.sf = SR;
-        handles.settings.acq.channels_eeg = ChanNum;
+        %handles.settings.acq.channels_eeg = ChanNum;
         handles.settings.acq.channels_tri = TrChanNum;
         set(handles.EEG_Fs,'String',SR);
-        set(handles.EEG_Channels,'String',num2str(ChanNum));
+        %set(handles.EEG_Channels,'String',num2str(ChanNum));
         
         guidata(gcf,handles);
     end
