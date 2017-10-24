@@ -180,6 +180,8 @@ for i=1:FileNum
         end
     end
     
+    dataset.run{i}.eeg = bci.eeg;
+    dataset.run{i}.eeglabels = bci.lbl_eeg;
     dataset.run{i}.data = bci.afeats;
     dataset.run{i}.labels = bci.lbl_sample;
     dataset.run{i}.trial = bci.trial_idx;

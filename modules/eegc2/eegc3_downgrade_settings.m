@@ -122,6 +122,11 @@ analysis.tools.features.bands     = settings.bci.smr.bands;
 analysis.tools.net.gau.M          = settings.bci.smr.gau.M;      
 analysis.tools.net.gau.C          = settings.bci.smr.gau.C;
 
+analysis.tools.artefacts.zth      = settings.modules.smr.artefacts.zth;
+analysis.tools.artefacts.mean     = settings.modules.smr.artefacts.mean;
+analysis.tools.artefacts.std      = settings.modules.smr.artefacts.std;
+analysis.tools.artefacts.channels = settings.modules.smr.artefacts.channels;
+
 if(isfield(settings.bci.smr,'lda'))
     analysis.tools.lda.m_right    = settings.bci.smr.lda.m_right;
     analysis.tools.lda.m_left    = settings.bci.smr.lda.m_left;

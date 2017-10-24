@@ -41,6 +41,7 @@ settings.modules.smr.options.classification.gau  	= true;
 settings.modules.smr.options.classification.lda  	= false;
 settings.modules.smr.options.classification.sep  	= false;
 settings.modules.smr.options.classification.single 	= false;
+settings.modules.smr.options.classification.artefacts = true;
 
 settings.modules.wp4.datatype = 0;
 
@@ -73,6 +74,12 @@ settings.modules.smr.gau.mimean		= 0.0001;
 settings.modules.smr.gau.micov		= 0.00001;
 settings.modules.smr.gau.th		= 0.70;
 settings.modules.smr.gau.terminate	= true;
+
+%% EEG distribution params for artefact detection
+settings.modules.smr.artefacts.zth	= 50;
+settings.modules.smr.artefacts.mean	= [];
+settings.modules.smr.artefacts.std	= [];
+settings.modules.smr.artefacts.channels	= [1 2 13 14];
 
 % LDA settings
 settings.modules.smr.lda.priors	= [0.5 0.5];
