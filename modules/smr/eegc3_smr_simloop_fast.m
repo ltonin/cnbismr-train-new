@@ -90,6 +90,12 @@ end
 % Import all the data we need
 printf('[eegc3_smr_simloop] Loading GDF/TXT files... ');
 [data.eeg, data.hdr] = sload(filexdf);
+
+%% For mentalwork, we save all 19 channels of the WS cap, but we only want to use
+% 8 of them for MI (real index in parenthesis): 
+% [1.F3 (4) 2.F4 (5) 3.Cz (8) 4.C3 (9) 5.C4 (10) 6.Pz (15) 7.P3 (16) 8.P4 (17)]
+data.eeg = data.eeg(:,[4 5 8 9 10 15 16 17]);
+
 if(~isempty(bci.trace.eegc3_smr_simloop.filetxt))
 	data.aprobs = importdata(filetxt);
 	data.cprobs = data.aprobs(:, 1:2);
