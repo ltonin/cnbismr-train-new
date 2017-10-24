@@ -22,7 +22,8 @@ function settings = eegc3_smr_newsettings(settings)
 % Default gTec SMR BCI
 settings.acq.id = 501;
 settings.acq.sf = 300;
-settings.acq.channels_eeg = 19;
+%settings.acq.channels_eeg = 19;
+settings.acq.channels_eeg = 8;
 settings.acq.channels_tri = 0;
 
 settings.modules.smr.options.prep.dc  			= true; %% Wearable sensing needs this!!!!!!
@@ -45,11 +46,14 @@ settings.modules.smr.options.classification.artefacts = true;
 
 settings.modules.wp4.datatype = 0;
 
-settings.modules.smr.montage = [0 1 0 1 0 ;...
-                                1 1 1 1 1; ...
-                                1 1 1 1 1; ...
-                                1 1 1 1 1; ...
-                                0 1 0 1 0];
+%settings.modules.smr.montage = [0 1 0 1 0 ;...
+%                                1 1 1 1 1; ...
+%                                1 1 1 1 1; ...
+%                                1 1 1 1 1; ...
+%                                0 1 0 1 0];
+settings.modules.smr.montage = [1 0 2;...
+                                4 3 5;...
+                                7 6 8];
 settings.modules.smr.laplacian = ...
 	eegc3_montage(settings.modules.smr.montage);
 
@@ -69,10 +73,10 @@ settings.modules.smr.dp.threshold	= 0.50;
 
 settings.modules.smr.gau.somunits 	= [1 1]; % QDA-style
 settings.modules.smr.gau.sharedcov 	= 'f'; % No difference anyway
-settings.modules.smr.gau.epochs 	= 20;
-settings.modules.smr.gau.mimean		= 0.0001;
-settings.modules.smr.gau.micov		= 0.00001;
-settings.modules.smr.gau.th		= 0.70;
+settings.modules.smr.gau.epochs 	= 50;
+settings.modules.smr.gau.mimean		= 0.001;
+settings.modules.smr.gau.micov		= 0.0001;
+settings.modules.smr.gau.th         = 0.60;
 settings.modules.smr.gau.terminate	= true;
 
 %% EEG distribution params for artefact detection

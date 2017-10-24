@@ -59,7 +59,7 @@ end
 %         num2str(NTrial-NTrain) ' trials']);
 % end
 
-if(unique(labels)==2) % 2-class case
+if(length(unique(labels))==2) % 2-class case
     % Split possible 50/50
     % Find class samples
     C{1} = find(labels==1);
@@ -80,8 +80,8 @@ if(unique(labels)==2) % 2-class case
     blabels = blabels(brand);
     bdata = bdata(brand,:);
 
-    % Now split to training and testing set, 70/30 split
-    Pind = [1:round(0.7*length(blabels))];
+    % Now split to training and testing set, 40/60 split
+    Pind = [1:round(0.4*length(blabels))];
     Tind = [max(Pind)+1:length(blabels)];
 
     P = bdata(Pind,:);
@@ -111,8 +111,8 @@ if(unique(labels)==2) % 2-class case
         disp(['[eegc3_train_gau] Warning: Testing samples seem to be too unbalanced...']);
     end
 else
-    % Split to training and testing set, 70/30 split
-    Pind = [1:round(0.7*length(labels))];
+    % Split to training and testing set, 40/60 split
+    Pind = [1:round(0.4*length(labels))];
     Tind = [max(Pind)+1:length(labels)];
 
     P = data(Pind,:);
