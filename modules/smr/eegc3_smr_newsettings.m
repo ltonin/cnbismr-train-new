@@ -42,7 +42,7 @@ settings.modules.smr.options.classification.gau  	= true;
 settings.modules.smr.options.classification.lda  	= false;
 settings.modules.smr.options.classification.sep  	= false;
 settings.modules.smr.options.classification.single 	= false;
-settings.modules.smr.options.classification.artefacts = true;
+settings.modules.smr.options.classification.artefacts = false;
 
 settings.modules.wp4.datatype = 0;
 

@@ -501,24 +501,24 @@ for i = 1:length(Classifiers)
             end
         end
         %% Compute statistics of EEG signal (within trials only to avoid noise)
-        Csettings{class_idx} = eegc3_smr_eegstats(Csettings{class_idx}, dataset);
-
-        if(usedlg)
-            
-            Ans = questdlg(['Do you want to train a LDA classifier for modality ' Classifiers{i}.modality...
-                ' ?'], 'Attention!','Yes','No','Yes');
-            if(strcmp(Ans,'Yes'))
-                Csettings{class_idx}.modules.smr.options.classification.lda = true;
-            else
-                Csettings{class_idx}.modules.smr.options.classification.lda = false;
-            end
-        else
-            if(Csettings{class_idx}.modules.smr.options.classification.lda)
-                Ans = 'Yes';
-            else
-                Ans = 'No';
-            end
-        end
+%         Csettings{class_idx} = eegc3_smr_eegstats(Csettings{class_idx}, dataset);
+% 
+%         if(usedlg)
+%             
+%             Ans = questdlg(['Do you want to train a LDA classifier for modality ' Classifiers{i}.modality...
+%                 ' ?'], 'Attention!','Yes','No','Yes');
+%             if(strcmp(Ans,'Yes'))
+%                 Csettings{class_idx}.modules.smr.options.classification.lda = true;
+%             else
+%                 Csettings{class_idx}.modules.smr.options.classification.lda = false;
+%             end
+%         else
+%             if(Csettings{class_idx}.modules.smr.options.classification.lda)
+%                 Ans = 'Yes';
+%             else
+%                 Ans = 'No';
+%             end
+%         end
 
         if(strcmp(Ans,'Yes'))
             % Train classifier
