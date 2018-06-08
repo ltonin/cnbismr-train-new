@@ -63,9 +63,23 @@ handles.settings = settings;
 handles.settings.modules.smr.options.selection.usegui = 1;
 handles.settings.modules.smr.options.extraction.trials = 0;
 handles.usedlg = false;
-
-set(handles.Prep_DC,'Value',1);
-set(handles.Prep_Laplacian,'Value',1);
+set(handles.Subject_code,'String','unknown');
+set(handles.Feat_Win,'String',num2str(settings.modules.smr.win.size));
+set(handles.Feat_Win_Shift,'String',num2str(settings.modules.smr.win.shift));
+set(handles.PSD_Win,'String',num2str(settings.modules.smr.psd.win));
+set(handles.PSD_Overlap,'String',num2str(settings.modules.smr.psd.ovl));
+set(handles.PSD_Freqs,'String',[num2str(settings.modules.smr.psd.freqs(1)) ':' ...
+    num2str(settings.modules.smr.psd.freqs(2)-settings.modules.smr.psd.freqs(1)) ':'...
+    num2str(settings.modules.smr.psd.freqs(end))]);
+set(handles.Prep_DC,'Value',settings.modules.smr.options.prep.dc);
+set(handles.Prep_CAR,'Value',settings.modules.smr.options.prep.car);
+set(handles.Prep_Laplacian,'Value',settings.modules.smr.options.prep.laplacian);
+set(handles.EEG_Fs,'String',num2str(settings.acq.sf));
+set(handles.EEG_Channels,'String',num2str(settings.acq.channels_eeg));
+set(handles.Montage_File,'String','gTec32bochum.mat');
+set(handles.Lbl_Montage,'Enable','on');
+set(handles.Montage_File,'Enable','on');
+set(handles.Ld_Montage,'Enable','on');
 set(handles.UseDlg,'Value',0);
 set(handles.SelectGUI,'Value',1);
 set(handles.EnableSettings,'Value',0);
@@ -194,12 +208,12 @@ else
         handles.settings.info.subject = sID{1};
         set(handles.Subject_code,'String',sID);
         
-        [SR ChanNum TrChanNum] = eegc3_GDFInfo(file_path);
-        handles.settings.acq.sf = SR;
-        %handles.settings.acq.channels_eeg = ChanNum;
-        handles.settings.acq.channels_tri = TrChanNum;
-        set(handles.EEG_Fs,'String',SR);
-        %set(handles.EEG_Channels,'String',num2str(ChanNum));
+%         [SR ChanNum TrChanNum] = eegc3_GDFInfo(file_path);
+%         handles.settings.acq.sf = SR;
+%         %handles.settings.acq.channels_eeg = ChanNum;
+%         handles.settings.acq.channels_tri = TrChanNum;
+%         set(handles.EEG_Fs,'String',SR);
+%         %set(handles.EEG_Channels,'String',num2str(ChanNum));
         
         guidata(gcf,handles);
     end
@@ -1340,17 +1354,19 @@ settings = eegc3_newsettings();
 settings = eegc3_smr_newsettings(settings);
 handles.settings = settings;
 set(handles.Subject_code,'String','unknown');
-set(handles.Feat_Win,'String','1');
-set(handles.Feat_Win_Shift,'String','0.10');
-set(handles.PSD_Win,'String','0.5');
-set(handles.PSD_Overlap,'String','0.6');
-set(handles.PSD_Freqs,'String','4:2:48');
-set(handles.Prep_DC,'Value',1);
-set(handles.Prep_CAR,'Value',0);
-set(handles.Prep_Laplacian,'Value',1);
-set(handles.EEG_Fs,'String','300');
-set(handles.EEG_Channels,'String','8');
-set(handles.Montage_File,'String','ws8.mat');
+set(handles.Feat_Win,'String',num2str(settings.modules.smr.win.size));
+set(handles.Feat_Win_Shift,'String',num2str(settings.modules.smr.win.shift));
+set(handles.PSD_Win,'String',num2str(settings.modules.smr.psd.win));
+set(handles.PSD_Overlap,'String',num2str(settings.modules.smr.psd.ovl));
+set(handles.PSD_Freqs,'String',[num2str(settings.modules.smr.psd.freqs(1)) ':' ...
+    num2str(settings.modules.smr.psd.freqs(2)-settings.modules.smr.psd.freqs(1)) ':'...
+    num2str(settings.modules.smr.psd.freqs(end))]);
+set(handles.Prep_DC,'Value',settings.modules.smr.options.prep.dc);
+set(handles.Prep_CAR,'Value',settings.modules.smr.options.prep.car);
+set(handles.Prep_Laplacian,'Value',settings.modules.smr.options.prep.laplacian);
+set(handles.EEG_Fs,'String',num2str(settings.acq.sf));
+set(handles.EEG_Channels,'String',num2str(settings.acq.channels_eeg));
+set(handles.Montage_File,'String','eego64.mat');
 set(handles.Lbl_Montage,'Enable','on');
 set(handles.Montage_File,'Enable','on');
 set(handles.Ld_Montage,'Enable','on');
