@@ -22,7 +22,7 @@ function varargout = eegc3_train_gui(varargin)
 
 % Edit the above text to modify the response to help eegc3_train_gui
 
-% Last Modified by GUIDE v2.5 15-Aug-2016 13:54:36
+% Last Modified by GUIDE v2.5 08-Jun-2018 23:36:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -97,8 +97,8 @@ handles = load_listbox(dir,handles);
 
 
 % Prepare the Classifier cell array for requested classifiers
-Classifier = cell(1,7);
-for i=1:7
+Classifier = cell(1,9);
+for i=1:9
     Classifier{i}.Enable = false;
     Classifier{i}.filename = '';
     Classifier{i}.filepath = '';
@@ -111,6 +111,8 @@ Classifier{4}.modality = 'rhrst';
 Classifier{5}.modality = 'lhrst';
 Classifier{6}.modality = 'mod1';
 Classifier{7}.modality = 'mod2';
+Classifier{8}.modality = 'bhbf';
+Classifier{9}.modality = 'bfbh';
 
 Classifier{1}.task_right = 770;
 Classifier{1}.task_left = 769;
@@ -146,6 +148,16 @@ Classifier{7}.task_right = -1;
 Classifier{7}.task_left = -1;
 Classifier{7}.task_top = -1;
 Classifier{7}.task_bottom = -1;
+
+Classifier{8}.task_right = 773;
+Classifier{8}.task_left = 771;
+Classifier{8}.task_top = -1;
+Classifier{8}.task_bottom = -1;
+
+Classifier{9}.task_right = 771;
+Classifier{9}.task_left = 773;
+Classifier{9}.task_top = -1;
+Classifier{9}.task_bottom = -1;
 
 handles.Classifier = Classifier;
 
@@ -1446,7 +1458,7 @@ end
 
 % Warn that only features will be computed
 isEnabled = false;
-for i=1:7
+for i=1:9
     if(handles.Classifier{i}.Enable)
         isEnabled = true;
     end
@@ -1645,3 +1657,66 @@ function Mod2Btrig_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in BHBFCheck.
+function BHBFCheck_Callback(hObject, eventdata, handles)
+% hObject    handle to BHBFCheck (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of BHBFCheck
+if(get(handles.BHBFCheck,'Value')==1)
+    set(handles.LdClassBHBF,'Enable','on');
+    set(handles.BHBFCheck,'Value',1);
+    handles.Classifier{8}.Enable = true;
+else
+    set(handles.LdClassBHBF,'Enable','off');
+    set(handles.BHBFCheck,'Value',0);
+    handles.Classifier{8}.Enable = false;
+end
+guidata(gcf,handles);
+
+% --- Executes on button press in LdClassBHBF.
+function LdClassBHBF_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassBHBF (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[handles.Classifier{8}.filepath handles.Classifier{8}.filename] = eegc3_gui_initclass();
+if(~isempty(handles.Classifier{8}.filepath))
+    set(handles.ClassLbl_bhbf,'String',handles.Classifier{8}.filename);
+else
+    set(handles.ClassLbl_bhbf,'String','None');
+end
+guidata(gcf,handles);
+
+% --- Executes on button press in BFBHCheck.
+function BFBHCheck_Callback(hObject, eventdata, handles)
+% hObject    handle to BFBHCheck (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of BFBHCheck
+if(get(handles.BFBHCheck,'Value')==1)
+    set(handles.LdClassBFBH,'Enable','on');
+    set(handles.BFBHCheck,'Value',1);
+    handles.Classifier{9}.Enable = true;
+else
+    set(handles.LdClassBFBH,'Enable','off');
+    set(handles.BFBHCheck,'Value',0);
+    handles.Classifier{9}.Enable = false;
+end
+guidata(gcf,handles);
+
+% --- Executes on button press in LdClassBFBH.
+function LdClassBFBH_Callback(hObject, eventdata, handles)
+% hObject    handle to LdClassBFBH (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[handles.Classifier{9}.filepath handles.Classifier{9}.filename] = eegc3_gui_initclass();
+if(~isempty(handles.Classifier{9}.filepath))
+    set(handles.ClassLbl_bfbh,'String',handles.Classifier{9}.filename);
+else
+    set(handles.ClassLbl_bfbh,'String','None');
+end
+guidata(gcf,handles);
