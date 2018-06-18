@@ -91,7 +91,7 @@ handles.output = hObject;
     set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
     set(gca, 'YTickLabel', {});
     set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
-    set(gca, 'XTickLabel', {});    
+    set(gca, 'XTickLabel', handles.settings.acq.channel_lbl);
     set(handles.DPPlot,'Tag','DPPlot');
     plotPresent(handles);
     
@@ -108,7 +108,7 @@ handles.output = hObject;
     set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
     set(gca, 'YTickLabel', {});
     set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
-    set(gca, 'XTickLabel', {});        
+    set(gca, 'XTickLabel', handles.settings.acq.channel_lbl);        
     set(handles.SelectionPlot,'Tag','SelectionPlot');
     computeSelection(hObject,handles);
     
@@ -345,7 +345,7 @@ handles.SelectedHim = imagesc(handles.SelectedMat,[0 1]);
 set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
 set(gca, 'YTickLabel', {});
 set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
-set(gca, 'XTickLabel', {});    
+set(gca, 'XTickLabel', handles.settings.acq.channel_lbl);    
 set(handles.SelectionPlot,'Tag','SelectionPlot');
 plotPresent(handles);
 guidata(hObject,handles);
