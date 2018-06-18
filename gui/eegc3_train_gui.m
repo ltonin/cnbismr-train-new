@@ -76,7 +76,7 @@ set(handles.Prep_CAR,'Value',settings.modules.smr.options.prep.car);
 set(handles.Prep_Laplacian,'Value',settings.modules.smr.options.prep.laplacian);
 set(handles.EEG_Fs,'String',num2str(settings.acq.sf));
 set(handles.EEG_Channels,'String',num2str(settings.acq.channels_eeg));
-set(handles.Montage_File,'String','gTec32bochum.mat');
+set(handles.Montage_File,'String','ANTNeuro32.mat');
 set(handles.Lbl_Montage,'Enable','on');
 set(handles.Montage_File,'Enable','on');
 set(handles.Ld_Montage,'Enable','on');
