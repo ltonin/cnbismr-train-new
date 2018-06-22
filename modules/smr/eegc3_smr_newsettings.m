@@ -35,10 +35,16 @@ settings.acq.channel_lbl = {'Fz','FC3','FC1','FCz','FC2','FC4','C3','C1','Cz','C
     'CP1','CPz','CP2','CP4','F1','F2','FC5','FC6','C5','C6','CP5','CP6',...
     'P5','P3','P1','Pz','P2','P4','P6','POz'};
 
-% AntNeuro 32 standard
+% AntNeuro 32 channel standard layout (correct electrodes order)
+%settings.acq.channel_lbl = {'Fp1','Fpz','Fp2','F7','F3','Fz','F4','F8',...
+%    'FC5','FC1','FC2','FC6','M1','T7','C3','Cz','C4','T8','M2','CP5','CP1',...
+%    'CP2','CP6','P7','P3','Pz','P4','P8','POz','O1','Oz','O2'};
+
+% AntNeuro 32 channel standard layout (wrong electrodes order)
 %settings.acq.channel_lbl = {'Fz','FC5','FC1','FC2','FC6','C3','Cz','C4',...
 %    'CP5','CP1','CP2','CP6','P3','Pz','P4','M1','Fp1','Fpz','Fp2','F7','F3',...
 %    'F4','F8','T7','T8','P7','P8','POz','O1','Oz','O2','M2'};
+
 settings.acq.channels_tri = 1;
 
 settings.modules.smr.options.prep.dc  			= true;
