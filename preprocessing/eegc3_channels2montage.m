@@ -1,4 +1,4 @@
-function montage = mmbci_channels2montage(chanlabels)
+function montage = eegc3_channels2montage(chanlabels)
 
 % Hardcode a standard full montage
 LblMontage = cell(10,13);
@@ -17,9 +17,10 @@ montage = zeros(10,11);
 for ch=1:length(chanlabels)
     [row col] = find(strcmp(lower(LblMontage),lower(chanlabels{ch})));
     if(isempty(row) || isempty(col))
-        disp(['[mmbci_channels2montage] Error: Cannot map given channels to known configuration. Please provide a manual montage. Exiting']);
-        montage = NaN;
-        return;
+        disp(['[eegc3_channels2montage] Warning: Cannot map channel ' chanlabels{ch} ' to known configuration. Skipping.']);
+        %montage = NaN;
+        %return;
+        %montage(row,col) = ch;
     end
     montage(row,col) = ch;
 end
