@@ -75,13 +75,22 @@ handles.output = hObject;
     DPLength = length(handles.SessionPlotMats);
     for i=1:DPLength
         spax(i) = subplot(1,DPLength,i,'Parent',handles.SessionPlot);
-        imagesc(handles.SessionPlotMats{i},'Parent',spax(i));
-        set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
-        set(gca, 'YTickLabel', {});
-        set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
-        set(gca, 'XTickLabel', {});
-        xlabel('');
-        ylabel('');
+        h = imagesc(handles.SessionPlotMats{i},'Parent',spax(i));
+        %set(gca, 'YTick',      1:handles.settings.acq.channels_eeg);
+        %set(gca, 'YTickLabel', {});
+        %set(gca, 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
+        %set(gca, 'XTickLabel', {});
+		set(spax(i), 'YTick',      1:handles.settings.acq.channels_eeg);
+    	set(spax(i), 'YTickLabel', handles.settings.acq.channel_lbl);
+    	set(spax(i), 'XTick',      [1:1:length(handles.settings.modules.smr.psd.freqs)]);
+    	set(spax(i), 'XTickLabel', {handles.settings.modules.smr.psd.freqs});
+		ax = ancestor(h, 'axes');
+		yrule = ax.YAxis;
+		xrule = ax.XAxis;
+		yrule.FontSize = 10;
+		xrule.FontSize = 10;
+        xlabel(spax(i), '[Hz]');
+        ylabel(spax(i), '');
         %plotPresent(handles);
     end
     
