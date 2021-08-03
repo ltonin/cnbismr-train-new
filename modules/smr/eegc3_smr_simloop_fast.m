@@ -84,12 +84,18 @@ if(exist(bci.trace.eegc3_smr_simloop.filemat, 'file') && (~recompute))
 %    printf('[eegc3_smr_simloop] Plotting precomputed EEG spectrum');
 %    eegc3_smr_plotSpectrum(bci, bci.trace.eegc3_smr_simloop.filexdf, ...
 %        bci.settings.modules.smr.montage);
-	return;
+	%return;
 end
 
 % Import all the data we need
 printf('[eegc3_smr_simloop] Loading GDF/TXT files... ');
 [data.eeg, data.hdr] = sload(filexdf);
+
+exclude_lbl_id = data.hdr.EVENT.TYP == 1672 | data.hdr.EVENT.TYP == 1670;
+data.hdr.EVENT.TYP = data.hdr.EVENT.TYP(~exclude_lbl_id);
+data.hdr.EVENT.POS = data.hdr.EVENT.POS(~exclude_lbl_id);
+data.hdr.EVENT.DUR = data.hdr.EVENT.DUR(~exclude_lbl_id);
+
 
 % %% For mentalwork, we save all 19 channels of the WS cap, but we only want to use
 % % 8 of them for MI (real index in parenthesis): 
@@ -149,18 +155,19 @@ end
 data.lbl = data.hdr.EVENT.TYP;
 data.dur = data.hdr.EVENT.DUR;
 
+
 % Find the protocol
 [taskset, resetevents, protocol_label] = eegc3_smr_guesstask(data.lbl', bci.settings);
 
 % Find the labels of EEG samples (time domain)
 data.lbl_sample = zeros(1, size(data.eeg,1));
 data.trial_idx = zeros(1, size(data.eeg,1));
-printf('[eegc3_smr_simloop] Labeling raw EEG data according to protocol');
+printf('[eegc3_smr_simloop] Labeling raw EEG data according to protocol\n');
 data = eegc3_smr_labelEEG(data, protocol_label, bci.settings);
 
 % Calculate spectrum
 % Use only the pure MI trials, not the whole recording
-printf('[eegc3_smr_simloop] Calculating and plotting EEG spectrum');
+%printf('[eegc3_smr_simloop] Calculating and plotting EEG spectrum');
 %[bci.MI bci.nonMI info] = ...
 %    eegc3_smr_spectrum(data.eeg(:,1:end-1), data.trial_idx,...
 %    data.lbl_sample, 1, bci.settings, protocol_label, taskset);
@@ -248,8 +255,8 @@ for i = 1:1:bci.framet
             end
         end
 	elseif(trgdetect.tnow > 1)
-		printf('[eegc3_smr_simloop] Found >1 trigger in a single frame!\n');
-		return;
+% 		printf('[eegc3_smr_simloop] Found >1 trigger in a single frame!\n');
+% 		return;
     end
     
     if(tmp.frame1 >= size(data.eeg, 1))
@@ -261,6 +268,7 @@ end
 % Assign class labels to the PSD samples
 bci.lbl_sample = zeros(size(bci.afeats,1),1);
 bci.trial_idx = zeros(size(bci.afeats,1),1)';
+
        
 % Label each PSD sample individually and add the trial index of eaxh sample
 % to the structure

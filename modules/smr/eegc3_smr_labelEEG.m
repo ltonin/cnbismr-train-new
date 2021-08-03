@@ -31,6 +31,7 @@ function data = eegc3_smr_labelEEG(data, protocol_label, settings)
             end
         end
         
+        
     elseif(strcmp(protocol_label,'INC_eegc2'))
         
         current_lbl = -1;
@@ -59,18 +60,34 @@ function data = eegc3_smr_labelEEG(data, protocol_label, settings)
             end
         end
         
+        
     elseif(strcmp(protocol_label,'SMR_Online_eegc3'))
         
-        trial = 0;
-        for i=1:length(data.lbl)
-            
-            if(data.lbl(i) == 781)
-                % New trial
-                trial = trial + 1;
-                data.lbl_sample(data.pos(i):data.pos(i) + data.dur(i)) = data.lbl(i-1);
-                data.trial_idx(data.pos(i):data.pos(i) + data.dur(i)) = trial;
-            end
+%         trial = 0;
+%         for i=1:length(data.lbl)
+%             
+%             if(data.lbl(i) == 781)
+%                 % New trial
+%                 trial = trial + 1;
+%                 data.lbl_sample(data.pos(i):data.pos(i) + data.dur(i)) = data.lbl(i-1);
+%                 %data.lbl_sample(data.pos(i):data.pos(i) + data.dur(i)) = data.lbl(i-2);
+%                 data.trial_idx(data.pos(i):data.pos(i) + data.dur(i)) = trial;
+%             end
+%         end
+        
+        cfeedId = find(data.lbl == 781);
+        ccueId  = find(data.lbl == 773 | data.lbl == 771);
+        
+        for i = 1:length(cfeedId)
+            cstart = data.pos(cfeedId(i));
+            cstop  = cstart + data.dur(cfeedId(i)) -1;
+            data.lbl_sample(cstart:cstop) = data.lbl(ccueId(i));
+            data.trial_idx(cstart:cstop) = i;
         end
+        
+        
+        
+        
     elseif(strcmp(protocol_label,'WP4_Online_eegc3'))
         
         trial = 0;

@@ -90,12 +90,15 @@ for i=1:FileNum
         if (settings.modules.wp4.datatype)
             disp('WP4 Online Data - using eegc3_wp4_simloop_fast')
             % Compute ST performance
-            eegc3_wp4_trialPerf(Paths{i});
+%             eegc3_wp4_trialPerf(Paths{i});
             
             % extract features
-            bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[]);
-        else
+%             bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[]);
             bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[]);
+        else
+            disp('>>>>>>>>>>>>>>>>>>>HERE<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+            bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[]);
+            
         end
     else
         if (settings.modules.wp4.datatype)
@@ -111,23 +114,23 @@ for i=1:FileNum
     % Extract per trial performances for this run, if it is online
     [tkset, rev, prot_label] = eegc3_smr_guesstask(bci.lbl, bci.settings);
 
-    if(strcmp(prot_label,'SMR_Online_eegc3'))
-        % Performance of different classes
-        corr = zeros(length(tkset.cues),1);
-        err = zeros(length(tkset.cues),1);
-        for c = 1:length(tkset.cues)
-            % Find cues of this type
-            cind = find(bci.lbl==tkset.cues(c));
-            resind = cind+2;
-            corr(c) = sum(bci.lbl(resind)==897);
-            err(c) = sum(bci.lbl(resind)==898);
-            disp(['[eegc3_smr_extract] Class ' num2str(tkset.cues(c))...
-                ': ' num2str(corr(c)) '/' num2str(corr(c)+err(c)) ', '...
-                num2str(100*corr(c)/(corr(c)+err(c))) ' %']);
-        end
-        disp(['[eegc3_smr_extract] Total: ' num2str(100*sum(corr)/...
-            (sum(corr)+sum(err))) ' %' ]);
-    end
+%     if(strcmp(prot_label,'SMR_Online_eegc3'))
+%         % Performance of different classes
+%         corr = zeros(length(tkset.cues),1);
+%         err = zeros(length(tkset.cues),1);
+%         for c = 1:length(tkset.cues)
+%             % Find cues of this type
+%             cind = find(bci.lbl==tkset.cues(c));
+%             resind = cind+2;
+%             corr(c) = sum(bci.lbl(resind)==897);
+%             err(c) = sum(bci.lbl(resind)==898);
+%             disp(['[eegc3_smr_extract] Class ' num2str(tkset.cues(c))...
+%                 ': ' num2str(corr(c)) '/' num2str(corr(c)+err(c)) ', '...
+%                 num2str(100*corr(c)/(corr(c)+err(c))) ' %']);
+%         end
+%         disp(['[eegc3_smr_extract] Total: ' num2str(100*sum(corr)/...
+%             (sum(corr)+sum(err))) ' %' ]);
+%     end
     
     
     % Check that the requested settings are the same as those used for the
@@ -161,11 +164,15 @@ for i=1:FileNum
             % Recompute with current settings
             if(settings.modules.smr.options.extraction.fast)
                 if (settings.modules.wp4.datatype)
+                    disp('HERE1');
                     disp('WP4 Online Data - using eegc3_wp4_simloop_fast')
-                    eegc3_wp4_trialPerf(Paths{i});
-                    bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[],...
+                    %eegc3_wp4_trialPerf(Paths{i});
+%                     bci = eegc3_wp4_simloop_fast(Paths{i},[],settings,[],[],...
+%                         false, [781 898 897], 1);
+                    bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[],...
                         false, [781 898 897], 1);
                 else
+                    disp('HERE2');
                     bci = eegc3_smr_simloop_fast(Paths{i},[],settings,[],[],...
                         false, [781 898 897], 1);
                 end
